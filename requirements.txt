@@ -1,6 +1,0 @@
-matplotlib
-nbsphinx
-numpy
-seaborn
-sphinx
-sphinx_bootstrap_theme
