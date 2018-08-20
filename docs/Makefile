@@ -2,7 +2,7 @@
 #
 
 sphinx:
-	python3 -m sphinx source/ build/
+	python3 -m sphinx source/ ../../gh-pages
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
