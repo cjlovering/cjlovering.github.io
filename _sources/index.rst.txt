@@ -10,9 +10,9 @@ hello!
 
   <div class="container-fluid">
   <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-3">
 
-This site maintains some notes on different papers I have read and wrote. I use jupyter notebooks for executable examples.
+This site maintains some notes on papers I have read. I use jupyter notebooks for executable examples.
 
 For some papers, there are existing explications. However, the process of looking at these papers helps me understand them better, and might afford others another persepective.
 
@@ -21,8 +21,8 @@ This site is inspired by the formatting of seaborn and is built using sphinx.
 .. raw:: html
 
   </div>
-    <div class="col-md-3">
-  <div class="panel panel-default">   
+  <div class="col-md-3">
+  <div class="panel panel-default">
   <div class="panel-heading">
   <h3 class="panel-title">Posts</h3>
   </div>
@@ -40,7 +40,7 @@ This site is inspired by the formatting of seaborn and is built using sphinx.
   </div>
   </div>
   <div class="col-md-3">
-  <div class="panel panel-default">   
+ <div class="panel panel-default">
   <div class="panel-heading">
   <h3 class="panel-title">Profile</h3>
   </div>
@@ -51,8 +51,25 @@ This site is inspired by the formatting of seaborn and is built using sphinx.
    :glob:
 
    profile/research
-   profile/publications
    profile/professional
+
+.. raw:: html
+
+  </div>
+  </div>
+  </div>
+  <div class="col-md-3">
+  <div class="panel panel-default">
+  <div class="panel-heading">
+  <h3 class="panel-title">Publications</h3>
+  </div>
+  <div class="panel-body">
+
+.. toctree::
+   :maxdepth: 2
+   :glob:
+
+   profile/publications
 
 .. raw:: html
 

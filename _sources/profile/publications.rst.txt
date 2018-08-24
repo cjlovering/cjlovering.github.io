@@ -4,8 +4,8 @@ Publications
 Accepted
 ~~~~~~~~
 1. Rodica Neamtu, Ramoza Ahsan, Elke Rundensteiner, Gabor Sarkozy, Eamonn Keogh, Cuong Nguyen, Charles Lovering: Generalized Dynamic Time Warping. IEEE International Conference on Data Engineering (ICDE) 2018.
-2. Neamtu, R., Ahsan, R., Lovering, C., Nguyen, C., Rundensteiner, E., & Sarkozy, G. (2017, May). Interactive Time Series Analytics Powered by ONEX. In Proceedings of the 2017 ACM International Conference on Management of Data (pp. 1595-1598). ACM. (pdf)
-3. Nguyen, C., Lovering, C., & Neamtu, R. Ranked Time Series Matching by Interleaving Similarity Distances. 4th Workshop on Advances in Software and Hardware for Big Data to Knowledge Discovery 2017. IEEE Big Data 2017. (pdf)
+2. Neamtu, R., Ahsan, R., Lovering, C., Nguyen, C., Rundensteiner, E., & Sarkozy, G. (2017, May). Interactive Time Series Analytics Powered by ONEX. In Proceedings of the 2017 ACM International Conference on Management of Data (pp. 1595-1598). ACM.
+3. Nguyen, C., Lovering, C., & Neamtu, R. Ranked Time Series Matching by Interleaving Similarity Distances. 4th Workshop on Advances in Software and Hardware for Big Data to Knowledge Discovery 2017. IEEE Big Data 2017.
 
 Submitted
 ~~~~~~~~~
