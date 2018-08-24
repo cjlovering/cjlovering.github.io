@@ -12,7 +12,7 @@ hello!
   <div class="row">
   <div class="col-md-3">
 
-This site maintains some notes on different papers I have read and wrote. I use jupyter notebooks for executable examples.
+This site maintains some notes on papers I have read. I use jupyter notebooks for executable examples.
 
 For some papers, there are existing explications. However, the process of looking at these papers helps me understand them better, and might afford others another persepective.
 
