@@ -65,3 +65,10 @@ ul.dropdown-menu {
     padding-left: 10%;
     padding-right: 10%;
 }
+
+@font-face {
+    font-family: Hack;
+    src: url(//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css);
+}
+
+pre, code { font-family: Hack, monospace; }
