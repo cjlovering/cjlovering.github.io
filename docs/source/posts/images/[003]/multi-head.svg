@@ -1,0 +1,317 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 320">
+  <defs>
+    <style>
+      .cls-1, .cls-12 {
+        fill: #fd9910;
+      }
+
+      .cls-1, .cls-2, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9 {
+        opacity: 0.237;
+      }
+
+      .cls-13, .cls-15, .cls-16, .cls-17, .cls-2, .cls-24, .cls-5 {
+        fill: #020000;
+      }
+
+      .cls-13, .cls-15, .cls-2, .cls-22, .cls-5 {
+        font-size: 20px;
+      }
+
+      .cls-13, .cls-2, .cls-22, .cls-24 {
+        font-family: Hack-Regular, Hack;
+      }
+
+      .cls-3 {
+        font-size: 10px;
+      }
+
+      .cls-4 {
+        fill: rgba(255,47,47,0.5);
+      }
+
+      .cls-15, .cls-5 {
+        font-family: Menlo-Regular, Menlo;
+      }
+
+      .cls-18, .cls-6 {
+        fill: #95abf4;
+      }
+
+      .cls-21, .cls-7 {
+        fill: #e83ead;
+      }
+
+      .cls-11, .cls-29, .cls-8 {
+        fill: none;
+      }
+
+      .cls-11, .cls-25, .cls-8 {
+        stroke: #707070;
+      }
+
+      .cls-10, .cls-22, .cls-28 {
+        fill: #707070;
+      }
+
+      .cls-14 {
+        fill: #ff2f2f;
+      }
+
+      .cls-16, .cls-17, .cls-24 {
+        font-size: 15px;
+      }
+
+      .cls-16 {
+        font-family: Hack-Italic, Hack;
+      }
+
+      .cls-16, .cls-17 {
+        font-style: italic;
+      }
+
+      .cls-17 {
+        font-family: Menlo-Italic, Menlo;
+      }
+
+      .cls-19 {
+        fill: #10ebfd;
+      }
+
+      .cls-20 {
+        fill: rgba(255,47,47,0.98);
+      }
+
+      .cls-23 {
+        fill: #10fdbd;
+      }
+
+      .cls-24 {
+        opacity: 0.511;
+      }
+
+      .cls-25, .cls-26 {
+        fill: #fff;
+      }
+
+      .cls-26 {
+        stroke: #fff;
+      }
+
+      .cls-27, .cls-28 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="Group_47" data-name="Group 47" transform="translate(-36 -44)">
+    <rect id="Rectangle_21" data-name="Rectangle 21" class="cls-1" width="40" height="40" transform="translate(265 110)"/>
+    <text id="Wq1" class="cls-2" transform="translate(285 137)"><tspan x="-12.041" y="0">W</tspan><tspan class="cls-3" y="0">q1</tspan></text>
+    <rect id="Rectangle_22" data-name="Rectangle 22" class="cls-4" width="40" height="40" transform="translate(265 178)"/>
+    <text id="Wk1" class="cls-5" transform="translate(285 206)"><tspan x="-12.041" y="0">W</tspan><tspan class="cls-3" y="0">k1</tspan></text>
+    <rect id="Rectangle_23" data-name="Rectangle 23" class="cls-6" width="40" height="40" transform="translate(265 249)"/>
+    <text id="Wv1" class="cls-2" transform="translate(285 276)"><tspan x="-12.041" y="0">W</tspan><tspan class="cls-3" y="0">v1</tspan></text>
+    <rect id="Rectangle_24" data-name="Rectangle 24" class="cls-1" width="40" height="40" transform="translate(335 110)"/>
+    <text id="Q1" class="cls-2" transform="translate(355 137)"><tspan x="-9.031" y="0">Q</tspan><tspan class="cls-3" y="0">1</tspan></text>
+    <rect id="Rectangle_25" data-name="Rectangle 25" class="cls-4" width="40" height="40" transform="translate(335 178)"/>
+    <text id="K1" class="cls-5" transform="translate(355 205)"><tspan x="-9.031" y="0">K</tspan><tspan class="cls-3" y="0">1</tspan></text>
+    <rect id="Rectangle_26" data-name="Rectangle 26" class="cls-6" width="40" height="40" transform="translate(335 249)"/>
+    <text id="V1" class="cls-2" transform="translate(355 275)"><tspan x="-9.031" y="0">V</tspan><tspan class="cls-3" y="0">1</tspan></text>
+    <path id="Path_5" data-name="Path 5" class="cls-7" d="M0,0H53V40H0Z" transform="translate(417 178)"/>
+    <text id="SDA" class="cls-2" transform="translate(443 205)"><tspan x="-18.062" y="0">SDA</tspan></text>
+    <line id="Line_27" data-name="Line 27" class="cls-8" x2="15" transform="translate(379.5 127.5)"/>
+    <line id="Line_28" data-name="Line 28" class="cls-8" y2="143" transform="translate(394.5 127.5)"/>
+    <g id="Group_42" data-name="Group 42" class="cls-9" transform="translate(170.893 -117.607) rotate(90)">
+      <g id="Path_3" data-name="Path 3" class="cls-10" transform="translate(317.167 -239.107) rotate(45)">
+        <path class="cls-27" d="M 4.79009485244751 10.35495471954346 L 0.9132568836212158 0.9083845615386963 L 10.40186786651611 4.743190288543701 L 7.572525501251221 7.572524547576904 L 4.79009485244751 10.35495471954346 Z"/>
+        <path class="cls-28" d="M 1.826522827148438 1.816766738891602 L 4.967541694641113 9.470388412475586 L 7.218965530395508 7.218964099884033 L 9.514205932617188 4.923730373382568 L 1.826522827148438 1.816766738891602 M -4.76837158203125e-06 4.76837158203125e-06 L 11.28951549530029 4.562644481658936 L 7.926075458526611 7.926074028015137 L 4.612645149230957 11.23950386047363 L -4.76837158203125e-06 4.76837158203125e-06 Z"/>
+      </g>
+      <g id="Group_9" data-name="Group 9" transform="translate(317.185 -238.466)">
+        <line id="Line_7" data-name="Line 7" class="cls-11" y2="15"/>
+      </g>
+    </g>
+    <line id="Line_29" data-name="Line 29" class="cls-8" x2="15" transform="translate(379.5 199.5)"/>
+    <line id="Line_30" data-name="Line 30" class="cls-8" x2="15" transform="translate(379.5 270.5)"/>
+    <line id="Line_31" data-name="Line 31" class="cls-8" x2="15" transform="translate(475.5 200.5)"/>
+    <line id="Line_32" data-name="Line 32" class="cls-8" y2="43" transform="translate(490.5 157.5)"/>
+    <g id="Group_43" data-name="Group 43" class="cls-9" transform="translate(94.125 -187.607) rotate(90)">
+      <g id="Path_3-2" data-name="Path 3" class="cls-10" transform="translate(317.167 -239.107) rotate(45)">
+        <path class="cls-27" d="M 4.624250411987305 10.18009090423584 L 0.89665687084198 0.8917896747589111 L 10.22691440582275 4.577427387237549 L 7.402166843414307 7.40216588973999 L 4.624250411987305 10.18009090423584 Z"/>
+        <path class="cls-28" d="M 1.793312072753906 1.783587455749512 L 4.806203842163086 9.291015625 L 7.048606872558594 7.048605918884277 L 9.334651947021484 4.762567520141602 L 1.793312072753906 1.783587455749512 M -2.86102294921875e-06 -3.814697265625e-06 L 11.11915683746338 4.392285823822021 L 7.755717277526855 7.755715847015381 L 4.442286968231201 11.0691556930542 L -2.86102294921875e-06 -3.814697265625e-06 Z"/>
+      </g>
+      <g id="Group_9-2" data-name="Group 9" transform="translate(317.185 -238.479)">
+        <line id="Line_7-2" data-name="Line 7" class="cls-11" y2="26" transform="translate(0)"/>
+      </g>
+    </g>
+    <g id="Group_44" data-name="Group 44" class="cls-9" transform="translate(94.125 -117.607) rotate(90)">
+      <g id="Path_3-3" data-name="Path 3" class="cls-10" transform="translate(317.167 -239.107) rotate(45)">
+        <path class="cls-27" d="M 4.624250411987305 10.18009090423584 L 0.89665687084198 0.8917896747589111 L 10.22691440582275 4.577427387237549 L 7.402166843414307 7.40216588973999 L 4.624250411987305 10.18009090423584 Z"/>
+        <path class="cls-28" d="M 1.793312072753906 1.783587455749512 L 4.806203842163086 9.291015625 L 7.048606872558594 7.048605918884277 L 9.334651947021484 4.762567520141602 L 1.793312072753906 1.783587455749512 M -2.86102294921875e-06 -3.814697265625e-06 L 11.11915683746338 4.392285823822021 L 7.755717277526855 7.755715847015381 L 4.442286968231201 11.0691556930542 L -2.86102294921875e-06 -3.814697265625e-06 Z"/>
+      </g>
+      <g id="Group_9-3" data-name="Group 9" transform="translate(317.185 -238.479)">
+        <line id="Line_7-3" data-name="Line 7" class="cls-11" y2="26" transform="translate(0)"/>
+      </g>
+    </g>
+    <g id="Group_45" data-name="Group 45" class="cls-9" transform="translate(94.125 -46.607) rotate(90)">
+      <g id="Path_3-4" data-name="Path 3" class="cls-10" transform="translate(317.167 -239.107) rotate(45)">
+        <path class="cls-27" d="M 4.624250411987305 10.18009090423584 L 0.89665687084198 0.8917896747589111 L 10.22691440582275 4.577427387237549 L 7.402166843414307 7.40216588973999 L 4.624250411987305 10.18009090423584 Z"/>
+        <path class="cls-28" d="M 1.793312072753906 1.783587455749512 L 4.806203842163086 9.291015625 L 7.048606872558594 7.048605918884277 L 9.334651947021484 4.762567520141602 L 1.793312072753906 1.783587455749512 M -2.86102294921875e-06 -3.814697265625e-06 L 11.11915683746338 4.392285823822021 L 7.755717277526855 7.755715847015381 L 4.442286968231201 11.0691556930542 L -2.86102294921875e-06 -3.814697265625e-06 Z"/>
+      </g>
+      <g id="Group_9-4" data-name="Group 9" transform="translate(317.185 -238.479)">
+        <line id="Line_7-4" data-name="Line 7" class="cls-11" y2="26" transform="translate(0)"/>
+      </g>
+    </g>
+    <g id="Group_46" data-name="Group 46" class="cls-9" transform="translate(863.103 -55.215) rotate(180)">
+      <g id="Path_3-5" data-name="Path 3" class="cls-10" transform="translate(317.167 -239.107) rotate(45)">
+        <path class="cls-27" d="M 4.624250411987305 10.18009090423584 L 0.89665687084198 0.8917896747589111 L 10.22691440582275 4.577427387237549 L 7.402166843414307 7.40216588973999 L 4.624250411987305 10.18009090423584 Z"/>
+        <path class="cls-28" d="M 1.793312072753906 1.783587455749512 L 4.806203842163086 9.291015625 L 7.048606872558594 7.048605918884277 L 9.334651947021484 4.762567520141602 L 1.793312072753906 1.783587455749512 M -2.86102294921875e-06 -3.814697265625e-06 L 11.11915683746338 4.392285823822021 L 7.755717277526855 7.755715847015381 L 4.442286968231201 11.0691556930542 L -2.86102294921875e-06 -3.814697265625e-06 Z"/>
+      </g>
+      <g id="Group_9-5" data-name="Group 9" transform="translate(317.185 -238.479)">
+        <line id="Line_7-5" data-name="Line 7" class="cls-11" y2="26" transform="translate(0)"/>
+      </g>
+    </g>
+    <rect id="Rectangle_1" data-name="Rectangle 1" class="cls-12" width="40" height="40" transform="translate(165 136)"/>
+    <text id="Q" class="cls-13" transform="translate(184 163)"><tspan x="-6.021" y="0">Q</tspan></text>
+    <rect id="Rectangle_2" data-name="Rectangle 2" class="cls-14" width="40" height="40" transform="translate(165 204)"/>
+    <text id="K" class="cls-15" transform="translate(184 231)"><tspan x="-6.021" y="0">K</tspan></text>
+    <text id="q.d" class="cls-16" transform="translate(185 191)"><tspan x="-13.546" y="0">q.d</tspan></text>
+    <text id="n.d" class="cls-17" transform="translate(184 259)"><tspan x="-13.546" y="0">n.d</tspan></text>
+    <rect id="Rectangle_5" data-name="Rectangle 5" class="cls-18" width="40" height="40" transform="translate(165 275)"/>
+    <text id="V" class="cls-13" transform="translate(184 302)"><tspan x="-6.021" y="0">V</tspan></text>
+    <text id="n.v" class="cls-17" transform="translate(184 330)"><tspan x="-13.546" y="0">n.v</tspan></text>
+    <rect id="Rectangle_11" data-name="Rectangle 11" class="cls-19" width="40" height="40" transform="translate(40 204)"/>
+    <text id="U" class="cls-13" transform="translate(60 231)"><tspan x="-6.021" y="0">U</tspan></text>
+    <text id="n.d-2" data-name="n.d" class="cls-16" transform="translate(60 259)"><tspan x="-13.546" y="0">n.d</tspan></text>
+    <text id="n_q_d_v" data-name="n = q, d = v" class="cls-17" transform="translate(91 360)"><tspan x="-54.185" y="0">n = q, d = v</tspan></text>
+    <rect id="Rectangle_12" data-name="Rectangle 12" class="cls-12" width="40" height="40" transform="translate(233 136)"/>
+    <text id="Wqh" class="cls-13" transform="translate(253 163)"><tspan x="-12.041" y="0">W</tspan><tspan class="cls-3" y="0">qh</tspan></text>
+    <rect id="Rectangle_13" data-name="Rectangle 13" class="cls-20" width="40" height="40" transform="translate(233 204)"/>
+    <text id="Wkh" class="cls-15" transform="translate(253 232)"><tspan x="-12.041" y="0">W</tspan><tspan class="cls-3" y="0">kh</tspan></text>
+    <rect id="Rectangle_14" data-name="Rectangle 14" class="cls-18" width="40" height="40" transform="translate(233 275)"/>
+    <text id="Wvh" class="cls-13" transform="translate(253 302)"><tspan x="-12.041" y="0">W</tspan><tspan class="cls-3" y="0">vh</tspan></text>
+    <rect id="Rectangle_15" data-name="Rectangle 15" class="cls-12" width="40" height="40" transform="translate(303 136)"/>
+    <text id="Qh" class="cls-13" transform="translate(323 163)"><tspan x="-9.031" y="0">Q</tspan><tspan class="cls-3" y="0">h</tspan></text>
+    <rect id="Rectangle_16" data-name="Rectangle 16" class="cls-14" width="40" height="40" transform="translate(303 204)"/>
+    <text id="Kh" class="cls-15" transform="translate(323 231)"><tspan x="-9.031" y="0">K</tspan><tspan class="cls-3" y="0">h</tspan></text>
+    <rect id="Rectangle_17" data-name="Rectangle 17" class="cls-18" width="40" height="40" transform="translate(303 275)"/>
+    <text id="Vh" class="cls-13" transform="translate(323 301)"><tspan x="-9.031" y="0">V</tspan><tspan class="cls-3" y="0">h</tspan></text>
+    <text id="x" class="cls-13" transform="translate(218 163)"><tspan x="-6.021" y="0">x</tspan></text>
+    <text id="x-2" data-name="x" class="cls-13" transform="translate(218 232)"><tspan x="-6.021" y="0">x</tspan></text>
+    <text id="x-3" data-name="x" class="cls-13" transform="translate(218 301)"><tspan x="-6.021" y="0">x</tspan></text>
+    <path id="Path_4" data-name="Path 4" class="cls-21" d="M0,0H53V40H0Z" transform="translate(385 204)"/>
+    <text id="SDA-2" data-name="SDA" class="cls-13" transform="translate(411 231)"><tspan x="-18.062" y="0">SDA</tspan></text>
+    <text id="Self-Attention_w_Multi-Headed_Attention" data-name="Self-Attention w/ Multi-Headed Attention" class="cls-22" transform="translate(207 63)"><tspan x="0" y="0">Self-Attention w/ Multi-Headed Attention</tspan></text>
+    <line id="Line_14" data-name="Line 14" class="cls-11" x2="42" transform="translate(86.5 225.5)"/>
+    <g id="Group_28" data-name="Group 28" transform="translate(-79.875 -162.607) rotate(90)">
+      <g id="Path_3-6" data-name="Path 3" class="cls-10" transform="translate(317.167 -239.107) rotate(45)">
+        <path class="cls-27" d="M 4.624250411987305 10.18009090423584 L 0.89665687084198 0.8917896747589111 L 10.22691440582275 4.577427387237549 L 7.402166843414307 7.40216588973999 L 4.624250411987305 10.18009090423584 Z"/>
+        <path class="cls-28" d="M 1.793312072753906 1.783587455749512 L 4.806203842163086 9.291015625 L 7.048606872558594 7.048605918884277 L 9.334651947021484 4.762567520141602 L 1.793312072753906 1.783587455749512 M -2.86102294921875e-06 -3.814697265625e-06 L 11.11915683746338 4.392285823822021 L 7.755717277526855 7.755715847015381 L 4.442286968231201 11.0691556930542 L -2.86102294921875e-06 -3.814697265625e-06 Z"/>
+      </g>
+      <g id="Group_9-6" data-name="Group 9" transform="translate(317.185 -238.479)">
+        <line id="Line_7-6" data-name="Line 7" class="cls-11" y2="30"/>
+      </g>
+    </g>
+    <line id="Line_15" data-name="Line 15" class="cls-11" y2="142" transform="translate(128.5 154.5)"/>
+    <g id="Group_29" data-name="Group 29" transform="translate(-79.875 -20.607) rotate(90)">
+      <g id="Path_3-7" data-name="Path 3" class="cls-10" transform="translate(317.167 -239.107) rotate(45)">
+        <path class="cls-27" d="M 4.624250411987305 10.18009090423584 L 0.89665687084198 0.8917896747589111 L 10.22691440582275 4.577427387237549 L 7.402166843414307 7.40216588973999 L 4.624250411987305 10.18009090423584 Z"/>
+        <path class="cls-28" d="M 1.793312072753906 1.783587455749512 L 4.806203842163086 9.291015625 L 7.048606872558594 7.048605918884277 L 9.334651947021484 4.762567520141602 L 1.793312072753906 1.783587455749512 M -2.86102294921875e-06 -3.814697265625e-06 L 11.11915683746338 4.392285823822021 L 7.755717277526855 7.755715847015381 L 4.442286968231201 11.0691556930542 L -2.86102294921875e-06 -3.814697265625e-06 Z"/>
+      </g>
+      <g id="Group_9-7" data-name="Group 9" transform="translate(317.185 -238.479)">
+        <line id="Line_7-7" data-name="Line 7" class="cls-11" y2="30" transform="translate(0)"/>
+      </g>
+    </g>
+    <g id="Group_30" data-name="Group 30" transform="translate(-79.875 -91.607) rotate(90)">
+      <g id="Path_3-8" data-name="Path 3" class="cls-10" transform="translate(317.167 -239.107) rotate(45)">
+        <path class="cls-27" d="M 4.624250411987305 10.18009090423584 L 0.89665687084198 0.8917896747589111 L 10.22691440582275 4.577427387237549 L 7.402166843414307 7.40216588973999 L 4.624250411987305 10.18009090423584 Z"/>
+        <path class="cls-28" d="M 1.793312072753906 1.783587455749512 L 4.806203842163086 9.291015625 L 7.048606872558594 7.048605918884277 L 9.334651947021484 4.762567520141602 L 1.793312072753906 1.783587455749512 M -2.86102294921875e-06 -3.814697265625e-06 L 11.11915683746338 4.392285823822021 L 7.755717277526855 7.755715847015381 L 4.442286968231201 11.0691556930542 L -2.86102294921875e-06 -3.814697265625e-06 Z"/>
+      </g>
+      <g id="Group_9-8" data-name="Group 9" transform="translate(317.185 -238.479)">
+        <line id="Line_7-8" data-name="Line 7" class="cls-11" y2="30"/>
+      </g>
+    </g>
+    <line id="Line_19" data-name="Line 19" class="cls-11" x2="15" transform="translate(347.5 153.5)"/>
+    <line id="Line_20" data-name="Line 20" class="cls-11" y2="143" transform="translate(362.5 153.5)"/>
+    <g id="Group_31" data-name="Group 31" transform="translate(138.893 -91.607) rotate(90)">
+      <g id="Path_3-9" data-name="Path 3" class="cls-10" transform="translate(317.167 -239.107) rotate(45)">
+        <path class="cls-27" d="M 4.79009485244751 10.35495471954346 L 0.9132568836212158 0.9083845615386963 L 10.40186786651611 4.743190288543701 L 7.572525501251221 7.572524547576904 L 4.79009485244751 10.35495471954346 Z"/>
+        <path class="cls-28" d="M 1.826522827148438 1.816766738891602 L 4.967541694641113 9.470388412475586 L 7.218965530395508 7.218964099884033 L 9.514205932617188 4.923730373382568 L 1.826522827148438 1.816766738891602 M -4.76837158203125e-06 4.76837158203125e-06 L 11.28951549530029 4.562644481658936 L 7.926075458526611 7.926074028015137 L 4.612645149230957 11.23950386047363 L -4.76837158203125e-06 4.76837158203125e-06 Z"/>
+      </g>
+      <g id="Group_9-9" data-name="Group 9" transform="translate(317.185 -238.466)">
+        <line id="Line_7-9" data-name="Line 7" class="cls-11" y2="15"/>
+      </g>
+    </g>
+    <line id="Line_21" data-name="Line 21" class="cls-11" x2="15" transform="translate(347.5 225.5)"/>
+    <line id="Line_22" data-name="Line 22" class="cls-11" x2="15" transform="translate(347.5 296.5)"/>
+    <g id="Group_32" data-name="Group 32" transform="translate(-79.875 -162.607) rotate(90)">
+      <g id="Path_3-10" data-name="Path 3" class="cls-10" transform="translate(317.167 -239.107) rotate(45)">
+        <path class="cls-27" d="M 4.624250411987305 10.18009090423584 L 0.89665687084198 0.8917896747589111 L 10.22691440582275 4.577427387237549 L 7.402166843414307 7.40216588973999 L 4.624250411987305 10.18009090423584 Z"/>
+        <path class="cls-28" d="M 1.793312072753906 1.783587455749512 L 4.806203842163086 9.291015625 L 7.048606872558594 7.048605918884277 L 9.334651947021484 4.762567520141602 L 1.793312072753906 1.783587455749512 M -2.86102294921875e-06 -3.814697265625e-06 L 11.11915683746338 4.392285823822021 L 7.755717277526855 7.755715847015381 L 4.442286968231201 11.0691556930542 L -2.86102294921875e-06 -3.814697265625e-06 Z"/>
+      </g>
+    </g>
+    <line id="Line_25" data-name="Line 25" class="cls-11" x2="47" transform="translate(443.5 226.5)"/>
+    <line id="Line_26" data-name="Line 26" class="cls-11" y2="42" transform="translate(490.5 226.5)"/>
+    <g id="Group_37" data-name="Group 37" transform="translate(62.125 -161.607) rotate(90)">
+      <g id="Path_3-11" data-name="Path 3" class="cls-10" transform="translate(317.167 -239.107) rotate(45)">
+        <path class="cls-27" d="M 4.624250411987305 10.18009090423584 L 0.89665687084198 0.8917896747589111 L 10.22691440582275 4.577427387237549 L 7.402166843414307 7.40216588973999 L 4.624250411987305 10.18009090423584 Z"/>
+        <path class="cls-28" d="M 1.793312072753906 1.783587455749512 L 4.806203842163086 9.291015625 L 7.048606872558594 7.048605918884277 L 9.334651947021484 4.762567520141602 L 1.793312072753906 1.783587455749512 M -2.86102294921875e-06 -3.814697265625e-06 L 11.11915683746338 4.392285823822021 L 7.755717277526855 7.755715847015381 L 4.442286968231201 11.0691556930542 L -2.86102294921875e-06 -3.814697265625e-06 Z"/>
+      </g>
+      <g id="Group_9-10" data-name="Group 9" transform="translate(317.185 -238.479)">
+        <line id="Line_7-10" data-name="Line 7" class="cls-11" y2="26" transform="translate(0)"/>
+      </g>
+    </g>
+    <g id="Group_38" data-name="Group 38" transform="translate(62.125 -91.607) rotate(90)">
+      <g id="Path_3-12" data-name="Path 3" class="cls-10" transform="translate(317.167 -239.107) rotate(45)">
+        <path class="cls-27" d="M 4.624250411987305 10.18009090423584 L 0.89665687084198 0.8917896747589111 L 10.22691440582275 4.577427387237549 L 7.402166843414307 7.40216588973999 L 4.624250411987305 10.18009090423584 Z"/>
+        <path class="cls-28" d="M 1.793312072753906 1.783587455749512 L 4.806203842163086 9.291015625 L 7.048606872558594 7.048605918884277 L 9.334651947021484 4.762567520141602 L 1.793312072753906 1.783587455749512 M -2.86102294921875e-06 -3.814697265625e-06 L 11.11915683746338 4.392285823822021 L 7.755717277526855 7.755715847015381 L 4.442286968231201 11.0691556930542 L -2.86102294921875e-06 -3.814697265625e-06 Z"/>
+      </g>
+      <g id="Group_9-11" data-name="Group 9" transform="translate(317.185 -238.479)">
+        <line id="Line_7-11" data-name="Line 7" class="cls-11" y2="26" transform="translate(0)"/>
+      </g>
+    </g>
+    <g id="Group_39" data-name="Group 39" transform="translate(62.125 -20.607) rotate(90)">
+      <g id="Path_3-13" data-name="Path 3" class="cls-10" transform="translate(317.167 -239.107) rotate(45)">
+        <path class="cls-27" d="M 4.624250411987305 10.18009090423584 L 0.89665687084198 0.8917896747589111 L 10.22691440582275 4.577427387237549 L 7.402166843414307 7.40216588973999 L 4.624250411987305 10.18009090423584 Z"/>
+        <path class="cls-28" d="M 1.793312072753906 1.783587455749512 L 4.806203842163086 9.291015625 L 7.048606872558594 7.048605918884277 L 9.334651947021484 4.762567520141602 L 1.793312072753906 1.783587455749512 M -2.86102294921875e-06 -3.814697265625e-06 L 11.11915683746338 4.392285823822021 L 7.755717277526855 7.755715847015381 L 4.442286968231201 11.0691556930542 L -2.86102294921875e-06 -3.814697265625e-06 Z"/>
+      </g>
+      <g id="Group_9-12" data-name="Group 9" transform="translate(317.185 -238.479)">
+        <line id="Line_7-12" data-name="Line 7" class="cls-11" y2="26" transform="translate(0)"/>
+      </g>
+    </g>
+    <g id="Group_41" data-name="Group 41" transform="translate(323.733 481.371)">
+      <g id="Path_3-14" data-name="Path 3" class="cls-10" transform="translate(317.167 -239.107) rotate(45)">
+        <path class="cls-27" d="M 4.624250411987305 10.18009090423584 L 0.89665687084198 0.8917896747589111 L 10.22691440582275 4.577427387237549 L 7.402166843414307 7.40216588973999 L 4.624250411987305 10.18009090423584 Z"/>
+        <path class="cls-28" d="M 1.793312072753906 1.783587455749512 L 4.806203842163086 9.291015625 L 7.048606872558594 7.048605918884277 L 9.334651947021484 4.762567520141602 L 1.793312072753906 1.783587455749512 M -2.86102294921875e-06 -3.814697265625e-06 L 11.11915683746338 4.392285823822021 L 7.755717277526855 7.755715847015381 L 4.442286968231201 11.0691556930542 L -2.86102294921875e-06 -3.814697265625e-06 Z"/>
+      </g>
+      <g id="Group_9-13" data-name="Group 9" transform="translate(317.185 -238.479)">
+        <line id="Line_7-13" data-name="Line 7" class="cls-11" y2="26" transform="translate(0)"/>
+      </g>
+    </g>
+    <rect id="Rectangle_20" data-name="Rectangle 20" class="cls-23" width="40" height="40" transform="translate(708 194)"/>
+    <text id="Wo" class="cls-13" transform="translate(728 223)"><tspan x="-9.031" y="0">W</tspan><tspan class="cls-3" y="0">o</tspan></text>
+    <text id="x-4" data-name="x" class="cls-13" transform="translate(689 219)"><tspan x="-6.021" y="0">x</tspan></text>
+    <text id="q._h_w_" data-name="q.(h*w)" class="cls-17" transform="translate(594 298)"><tspan x="-31.608" y="0">q.(h*w)</tspan></text>
+    <text id="_h_w_.v" data-name="(h*w).v" class="cls-17" transform="translate(724 252)"><tspan x="-31.608" y="0">(h*w).v</tspan></text>
+    <text id="v.w" class="cls-17" transform="translate(253 330)"><tspan x="-13.546" y="0">v.w</tspan></text>
+    <text id="d.w" class="cls-17" transform="translate(253 259)"><tspan x="-13.546" y="0">d.w</tspan></text>
+    <text id="d.w-2" data-name="d.w" class="cls-17" transform="translate(252 191)"><tspan x="-13.546" y="0">d.w</tspan></text>
+    <text id="n.w" class="cls-17" transform="translate(323 258)"><tspan x="-13.546" y="0">n.w</tspan></text>
+    <text id="n.w-2" data-name="n.w" class="cls-17" transform="translate(324 329)"><tspan x="-13.546" y="0">n.w</tspan></text>
+    <text id="q.w" class="cls-17" transform="translate(324 189)"><tspan x="-13.546" y="0">q.w</tspan></text>
+    <text id="_..." data-name="..." class="cls-24" transform="matrix(0.469, -0.883, 0.883, 0.469, 475.181, 213.286)"><tspan x="-13.546" y="0">...</tspan></text>
+    <g id="Rectangle_32" data-name="Rectangle 32" class="cls-25" transform="translate(517 187.992)">
+      <rect class="cls-27" width="154.712" height="51.199"/>
+      <rect class="cls-29" x="0.5" y="0.5" width="153.712" height="50.199"/>
+    </g>
+    <g id="Rectangle_33" data-name="Rectangle 33" class="cls-26" transform="translate(523.601 185.629)">
+      <rect class="cls-27" width="140.41" height="55.451"/>
+      <rect class="cls-29" x="0.5" y="0.5" width="139.41" height="54.451"/>
+    </g>
+    <rect id="Rectangle_34" data-name="Rectangle 34" class="cls-19" width="49" height="40" transform="translate(522 194)"/>
+    <text id="U1" class="cls-13" transform="translate(548 222)"><tspan x="-9.031" y="0">U</tspan><tspan class="cls-3" y="0">1</tspan></text>
+    <rect id="Rectangle_35" data-name="Rectangle 35" class="cls-19" width="49" height="40" transform="translate(617 194)"/>
+    <text id="Uh" class="cls-13" transform="translate(642 221)"><tspan x="-9.031" y="0">U</tspan><tspan class="cls-3" y="0">h</tspan></text>
+    <text id="_...-2" data-name="..." class="cls-13" transform="translate(594 213)"><tspan x="-18.062" y="0">...</tspan></text>
+    <line id="Line_33" data-name="Line 33" class="cls-8" x2="55" transform="translate(490.5 157.5)"/>
+    <line id="Line_34" data-name="Line 34" class="cls-11" x2="150" transform="translate(490.5 268.5)"/>
+    <text id="q.w-2" data-name="q.w" class="cls-17" transform="translate(548 250)"><tspan x="-13.546" y="0">q.w</tspan></text>
+  </g>
+</svg>
