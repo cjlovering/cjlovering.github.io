@@ -16,8 +16,6 @@ This site maintains some notes on papers I have read. I use jupyter notebooks fo
 
 For some papers, there are existing explications. However, the process of looking at these papers helps me understand them better, and might afford others another persepective.
 
-This site is inspired by the formatting of seaborn and is built using sphinx.
-
 .. raw:: html
 
   </div>
