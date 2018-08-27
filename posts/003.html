@@ -20,7 +20,7 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Research" href="../profile/research.html" />
+    <link rel="next" title="Beam Search" href="004.html" />
     <link rel="prev" title="Byte-Encoding Representation" href="002.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -59,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="001.html">Playground</a></li>
 <li class="toctree-l1"><a class="reference internal" href="002.html">Byte-Encoding Representation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Transformer Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="004.html">Beam Search</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../profile/research.html">Research</a></li>
@@ -832,7 +833,7 @@ embeddings.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/posts_003_43_0.png" src="../_images/posts_003_43_0.png" />
+<img alt="../_images/posts_003_44_0.png" src="../_images/posts_003_44_0.png" />
 </div>
 </div>
 <p>The authors use dropout to reduce the strength of the signal; the figure
@@ -856,7 +857,7 @@ below demonstrates its effect.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/posts_003_45_0.png" src="../_images/posts_003_45_0.png" />
+<img alt="../_images/posts_003_46_0.png" src="../_images/posts_003_46_0.png" />
 </div>
 </div>
 </div>
@@ -882,7 +883,7 @@ each stack is the of the same dimensionality.</p>
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/posts_003_48_0.svg" src="../_images/posts_003_48_0.svg" /></div>
+<img alt="../_images/posts_003_49_0.svg" src="../_images/posts_003_49_0.svg" /></div>
 </div>
 <div class="section" id="Decoding">
 <h3>Decoding<a class="headerlink" href="#Decoding" title="Permalink to this headline">¶</a></h3>
@@ -922,9 +923,9 @@ greedy approach looks something like this:</p>
 </pre></div>
 </div>
 </div>
-<p>Using <a class="reference external" href="beam-search.ipynb">beam search</a> (as the authors did do), a
-path is selected by maintaining <em>k</em> beams - i.e.&nbsp;the best-so-far
-<span class="math notranslate nohighlight">\(k\)</span> options.</p>
+<p>Using <a class="reference internal" href="004.html"><span class="doc">beam search</span></a> (as the authors did do), a path is
+selected by maintaining <em>k</em> beams - i.e.&nbsp;the best-so-far <span class="math notranslate nohighlight">\(k\)</span>
+options.</p>
 </div>
 </div>
 </div>
