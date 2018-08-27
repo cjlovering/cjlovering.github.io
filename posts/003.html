@@ -89,6 +89,10 @@
 <li><a class="reference internal" href="#Multi-Head-Attention">Multi Head Attention</a></li>
 <li><a class="reference internal" href="#Input-Representation">Input Representation</a></li>
 <li><a class="reference internal" href="#Position-wise-Feed-Forward-Networks">Position-wise Feed-Forward Networks</a></li>
+<li><a class="reference internal" href="#Architecture">Architecture</a><ul>
+<li><a class="reference internal" href="#Decoding">Decoding</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -315,7 +319,7 @@ div.nboutput div.output_area.stderr {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;&lt;style&gt;img{max-height:400px !important;}&lt;/style&gt;&quot;</span>
+<span></span><span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;&lt;style&gt;img{max-height:500px !important;}&lt;/style&gt;&quot;</span>
 <span class="n">HTML</span><span class="p">(</span><span class="n">style</span><span class="p">)</span> <span class="c1"># this resizes SVGS in my site files.</span>
 </pre></div>
 </div>
@@ -326,7 +330,7 @@ div.nboutput div.output_area.stderr {
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<style>img{max-height:400px !important;}</style></div>
+<style>img{max-height:500px !important;}</style></div>
 </div>
 <p>Most of the paper was clear. However, it was difficult to see how it
 would work across sequences of different length. I don’t mean how or why
@@ -345,8 +349,13 @@ viewed at the links below.</p>
 <p>This work focuses on the task of natural language translation
 (e.g.&nbsp;english to german or vice versa.)</p>
 <div class="admonition note">
-I refer to implementations from the ‘tensor2tensor’ library and ‘The
-Annotated Transformer’ post.</div>
+I modify implementations from the
+<a class="reference external" href="https://github.com/tensorflow/tensor2tensor">tensor2tensor</a> library
+and <a class="reference external" href="http://nlp.seas.harvard.edu/2018/04/03/attention.html">The Annotated
+Transformer</a>
+post, focusing on my interpretation of the paper. The diagrams are by in
+large recreations from the original paper. For a complete view and
+implementation of this system, please visit the mentioned sources above.</div>
 </div>
 <div class="section" id="Encoder-Decoder">
 <h2>Encoder Decoder<a class="headerlink" href="#Encoder-Decoder" title="Permalink to this headline">¶</a></h2>
@@ -355,11 +364,12 @@ used: an input sequence of symbols,
 <span class="math notranslate nohighlight">\(x = { x_1, x_2, \dots, x_n }\)</span>, is encoded into a sequence of
 continuous variables, <span class="math notranslate nohighlight">\(\mathbf{z} = { z_1, z_2, \dots, z_n }\)</span>.
 This is then decoded into a sequence of symbols,
-<span class="math notranslate nohighlight">\(y = { y_1, y_2, \dots, y_n }\)</span>. This generation occurs one at a
-time - it is <a class="reference external" href="https://arxiv.org/abs/1308.0850">auto-regressive</a>,
-further consuming the previously generated symbols as additional input
-when generating the next. Encoder and decoder models usually use a
-recurrent architecture.</p>
+<span class="math notranslate nohighlight">\(y = { y_1, y_2, \dots, y_n }\)</span>. In some cases, <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>
+is a single continuous variable. This generation occurs one at a time -
+it is <a class="reference external" href="https://arxiv.org/abs/1308.0850">auto-regressive</a>, further
+consuming the previously generated symbols as additional input when
+generating the next. Encoder and decoder models usually use a recurrent
+architecture.</p>
 <p>According to Cho. 14, the encoding function <span class="math notranslate nohighlight">\(e\)</span> can be any
 non-linear function, but it is often implemented as an RNN.</p>
 <div class="math notranslate nohighlight">
@@ -367,17 +377,17 @@ non-linear function, but it is often implemented as an RNN.</p>
 h_{&lt;t&gt;} = e(h_{&lt;t-1&gt;}, x_t)
 \end{equation}</div><div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [18]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">SVG</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;images/[003]/encoder.svg&quot;</span><span class="p">)</span>
+<span></span><span class="n">SVG</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;images/003/encoder.svg&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[18]:
+<span></span>Out[3]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -395,7 +405,7 @@ h_{&lt;t&gt;} =&amp; d(h_{&lt;t-1&gt;}, y_{&lt;t-1&gt;}, z)\\
 y_{&lt;t&gt;} =&amp; g(h_{&lt;t&gt;}, y_{&lt;t-1&gt;}, z)\\
 \end{align}</div><div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [19]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -405,7 +415,7 @@ y_{&lt;t&gt;} =&amp; g(h_{&lt;t&gt;}, y_{&lt;t-1&gt;}, z)\\
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[19]:
+<span></span>Out[4]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -445,7 +455,7 @@ function. One could use any metric, learned or otherwise. Cosine
 distance or a layer of MLP can be used.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [20]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -455,7 +465,7 @@ distance or a layer of MLP can be used.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[20]:
+<span></span>Out[5]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -481,7 +491,7 @@ softmax function into regions where it has extremely small gradients.”</p>
 Why is the gradient small?</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [21]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -491,7 +501,7 @@ Why is the gradient small?</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[21]:
+<span></span>Out[6]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -620,8 +630,8 @@ tensor([[0.1679, 0.0000, 1.3650],
 </div>
 <div class="section" id="Multi-Head-Attention">
 <h2>Multi Head Attention<a class="headerlink" href="#Multi-Head-Attention" title="Permalink to this headline">¶</a></h2>
-<p>The primary representative power of the transformer is “Multi-Head
-Attention”. It is built up using the scaled dot product attention.</p>
+<p>The transformer uses “Multi-Head Attention” as its primary module. It is
+built up using scaled dot product attention.</p>
 <p>Rather than attend raw queries a single time, this method attends <em>h</em>
 linear projections of the input. For each of the <em>h</em> heads, the inputs
 (K,Q,V) are projected linearily with a learned mapping. This is great!
@@ -689,7 +699,7 @@ still output a fixed-size vector for each query by concat and then
 matrix multiply to reduce the dimensionality.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [22]:
+<span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -699,7 +709,7 @@ matrix multiply to reduce the dimensionality.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[22]:
+<span></span>Out[13]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -716,13 +726,15 @@ pairs.</p>
 </div>
 <div class="section" id="Position-wise-Feed-Forward-Networks">
 <h2>Position-wise Feed-Forward Networks<a class="headerlink" href="#Position-wise-Feed-Forward-Networks" title="Permalink to this headline">¶</a></h2>
-<p>This two linear transforms with a nonlinear (RELU) operation.</p>
+<p>This two linear transforms with a nonlinear (RELU) operation. The
+denotation of position-wise remarks on the fact that it is not a
+convolution, nor does it have any directly spatial functionality.</p>
 <div class="math notranslate nohighlight">
 \begin{equation}
-    \texttt{FFN}(x) = \max(0, xW_1 + b_1)W_2 + b_2
+    \text{FFN}(x) = \max(0, xW_1 + b_1)W_2 + b_2
 \end{equation}</div><div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [24]:
+<span></span>In [14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -739,13 +751,124 @@ pairs.</p>
 </pre></div>
 </div>
 </div>
+<p>The remaining features used by the network is residual layers, layer
+normalization and positional encoding. The structure and features of the
+model all work to make short paths between inputs and outputs, while
+also being highly regularized. Layer normalization and residual layers
+are topics on-to-themselves.</p>
+<p>The positional encoding is used to represent the position of the queries
+in their embeddings. This is important because the attention mechanisms
+have no notion of order among the queries, and order determines the
+semantics of a sentence.</p>
+<p>The authors use a positional encoding that uses</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\begin{align}
+\text{PE}_{(pos,2i)} =&amp; \sin(pos / 10000^{2i/d_{\text{model}}})\\
+\text{PE}{(pos,2i+1)} =&amp; \cos(pos / 10000^{2i/d_{\text{model}}})
+\end{align}</div></div></blockquote>
+<div class="line-block">
+<div class="line">where <span class="math notranslate nohighlight">\(pos\)</span> is the position and <span class="math notranslate nohighlight">\(i\)</span> is the dimension.</div>
+</div>
+<p>As the authors describe:</p>
+<blockquote>
+<div>That is, each dimension of the positional encoding corresponds to a
+sinusoid. The wavelengths form a geometric progression from
+<span class="math notranslate nohighlight">\(2\pi\)</span> to <span class="math notranslate nohighlight">\(10000 \cdot 2\pi\)</span>. We chose this function
+because we hypothesized it would allow the model to easily learn to
+attend by relative positions, since for any fixed offset <span class="math notranslate nohighlight">\(k\)</span>,
+<span class="math notranslate nohighlight">\(PE_{pos+k}\)</span> can be represented as a linear function of
+<span class="math notranslate nohighlight">\(PE_{pos}\)</span>.</div></blockquote>
+<div class="admonition note">
+How can this be represented as a linear function?</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">class</span> <span class="nc">PositionalEncoding</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="s2">&quot;Implement the PE function.&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="n">dropout</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="mi">5000</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PositionalEncoding</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">dropout</span><span class="p">)</span>
+        <span class="n">pe</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">max_len</span><span class="p">,</span> <span class="n">d_model</span><span class="p">)</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">max_len</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">div_term</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="mf">2.</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">10000.0</span><span class="p">)</span> <span class="o">/</span> <span class="n">d_model</span><span class="p">))</span>
+        <span class="n">pe</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="n">div_term</span><span class="p">)</span>
+        <span class="n">pe</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="n">div_term</span><span class="p">)</span>
+        <span class="n">pe</span> <span class="o">=</span> <span class="n">pe</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s1">&#39;pe&#39;</span><span class="p">,</span> <span class="n">pe</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">Variable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pe</span><span class="p">[:,</span> <span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Again, each dimension corresponds to its location; in the diagram below,
+each vertical slice of the grapch would be added to the input word
+embeddings.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">pe</span> <span class="o">=</span> <span class="n">PositionalEncoding</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">pe</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">20</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">5</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;dim </span><span class="si">%d</span><span class="s2">&quot;</span><span class="o">%</span><span class="k">p</span> for p in [5,6,7,8,9,10]])
+<span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/posts_003_43_0.png" src="../_images/posts_003_43_0.png" />
+</div>
+</div>
+<p>The authors use dropout to reduce the strength of the signal; the figure
+below demonstrates its effect.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">pe</span> <span class="o">=</span> <span class="n">PositionalEncoding</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">pe</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">20</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">5</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;dim </span><span class="si">%d</span><span class="s2">&quot;</span><span class="o">%</span><span class="k">p</span> for p in [5,6,7,8,9,10]])
+<span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/posts_003_45_0.png" src="../_images/posts_003_45_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Architecture">
+<h2>Architecture<a class="headerlink" href="#Architecture" title="Permalink to this headline">¶</a></h2>
 <p>Each instance of the transformer will output a probability for the next
 symbol. As you can see, the encoder and decoder stacks are repeated N
 times each. In the paper the default was N = 6. The input and ouput of
 each stack is the of the same dimensionality.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [25]:
+<span></span>In [18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -755,40 +878,54 @@ each stack is the of the same dimensionality.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[25]:
+<span></span>Out[18]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/posts_003_39_0.svg" src="../_images/posts_003_39_0.svg" /></div>
+<img alt="../_images/posts_003_48_0.svg" src="../_images/posts_003_48_0.svg" /></div>
 </div>
+<div class="section" id="Decoding">
+<h3>Decoding<a class="headerlink" href="#Decoding" title="Permalink to this headline">¶</a></h3>
+<p>The linear layer takes an input of <span class="math notranslate nohighlight">\(\mathbb{R}^{q \times m}\)</span> and
+has a weight shape of <span class="math notranslate nohighlight">\(\mathbb{R}^{m \times vocab}\)</span>, outputing
+<span class="math notranslate nohighlight">\(\mathbb{R}^{q \times vocab}\)</span>. During training, the decoding is
+set so that all subsequent positions are masked out during attention, so
+that a symbol could never see “into the future”. So, the final linear
+layer will output a probability distribution for each query (each symbol
+generated so far) starting with the start symbol. When decoding the next
+symbol will always be the right-most dimension.</p>
 <p>When decoding an output sequence, the network is run repeatedly. A
 greedy approach looks something like this:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [27]:
+<span></span>In [19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">greedy_decode</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">,</span> <span class="n">max_len</span><span class="p">,</span> <span class="n">start_symbol</span><span class="p">):</span>
     <span class="n">memory</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">)</span>
     <span class="n">ys</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="n">start_symbol</span><span class="p">)</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="c1"># generate a word up to the max length. the system could represent stop symbols to stop early.</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_len</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
             <span class="n">memory</span><span class="p">,</span>
             <span class="n">src_mask</span><span class="p">,</span>
             <span class="n">Variable</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span>
             <span class="n">Variable</span><span class="p">(</span><span class="n">subsequent_mask</span><span class="p">(</span><span class="n">ys</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span>
+        <span class="c1"># select the final outputs&#39; result.</span>
         <span class="n">prob</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generator</span><span class="p">(</span><span class="n">out</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">next_word</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="n">dim</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">next_word</span> <span class="o">=</span> <span class="n">next_word</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">ys</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">ys</span><span class="p">,</span>
-                        <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="n">next_word</span><span class="p">)],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># concat the most likely word to the result.</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">ys</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="n">next_word</span><span class="p">)],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ys</span>
 </pre></div>
 </div>
 </div>
-<p>A beam search approach instead would select the best path by maintaining
-<em>k</em> beams - i.e.&nbsp;the best-so-far k paths.</p>
+<p>Using <a class="reference external" href="beam-search.ipynb">beam search</a> (as the authors did do), a
+path is selected by maintaining <em>k</em> beams - i.e.&nbsp;the best-so-far
+<span class="math notranslate nohighlight">\(k\)</span> options.</p>
+</div>
 </div>
 </div>
 
