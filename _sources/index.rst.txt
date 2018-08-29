@@ -28,11 +28,21 @@ For some papers, there are existing explications. However, the process of lookin
 
 .. toctree::
    :maxdepth: 2
-   :glob:
 
-   posts/*
+   posts/002.ipynb
+   posts/004.ipynb
 
 .. raw:: html
+
+  <hr />
+
+.. toctree::
+   :maxdepth: 2
+
+   posts/003.ipynb
+
+.. raw:: html
+
 
   </div>
   </div>
