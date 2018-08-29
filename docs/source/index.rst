@@ -1,8 +1,3 @@
-.. Website documentation master file, created by
-   sphinx-quickstart on Sun Jun 10 23:54:15 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 .. raw:: html
 
   <hr />
