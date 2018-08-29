@@ -3,23 +3,20 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-hello!
-======
-
 .. raw:: html
 
+  <hr />
   <div class="container-fluid">
-  <div class="row">
-  <div class="col-md-3">
-
-This site maintains some notes on papers I have read. I use jupyter notebooks for executable examples.
-
-For some papers, there are existing explications. However, the process of looking at these papers helps me understand them better, and might afford others another persepective.
-
-.. raw:: html
-
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Hello</h3>
   </div>
-  <div class="col-md-3">
+  <div class="panel-body">
+    <p class="card-text">This site maintains some notes on papers I have read. I use jupyter notebooks for executable examples. For some papers, there are existing explications. However, the process of looking at these papers helps me understand them better, and might afford others another persepective.</p>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col-md-4">
   <div class="panel panel-default">
   <div class="panel-heading">
   <h3 class="panel-title">Posts</h3>
@@ -47,7 +44,7 @@ For some papers, there are existing explications. However, the process of lookin
   </div>
   </div>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-4">
  <div class="panel panel-default">
   <div class="panel-heading">
   <h3 class="panel-title">Profile</h3>
@@ -66,7 +63,7 @@ For some papers, there are existing explications. However, the process of lookin
   </div>
   </div>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-4">
   <div class="panel panel-default">
   <div class="panel-heading">
   <h3 class="panel-title">Publications</h3>
