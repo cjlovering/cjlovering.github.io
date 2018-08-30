@@ -14,12 +14,12 @@ This is much more valuable than a symbol for an unknown word (UNK). Using the tw
 
 To build this representation, an iterative algorithm can be used to link together the most common segments, starting with character pairs. Below is the pseudo code provided by the original authors with a few changes. This algorithm is iterative. The author provides a more optimized implementation that batches and avoids recomputation. It starts bottom up, getting the bigram counts for every pair of symbols. These symbols will startout as characters but in later steps be common strings.
 
-.. literalinclude:: assets/code/002/bce.py
+.. literalinclude:: assets/code/001/bce.py
    :lines: 4-14
 
 Next, given the bi-counts of a vocabulary, merge the vocabulary to remove repetitions of this bigram.
 
-.. literalinclude:: assets/code/002/bce.py
+.. literalinclude:: assets/code/001/bce.py
    :lines: 16-
 
 .. code-block:: python3
