@@ -1,38 +1,14 @@
-============================
-Byte-Encoding Representation
-============================
+Beam Search
+~~~~~~~~~~~
 
-This is a subword tokenization of a vocabulary. An example of how this would work and be useful at test time from Sennrich et al. is as follows:
+Beam search is a method for decoding a sequence, and it is often used translation. In the main, beam search is used at test time, not during training. The algorithm is also described in this paper. For a full implementation see OpenNMT [1]_, otherwise I provide an instructive implementation below.
 
-.. code-block:: python3
+Given a function f, which takes a prefix of a sequence and outputs a probability distribution of output symbols for the next item in the sequence, beam-search is an approximate algorithm which searches for the path that results in the most probable sequence. The path with the highest probability to start with, may not end up being the most likely sequence.
 
-  V = { "low", "lowest", "newer", "wider" }
-  BCE("lower")
-  > "low", "er"
+For example, if there were 3 possible symbols to output (A, B, C), and given a start symbol the first output is [0.90, 0.05, 0.05]. However, if in the next time step, the probability for all the sequences that start with A are all equal, [0.33, 0.33, 0.33], and the probabilities if we had selected B or C are much higher [0.,0.,0.99] for many steps, we would have preferred to select another path. Note that often the scores we use are in the log space to avoid floating point issues with small probabilities.
 
-This is much more valuable than a symbol for an unknown word (UNK). Using the two subword segments, it would not be surpirising if a model would be able to intepret "lower" correctly.
+If one used depth-first search, each path would be evaluated, but at exponential cost. For example, with a vocabulary of 3 possible output symbols, and a maximum length of 10 symbols, finding the most likely path would cost 310 operations. Beam search instead does not maintain all possibilities. Instead it keeps the current best-so-far h possibilties. This instead requires a linear number of operations (around 30 in this example.)
 
-To build this representation, an iterative algorithm can be used to link together the most common segments, starting with character pairs. Below is the pseudo code provided by the original authors with a few changes. This algorithm is iterative. The author provides a more optimized implementation that batches and avoids recomputation. It starts bottom up, getting the bigram counts for every pair of symbols. These symbols will startout as characters but in later steps be common strings.
+.. literalinclude:: assets/code/002/beam_search.py
 
-.. literalinclude:: assets/code/002/bce.py
-   :lines: 4-14
-
-Next, given the bi-counts of a vocabulary, merge the vocabulary to remove repetitions of this bigram.
-
-.. literalinclude:: assets/code/002/bce.py
-   :lines: 16-
-
-.. code-block:: python3
-
-    >>> vocab = {
-        'l o w </w>' : 5, 
-        'f a r t h e s t </w>' : 5,
-        'n e w e r </w>': 5,
-        'w i d e r </w>': 5 }
-    5
-    >>> byte_pair_encoding(vocab)
-    {'l o w </w>': 5, 'f a r t h e s t </w>': 5, 'n e w er </w>': 5, 'w i d er </w>': 5}
-    {'l o w </w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}
-    {'lo w </w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}
-    {'low </w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}
-    {'low</w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}
+.. [1] (https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py)

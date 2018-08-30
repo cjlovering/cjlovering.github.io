@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Transformer Networks &#8212; cjlovering 0.0 documentation</title>
+    <title>Transformer Network &#8212; cjlovering 0.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/style.css" type="text/css" />
@@ -21,7 +21,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Research" href="../profile/research.html" />
-    <link rel="prev" title="Beam Search" href="004.html" />
+    <link rel="prev" title="Beam Search" href="002.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -56,11 +56,12 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
-<li class="toctree-l1"><a class="reference internal" href="002.html">Byte-Encoding Representation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="004.html">Beam Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="001.html">Byte-Encoding Representation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="002.html">Beam Search</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Transformer Networks</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Transformer Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#id2">Transformer Network</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../profile/research.html">Research</a></li>
@@ -81,20 +82,28 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Transformer Networks</a><ul>
-<li><a class="reference internal" href="#Overview">Overview</a></li>
-<li><a class="reference internal" href="#Encoder-Decoder">Encoder Decoder</a></li>
-<li><a class="reference internal" href="#Scaled-Dot-Product-Attention">Scaled Dot-Product Attention</a><ul>
-<li><a class="reference internal" href="#Self-Attention">Self Attention</a></li>
+<li><a class="reference internal" href="#">Transformer Network</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#encoder-decoder">Encoder Decoder</a></li>
+<li><a class="reference internal" href="#scaled-dot-product-attention">Scaled Dot-Product Attention</a></li>
+<li><a class="reference internal" href="#self-attention">Self Attention</a></li>
+<li><a class="reference internal" href="#multi-head-attention">Multi Head Attention</a></li>
+<li><a class="reference internal" href="#input-representation">Input Representation</a></li>
+<li><a class="reference internal" href="#position-wise-feed-forward-networks">Position-wise Feed-Forward Networks</a></li>
+<li><a class="reference internal" href="#architecture">Architecture</a></li>
+<li><a class="reference internal" href="#decoding">Decoding</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Multi-Head-Attention">Multi Head Attention</a></li>
-<li><a class="reference internal" href="#Input-Representation">Input Representation</a></li>
-<li><a class="reference internal" href="#Position-wise-Feed-Forward-Networks">Position-wise Feed-Forward Networks</a></li>
-<li><a class="reference internal" href="#Architecture">Architecture</a><ul>
-<li><a class="reference internal" href="#Decoding">Decoding</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#id2">Transformer Network</a><ul>
+<li><a class="reference internal" href="#id5">Overview</a></li>
+<li><a class="reference internal" href="#id6">Encoder Decoder</a></li>
+<li><a class="reference internal" href="#id7">Scaled Dot-Product Attention</a></li>
+<li><a class="reference internal" href="#id8">Self Attention</a></li>
+<li><a class="reference internal" href="#id9">Multi Head Attention</a></li>
+<li><a class="reference internal" href="#id10">Input Representation</a></li>
+<li><a class="reference internal" href="#id11">Position-wise Feed-Forward Networks</a></li>
+<li><a class="reference internal" href="#id12">Architecture</a></li>
+<li><a class="reference internal" href="#id13">Decoding</a></li>
 </ul>
 </li>
 </ul>
@@ -126,398 +135,76 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  
-<style>
-/* CSS for nbsphinx extension */
-
-/* remove conflicting styling from Sphinx themes */
-div.nbinput,
-div.nbinput div.prompt,
-div.nbinput div.input_area,
-div.nbinput div[class*=highlight],
-div.nbinput div[class*=highlight] pre,
-div.nboutput,
-div.nbinput div.prompt,
-div.nbinput div.output_area,
-div.nboutput div[class*=highlight],
-div.nboutput div[class*=highlight] pre {
-    background: none;
-    border: none;
-    padding: 0 0;
-    margin: 0;
-    box-shadow: none;
-}
-
-/* avoid gaps between output lines */
-div.nboutput div[class*=highlight] pre {
-    line-height: normal;
-}
-
-/* input/output containers */
-div.nbinput,
-div.nboutput {
-    display: -webkit-flex;
-    display: flex;
-    align-items: flex-start;
-    margin: 0;
-    width: 100%;
-}
-@media (max-width: 540px) {
-    div.nbinput,
-    div.nboutput {
-        flex-direction: column;
-    }
-}
-
-/* input container */
-div.nbinput {
-    padding-top: 5px;
-}
-
-/* last container */
-div.nblast {
-    padding-bottom: 5px;
-}
-
-/* input prompt */
-div.nbinput div.prompt pre {
-    color: #303F9F;
-}
-
-/* output prompt */
-div.nboutput div.prompt pre {
-    color: #D84315;
-}
-
-/* all prompts */
-div.nbinput div.prompt,
-div.nboutput div.prompt {
-    min-width: 9ex;
-    padding-top: 0.4em;
-    padding-right: 0.4em;
-    text-align: right;
-    flex: 0;
-}
-@media (max-width: 540px) {
-    div.nbinput div.prompt,
-    div.nboutput div.prompt {
-        text-align: left;
-        padding: 0.4em;
-    }
-    div.nboutput div.prompt.empty {
-        padding: 0;
-    }
-}
-
-/* disable scrollbars on prompts */
-div.nbinput div.prompt pre,
-div.nboutput div.prompt pre {
-    overflow: hidden;
-}
-
-/* input/output area */
-div.nbinput div.input_area,
-div.nboutput div.output_area {
-    padding: 0.4em;
-    -webkit-flex: 1;
-    flex: 1;
-    overflow: auto;
-}
-@media (max-width: 540px) {
-    div.nbinput div.input_area,
-    div.nboutput div.output_area {
-        width: 100%;
-    }
-}
-
-/* input area */
-div.nbinput div.input_area {
-    border: 1px solid #cfcfcf;
-    border-radius: 2px;
-    background: #f7f7f7;
-}
-
-/* override MathJax center alignment in output cells */
-div.nboutput div[class*=MathJax] {
-    text-align: left !important;
-}
-
-/* override sphinx.ext.pngmath center alignment in output cells */
-div.nboutput div.math p {
-    text-align: left;
-}
-
-/* standard error */
-div.nboutput div.output_area.stderr {
-    background: #fdd;
-}
-
-/* ANSI colors */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-default-inverse-fg { color: #FFFFFF; }
-.ansi-default-inverse-bg { background-color: #000000; }
-
-.ansi-bold { font-weight: bold; }
-.ansi-underline { text-decoration: underline; }
-</style>
-<div class="section" id="Transformer-Networks">
-<h1>Transformer Networks<a class="headerlink" href="#Transformer-Networks" title="Permalink to this headline">¶</a></h1>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [1]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
-<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
-<span class="kn">import</span> <span class="nn">math</span><span class="o">,</span> <span class="nn">copy</span><span class="o">,</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="k">import</span> <span class="n">Variable</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span>
-<span class="n">seaborn</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="s2">&quot;talk&quot;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">SVG</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;&lt;style&gt;img{max-height:500px !important;}&lt;/style&gt;&quot;</span>
-<span class="n">HTML</span><span class="p">(</span><span class="n">style</span><span class="p">)</span> <span class="c1"># this resizes SVGS in my site files.</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[2]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<style>img{max-height:500px !important;}</style></div>
-</div>
-<p>Most of the paper was clear. However, it was difficult to see how it
-would work across sequences of different length. I don’t mean how or why
-the positional encoding would work - this is intuitive, but rather how
-they construct the matrices to fit together :).</p>
-<p>This notebook focuses on the unique modules the authors present, and how
-the system fits together. Other <em>dependencies</em> of this post can be
-viewed at the links below.</p>
+  <div class="section" id="transformer-network">
+<h1>Transformer Network<a class="headerlink" href="#transformer-network" title="Permalink to this headline">¶</a></h1>
+<p>Most of the paper was clear. However, it was difficult to see how it would work across sequences of different length. I don’t mean how or why the positional encoding would work - this is intuitive, but rather how they construct the matrices to fit together :).</p>
+<p>This notebook focuses on the unique modules the authors present, and how the system fits together. Other dependencies of this post:</p>
 <ul class="simple">
-<li><a class="reference internal" href="002.html"><span class="doc">Byte-Encoding</span></a></li>
+<li><a class="reference internal" href="001.html"><span class="doc">Byte-Encoding</span></a></li>
 <li>Layer Normalization</li>
 <li>Residual Connections</li>
+<li><a class="reference internal" href="002.html"><span class="doc">Beam Search</span></a></li>
 </ul>
-<div class="section" id="Overview">
-<h2>Overview<a class="headerlink" href="#Overview" title="Permalink to this headline">¶</a></h2>
-<p>This work focuses on the task of natural language translation
-(e.g.&nbsp;english to german or vice versa.)</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This work focuses on the task of natural language translation (e.g. english to german or vice versa.)</p>
 <div class="admonition note">
-I modify implementations from the
-<a class="reference external" href="https://github.com/tensorflow/tensor2tensor">tensor2tensor</a> library
-and <a class="reference external" href="http://nlp.seas.harvard.edu/2018/04/03/attention.html">The Annotated
-Transformer</a>
-post, focusing on my interpretation of the paper. The diagrams are by in
-large recreations from the original paper. For a complete view and
-implementation of this system, please visit the mentioned sources above.</div>
+<p class="first admonition-title">Note</p>
+<p class="last">I modify implementations from the <a class="reference external" href="https://github.com/tensorflow/tensor2tensor">tensor2tensor</a> library and <a class="reference external" href="http://nlp.seas.harvard.edu/2018/04/03/attention.html">The Annotated Transformer</a> post, focusing on my interpretation of the paper. For a complete view and implementation of this system, please visit the mentioned sources above. All diagrams were created by me. Some are re-intepretations from the orginal paper.</p>
 </div>
-<div class="section" id="Encoder-Decoder">
-<h2>Encoder Decoder<a class="headerlink" href="#Encoder-Decoder" title="Permalink to this headline">¶</a></h2>
-<p>A encoder-decoder <a class="reference external" href="https://arxiv.org/abs/1409.0473">structure</a> is
-used: an input sequence of symbols,
-<span class="math notranslate nohighlight">\(x = { x_1, x_2, \dots, x_n }\)</span>, is encoded into a sequence of
-continuous variables, <span class="math notranslate nohighlight">\(\mathbf{z} = { z_1, z_2, \dots, z_n }\)</span>.
-This is then decoded into a sequence of symbols,
-<span class="math notranslate nohighlight">\(y = { y_1, y_2, \dots, y_n }\)</span>. In some cases, <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>
-is a single continuous variable. This generation occurs one at a time -
-it is <a class="reference external" href="https://arxiv.org/abs/1308.0850">auto-regressive</a>, further
-consuming the previously generated symbols as additional input when
-generating the next. Encoder and decoder models usually use a recurrent
-architecture.</p>
-<p>According to Cho. 14, the encoding function <span class="math notranslate nohighlight">\(e\)</span> can be any
-non-linear function, but it is often implemented as an RNN.</p>
+</div>
+<div class="section" id="encoder-decoder">
+<h2>Encoder Decoder<a class="headerlink" href="#encoder-decoder" title="Permalink to this headline">¶</a></h2>
+<p>The transformer uses a <a class="reference external" href="https://arxiv.org/abs/1409.0473">encoder-decoder</a> structure: an input sequence of symbols, <span class="math notranslate nohighlight">\(x = { x_1, x_2, \dots, x_n }\)</span>, is encoded into a sequence of continuous variables,  <span class="math notranslate nohighlight">\(\mathbf{z} = { z_1, z_2, \dots, z_n }\)</span>. This is then decoded into a sequence of symbols, <span class="math notranslate nohighlight">\(y = { y_1, y_2, \dots, y_n }\)</span>. In some cases, <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is a single continuous variable. This generation occurs one at a time - it is <a class="reference external" href="https://arxiv.org/abs/1308.0850">auto-regressive</a>, further consuming the previously generated symbols as additional input when generating the next. Encoder and decoder models usually use a recurrent architecture.</p>
+<p>According to Cho. 14, the encoding function <span class="math notranslate nohighlight">\(e\)</span> can be any non-linear function, but it is often implemented as an RNN.</p>
 <div class="math notranslate nohighlight">
-\begin{equation}
-h_{&lt;t&gt;} = e(h_{&lt;t-1&gt;}, x_t)
-\end{equation}</div><div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [3]:
-</pre></div>
+\[h_{&lt;t&gt;} = e(h_{&lt;t-1&gt;}, x_t)\]</div>
+<div class="figure align-center" id="id14">
+<img alt="../_images/encoder.svg" height="250px" src="../_images/encoder.svg" /><p class="caption"><span class="caption-text">Encoder architecture.</span></p>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">SVG</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;images/003/encoder.svg&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[3]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/posts_003_8_0.svg" src="../_images/posts_003_8_0.svg" /></div>
-</div>
-<p>The input sentence <span class="math notranslate nohighlight">\(x\)</span> is encoded into the vector
-<span class="math notranslate nohighlight">\(\mathbf{z}\)</span>. Depending on the implemention, we consider the final
-hidden states as the encoding, or some operation on all the hidden
-states.</p>
-<p>Next, we decode <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> into the output predictions
-<span class="math notranslate nohighlight">\(y\)</span>. Again, this uses a recurrent function (RNN).</p>
+<p>The input sentence <span class="math notranslate nohighlight">\(x\)</span> is encoded into the vector <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>. Depending on the implemention, we consider the final hidden states as the encoding, or some operation on all the hidden states.</p>
+<p>Next, we decode <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> into the output predictions <span class="math notranslate nohighlight">\(y\)</span>. Again, this uses a recurrent function (RNN).</p>
 <div class="math notranslate nohighlight">
-\begin{align}
-h_{&lt;t&gt;} =&amp; d(h_{&lt;t-1&gt;}, y_{&lt;t-1&gt;}, z)\\
-y_{&lt;t&gt;} =&amp; g(h_{&lt;t&gt;}, y_{&lt;t-1&gt;}, z)\\
-\end{align}</div><div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">SVG</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;images/003/decoder.svg&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[4]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/posts_003_10_0.svg" src="../_images/posts_003_10_0.svg" /></div>
+\[\begin{split}h_{&lt;t&gt;} = d(h_{&lt;t-1&gt;}, y_{&lt;t-1&gt;}, z)\\
+y_{&lt;t&gt;} = g(h_{&lt;t&gt;}, y_{&lt;t-1&gt;}, z)\end{split}\]</div>
+<div class="figure align-center" id="id15">
+<img alt="../_images/decoder.svg" height="350px" src="../_images/decoder.svg" /><p class="caption"><span class="caption-text">Encoder architecture.</span></p>
 </div>
 <p>This structure has some issues.</p>
 <ol class="arabic simple">
 <li>Its sequential and for a given <span class="math notranslate nohighlight">\(x\)</span>, it cannot be parallelized.</li>
-<li>Often <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is input into each decoding function, and
-since <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is O(n) distance to each input symbol, it
-becomes difficult to learn long range dependencies.</li>
-<li>The path between an output symbol and its corresponding source symbol
-depends on the length of <span class="math notranslate nohighlight">\(x\)</span>.</li>
+<li>Often <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is input into each decoding function, and since <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is O(n) distance to each input symbol, it becomes difficult to learn long range dependencies.</li>
+<li>The path between an output symbol and its corresponding source symbol depends on the length of <span class="math notranslate nohighlight">\(x\)</span>.</li>
 </ol>
-<p>The transformer network uses a stateless auto-regressive strategy which
-will decode the encoded (but not summarized) source words and the
-current output words. This will allow the model to be highly
-parallelized.</p>
+<p>The transformer network uses a stateless auto-regressive strategy which will decode the encoded (but not summarized) source words and the current output words. This will allow the model to be highly parallelized.</p>
 <p>The primary featured used is scaled dot product attention.</p>
 </div>
-<div class="section" id="Scaled-Dot-Product-Attention">
-<h2>Scaled Dot-Product Attention<a class="headerlink" href="#Scaled-Dot-Product-Attention" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="scaled-dot-product-attention">
+<h2>Scaled Dot-Product Attention<a class="headerlink" href="#scaled-dot-product-attention" title="Permalink to this headline">¶</a></h2>
 <p>The authors describe attention as follows:</p>
 <blockquote>
-<div>An attention function can be described as mapping a query and a set
-of key-value pairs to an output, where the query, keys, values, and
-output are all vectors. The output is computed as a weighted sum of
-the values, where the weight assigned to each value is computed by a
-compatibility function of the query with the corresponding key.</div></blockquote>
-<p>In addition to attention, they use a few techniques to regularize their
-network: layer normalization, residual connections, and dropout.</p>
-<p>As noted by the authors, attention maps a query to a combination of
-given outputs, as determined by the query’s corresponding compatibility
-with the input keys. As the autological “Scaled Dot-Product Attention”
-method implies, the authors use dot product for their compatibility
-function. One could use any metric, learned or otherwise. Cosine
-distance or a layer of MLP can be used.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [5]:
-</pre></div>
+<div>An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors.  The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key.</div></blockquote>
+<p>In addition to attention, they use a few techniques to regularize their network: layer normalization, residual connections, and dropout.</p>
+<p>As noted by the authors, attention maps a query to a combination of given outputs, as determined by the query’s corresponding compatibility with the input keys. As the autological “Scaled Dot-Product Attention” method implies, the authors use dot product for their compatibility function. One could use any metric, learned or otherwise. Cosine distance or a layer of MLP can be used.</p>
+<div class="figure align-center" id="id16">
+<img alt="../_images/attention-example.svg" height="350px" src="../_images/attention-example.svg" /><p class="caption"><span class="caption-text">Attention inuition.</span></p>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">SVG</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;images/003/attention-example.svg&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[5]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/posts_003_15_0.svg" src="../_images/posts_003_15_0.svg" /></div>
-</div>
-<p>As shown in the intuitive example above, the query <span class="math notranslate nohighlight">\(q_1\)</span> is most
-similar to <span class="math notranslate nohighlight">\(k_1\)</span>, thus it is mapped predimately to the
-corresponding value <span class="math notranslate nohighlight">\(v_1\)</span>. Note: these values are examples, not
-necessarily accurate.</p>
+<p>As shown in the intuitive example above, the query <span class="math notranslate nohighlight">\(q_1\)</span> is most similar to <span class="math notranslate nohighlight">\(k_1\)</span>, thus it is mapped predimately to the corresponding value <span class="math notranslate nohighlight">\(v_1\)</span>. Note: these values are examples, not necessarily accurate.</p>
 <p>The scaled dot product attention is straight forward.</p>
 <div class="math notranslate nohighlight">
-\begin{equation}
-A: Q \times K \times V \to O \\
+\[\begin{split}A: Q \times K \times V \to O \\
 Q\in \mathbb{R}^{q \times d}, K \in \mathbb{R}^{n \times d}, V \in \mathbb{R}^{n \times v}, O \in \mathbb{R}^{q \times v} \\
-A = \text{SOFTMAX}(\frac{QK^{\intercal}}{\sqrt{d}}) V
-\end{equation}</div><p>The innovative aspect of scaled dot product - beyond the authors’ apt
-framing of the problem as an interaction between queries, keys, and
-values - is the scaling. The author motivate this scaling by noting that
-the variance of a dot product scales with the size of the input vectors.
-Increased variance will result in increased magnitude, “pushing the
-softmax function into regions where it has extremely small gradients.”</p>
-<div class="admonition note">
-Why is the gradient small?</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [6]:
-</pre></div>
+A = \text{SOFTMAX}(\frac{QK^{\intercal}}{\sqrt{d}}) V\end{split}\]</div>
+<p>The innovative aspect of scaled dot product - beyond the authors’ apt framing of the problem as an interaction between queries, keys, and values - is the scaling. The author motivate this scaling by noting that the variance of a dot product scales with the size of the input vectors. Increased variance will result in increased magnitude, “pushing the softmax function into regions where it has extremely small gradients.”</p>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">Why is the gradient small?</p>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">SVG</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;images/003/scaled-dot-product.svg&quot;</span><span class="p">)</span>
-</pre></div>
+<div class="figure align-center" id="id17">
+<img alt="../_images/scaled-dot-product.svg" height="350px" src="../_images/scaled-dot-product.svg" /><p class="caption"><span class="caption-text">Scaled dot product attention.</span></p>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[6]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/posts_003_19_0.svg" src="../_images/posts_003_19_0.svg" /></div>
-</div>
-<p>Below is an implementation for the scaled dot product. Each line
-corresponds to a box in the figure above.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">attention</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<p>Below is an implementation for the scaled dot product. Each line corresponds to a box in the figure above.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">attention</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="s2">&quot;Compute &#39;Scaled Dot Product Attention&#39;&quot;</span>
     <span class="c1"># Compatiblity function (dot product) between the query and keys.</span>
     <span class="n">scores</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
@@ -533,131 +220,50 @@ corresponds to a box in the figure above.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="Self-Attention">
-<h3>Self Attention<a class="headerlink" href="#Self-Attention" title="Permalink to this headline">¶</a></h3>
-<p>With a single query, self attention will have no effect. This is because
-the attention mechanism will be a linear combination of the values, and
-it can only reproduce itself so it serves as an identity function.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">SelfAttention</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<div class="section" id="self-attention">
+<h2>Self Attention<a class="headerlink" href="#self-attention" title="Permalink to this headline">¶</a></h2>
+<p>With a single query, self attention will have no effect. This is because the attention mechanism will be a linear combination of the values, and it can only reproduce itself so it serves as an identity function.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">SelfAttention</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
     <span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span>
     <span class="k">return</span> <span class="n">attention</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">out</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">SelfAttention</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">([[</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.8</span><span class="p">]]))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="n">tensor</span><span class="p">([[</span><span class="mf">0.1000</span><span class="p">,</span> <span class="mf">0.1000</span><span class="p">,</span> <span class="mf">0.8000</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+<span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">]])</span>
 </pre></div>
 </div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">out</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">SelfAttention</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">([[</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.8</span><span class="p">]]))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-tensor([[0.1000, 0.1000, 0.8000]])
-tensor([[1.]])
-</pre></div></div>
-</div>
-<p>When there are multiple queries, the vectors that are most <em>compatible</em>
-will become even more similar as they will be mapped to combinations
-consisting mostly of the already compatible vectors.</p>
+<p>When there are multiple queries, the vectors that are most <em>compatible</em> will become even more similar as they will be mapped to combinations consisting mostly of the already compatible vectors.</p>
 <p>The remaining vector will also be normalized <em>different</em>.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [10]:
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">([</span>
+<span class="go">    [0,0,1],</span>
+<span class="go">    [0,0,2],</span>
+<span class="go">    [1,0,0]</span>
+<span class="go">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">SelfAttention</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+<span class="go">tensor([[0.2992, 0.5329, 0.1679],</span>
+<span class="go">      [0.2228, 0.7070, 0.0702],</span>
+<span class="go">      [0.2645, 0.2645, 0.4711]])</span>
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">([</span>
-    <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
-    <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
-    <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
-<span class="p">])</span>
-<span class="n">out</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">SelfAttention</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
-</pre></div>
+<p>Note that, especially with values greater than 1, a vector can have a greater dot product with other vectors rather than itself. So, similarity is aptly not the correct word to describe this interaction (at least when using a dot product). Thus, the first vector is mapped to a construction consisting mostly of itself and the second vector follows the same trend but more extreme. Lastly, the third vector, less compatible than the others - becomes pseduo-normalized.</p>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-tensor([[0.2992, 0.5329, 0.1679],
-        [0.2228, 0.7070, 0.0702],
-        [0.2645, 0.2645, 0.4711]])
-</pre></div></div>
-</div>
-<p>Note that, especially with values greater than 1, a vector can have a
-greater dot product with other vectors rather than itself. So,
-similarity is aptly not the correct word to describe this interaction
-(at least when using a dot product). Thus, the first vector is mapped to
-a construction consisting mostly of itself and the second vector follows
-the same trend but more extreme. Lastly, the third vector, less
-compatible than the others - becomes pseduo-normalized.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [11]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-tensor([[0.1679, 0.0000, 1.3650],
-        [0.0702, 0.0000, 1.6368],
-        [0.4711, 0.0000, 0.7934]])
-</pre></div></div>
-</div>
-</div>
-</div>
-<div class="section" id="Multi-Head-Attention">
-<h2>Multi Head Attention<a class="headerlink" href="#Multi-Head-Attention" title="Permalink to this headline">¶</a></h2>
-<p>The transformer uses “Multi-Head Attention” as its primary module. It is
-built up using scaled dot product attention.</p>
-<p>Rather than attend raw queries a single time, this method attends <em>h</em>
-linear projections of the input. For each of the <em>h</em> heads, the inputs
-(K,Q,V) are projected linearily with a learned mapping. This is great!
-Rather than using a single dot product, the multi-headed attention can
-learn to project vectors and attend them differently.</p>
+<div class="section" id="multi-head-attention">
+<h2>Multi Head Attention<a class="headerlink" href="#multi-head-attention" title="Permalink to this headline">¶</a></h2>
+<p>The transformer uses “Multi-Head Attention” as its primary module. It is built up using scaled dot product attention.</p>
+<p>Rather than attend raw queries a single time, this method attends <em>h</em> linear projections of the input. For each of the <em>h</em> heads, the inputs (K,Q,V) are projected linearily with a learned mapping. This is great! Rather than using a single dot product, the multi-headed attention can learn to project vectors and attend them differently.</p>
 <div class="admonition note">
-Ultimately, the compatiblity function and the projections are all linear
-- perhaps it would be worth the time to see if non-linear mappings would
-drastically effect the performance of this method. Does using a feed
-forward layer here help? hurt?</div>
+<p class="first admonition-title">Note</p>
+<p class="last">Ultimately, the compatiblity function and the projections are all linear - perhaps it would be worth the time to see if non-linear mappings would drastically effect the performance of this method. Does using a feed forward layer here help? hurt?</p>
+</div>
 <div class="math notranslate nohighlight">
-\begin{equation}
-\text{out} = \texttt{Concat}(\text{head}_0, \dots, \text{head}_h) W^O \\
+\[\begin{split}\text{out} = \texttt{Concat}(\text{head}_0, \dots, \text{head}_h) W^O \\
 \text{head}_i = \texttt{Attention}(QW_i^Q, KW_i^K, VW_i^V) \\
 Q \in \mathbb{R}^{q \times m}, K \in \mathbb{R}^{n \times m}, V \in \mathbb{R}^{n \times m} \\
 W_j^Q, W_j^K, W_j^V \in \mathbb{R}^{m \times d} \\
-W^O \in \mathbb{R}^{(h*v)\times m}
-\end{equation}</div><div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [12]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">class</span> <span class="nc">MultiHeadedAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MultiHeadedAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
         <span class="s2">&quot;Take in model size and number of heads.&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MultiHeadedAttention</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -679,68 +285,34 @@ W^O \in \mathbb{R}^{(h*v)\times m}
         <span class="c1"># 1) Do all the linear projections in batch from d_model =&gt; h x d_k</span>
         <span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> \
             <span class="p">[</span><span class="n">l</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">nbatches</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_k</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-             <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linears</span><span class="p">,</span> <span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))]</span>
+            <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linears</span><span class="p">,</span> <span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))]</span>
 
         <span class="c1"># 2) Apply attention on all the projected vectors in batch.</span>
         <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attn</span> <span class="o">=</span> <span class="n">attention</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span>
-                                 <span class="n">dropout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">)</span>
+                                <span class="n">dropout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">)</span>
 
         <span class="c1"># 3) &quot;Concat&quot; using a view and apply a final linear.</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span> \
-             <span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">nbatches</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_k</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">nbatches</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_k</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">linears</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">](</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<p>Thus, the multi-headed attention is a function from <span class="math notranslate nohighlight">\(R^{q*d}\)</span> to
-<span class="math notranslate nohighlight">\(R^{q*v}\)</span>. Furthermore, like the scaled-dot-product attention, it
-is able to concurrently operate on all the queries in parallel
-regardless of the size of the sentence.</p>
-<p>Additionally, this module is able to support <em>h</em> different heads, and
-still output a fixed-size vector for each query by concat and then
-matrix multiply to reduce the dimensionality.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [13]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">SVG</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;images/003/multi-head.svg&quot;</span><span class="p">)</span>
-</pre></div>
+<p>Thus, the multi-headed attention is a function from <span class="math notranslate nohighlight">\(R^{q \times d}\)</span> to <span class="math notranslate nohighlight">\(R^{q\ times v}\)</span>. Furthermore, like the scaled-dot-product attenion, it is able to concurrently operate on all the queries in parallel regardless of the size of the sentence.</p>
+<p>Additionally, this module is able to support <em>h</em> different heads, and still output a fixed-size vector for each query by concat and then matrix multiply to reduce the dimensionality.</p>
+<div class="figure align-center" id="id18">
+<img alt="../_images/multi-head.svg" height="350px" src="../_images/multi-head.svg" /><p class="caption"><span class="caption-text">Scaled dot product attention.</span></p>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[13]:
-</pre></div>
+<div class="section" id="input-representation">
+<h2>Input Representation<a class="headerlink" href="#input-representation" title="Permalink to this headline">¶</a></h2>
+<p>This work used a Byte Pair Encoding scheme. This is a subword tokenization of your vocabulary. This is much more valuable than a UNK symbol. To build this representation, an iterative algorithm can be used to link together the most common segments, starting with character pairs.</p>
 </div>
-<div class="output_area docutils container">
-<img alt="../_images/posts_003_34_0.svg" src="../_images/posts_003_34_0.svg" /></div>
-</div>
-</div>
-<div class="section" id="Input-Representation">
-<h2>Input Representation<a class="headerlink" href="#Input-Representation" title="Permalink to this headline">¶</a></h2>
-<p>This work used a Byte Pair Encoding scheme. This is a subword
-tokenization of your vocabulary. This is much more valuable than a UNK
-symbol. To build this representation, an iterative algorithm can be used
-to link together the most common segments, starting with character
-pairs.</p>
-</div>
-<div class="section" id="Position-wise-Feed-Forward-Networks">
-<h2>Position-wise Feed-Forward Networks<a class="headerlink" href="#Position-wise-Feed-Forward-Networks" title="Permalink to this headline">¶</a></h2>
-<p>This two linear transforms with a nonlinear (RELU) operation. The
-denotation of position-wise remarks on the fact that it is not a
-convolution, nor does it have any directly spatial functionality.</p>
+<div class="section" id="position-wise-feed-forward-networks">
+<h2>Position-wise Feed-Forward Networks<a class="headerlink" href="#position-wise-feed-forward-networks" title="Permalink to this headline">¶</a></h2>
+<p>This two linear transforms with a nonlinear (RELU) operation. The denotation of position-wise remarks on the fact that it is not a convolution, nor does it have any directly spatial functionality.</p>
 <div class="math notranslate nohighlight">
-\begin{equation}
-    \text{FFN}(x) = \max(0, xW_1 + b_1)W_2 + b_2
-\end{equation}</div><div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [14]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">class</span> <span class="nc">PositionwiseFeedForward</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+\[\text{FFN}(x) = \max(0, xW_1 + b_1)W_2 + b_2\]</div>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">PositionwiseFeedForward</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="s2">&quot;Implements FFN equation.&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d_model</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">d_ff</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PositionwiseFeedForward</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -752,159 +324,262 @@ convolution, nor does it have any directly spatial functionality.</p>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_1</span><span class="p">(</span><span class="n">x</span><span class="p">))))</span>
 </pre></div>
 </div>
-</div>
-<p>The remaining features used by the network is residual layers, layer
-normalization and positional encoding. The structure and features of the
-model all work to make short paths between inputs and outputs, while
-also being highly regularized. Layer normalization and residual layers
-are topics on-to-themselves.</p>
-<p>The positional encoding is used to represent the position of the queries
-in their embeddings. This is important because the attention mechanisms
-have no notion of order among the queries, and order determines the
-semantics of a sentence.</p>
+<p>The remaining features used by the network is residual layers, layer normalization and positional encoding. The structure and features of the model all work to make short paths between inputs and outputs, while also being highly regularized. Layer normalization and residual layers are topics on-to-themselves.</p>
+<p>The positional encoding is used to represent the position of the queries in their embeddings. This is important because the attention mechanisms have no notion of order among the queries, and order determines the semantics of a sentence.</p>
 <p>The authors use a positional encoding that uses</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<blockquote>
-<div><div class="math notranslate nohighlight">
-\begin{align}
-\text{PE}_{(pos,2i)} =&amp; \sin(pos / 10000^{2i/d_{\text{model}}})\\
-\text{PE}{(pos,2i+1)} =&amp; \cos(pos / 10000^{2i/d_{\text{model}}})
-\end{align}</div></div></blockquote>
-<div class="line-block">
-<div class="line">where <span class="math notranslate nohighlight">\(pos\)</span> is the position and <span class="math notranslate nohighlight">\(i\)</span> is the dimension.</div>
-</div>
+<div class="math notranslate nohighlight">
+\[\text{PE}_{(pos,2i)} = \sin(pos / 10000^{2i/d_{\text{model}}})
+\text{PE}_{(pos,2i+1)} = \cos(pos / 10000^{2i/d_{\text{model}}})\]</div>
+<p>where <span class="math notranslate nohighlight">\(pos\)</span> is the position and <span class="math notranslate nohighlight">\(i\)</span> is the dimension.</p>
 <p>As the authors describe:</p>
 <blockquote>
-<div>That is, each dimension of the positional encoding corresponds to a
-sinusoid. The wavelengths form a geometric progression from
-<span class="math notranslate nohighlight">\(2\pi\)</span> to <span class="math notranslate nohighlight">\(10000 \cdot 2\pi\)</span>. We chose this function
-because we hypothesized it would allow the model to easily learn to
-attend by relative positions, since for any fixed offset <span class="math notranslate nohighlight">\(k\)</span>,
-<span class="math notranslate nohighlight">\(PE_{pos+k}\)</span> can be represented as a linear function of
-<span class="math notranslate nohighlight">\(PE_{pos}\)</span>.</div></blockquote>
+<div>That is, each dimension of the positional encoding corresponds to a sinusoid.  The wavelengths form a geometric progression from <span class="math notranslate nohighlight">\(2\pi\)</span> to <span class="math notranslate nohighlight">\(10000 \cdot 2\pi\)</span>.  We chose this function because we hypothesized it would allow the model to easily learn to attend by relative positions, since for any fixed offset <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(PE_{pos+k}\)</span> can be represented as a linear function of <span class="math notranslate nohighlight">\(PE_{pos}\)</span>.</div></blockquote>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">How can this be represented as a linear function?</p>
+</div>
+<div class="figure align-center" id="id19">
+<img alt="../_images/pe.png" src="../_images/pe.png" />
+<p class="caption"><span class="caption-text">Each dimension corresponds to its location; in the diagram below, each vertical slice of the grapch would be added to the input word embeddings.</span></p>
+</div>
+<div class="figure align-center" id="id20">
+<img alt="../_images/pe-dropout.png" src="../_images/pe-dropout.png" />
+<p class="caption"><span class="caption-text">The authors use dropout to reduce the strength of the signal; the figure demonstrates its effect.</span></p>
+</div>
+</div>
+<div class="section" id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
+<p>Each instance of the transformer will output a probability for the next symbol. As you can see, the encoder and decoder stacks are repeated N times each. In the paper the default was N = 6. The input and ouput of each stack is the of the same dimensionality.</p>
+<div class="figure align-center">
+<img alt="../_images/architecture.svg" height="650px" src="../_images/architecture.svg" /></div>
+</div>
+<div class="section" id="decoding">
+<h2>Decoding<a class="headerlink" href="#decoding" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="section" id="id2">
+<h1>Transformer Network<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h1>
+<p>Most of the paper was clear. However, it was difficult to see how it would work across sequences of different length. I don’t mean how or why the positional encoding would work - this is intuitive, but rather how they construct the matrices to fit together :).</p>
+<p>This notebook focuses on the unique modules the authors present, and how the system fits together. Other dependencies of this post:</p>
+<ul class="simple">
+<li><a class="reference internal" href="001.html"><span class="doc">Byte-Encoding</span></a></li>
+<li>Layer Normalization</li>
+<li>Residual Connections</li>
+<li><a class="reference internal" href="002.html"><span class="doc">Beam Search</span></a></li>
+</ul>
+<div class="section" id="id5">
+<h2>Overview<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p>This work focuses on the task of natural language translation (e.g. english to german or vice versa.)</p>
 <div class="admonition note">
-How can this be represented as a linear function?</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [15]:
+<p class="first admonition-title">Note</p>
+<p class="last">I modify implementations from the [tensor2tensor](<a class="reference external" href="https://github.com/tensorflow/tensor2tensor">https://github.com/tensorflow/tensor2tensor</a>) library and [The Annotated Transformer](<a class="reference external" href="http://nlp.seas.harvard.edu/2018/04/03/attention.html">http://nlp.seas.harvard.edu/2018/04/03/attention.html</a>) post, focusing on my interpretation of the paper. The diagrams are by in large recreations from the original paper. For a complete view and implementation of this system, please visit the mentioned sources above.</p>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>Encoder Decoder<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<p>A encoder-decoder [structure](<a class="reference external" href="https://arxiv.org/abs/1409.0473">https://arxiv.org/abs/1409.0473</a>) is used: an input sequence of symbols, <span class="math notranslate nohighlight">\(x = { x_1, x_2, \dots, x_n }\)</span>, is encoded into a sequence of continuous variables,  <span class="math notranslate nohighlight">\(\mathbf{z} = { z_1, z_2, \dots, z_n }\)</span>. This is then decoded into a sequence of symbols, <span class="math notranslate nohighlight">\(y = { y_1, y_2, \dots, y_n }\)</span>. In some cases, <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is a single continuous variable. This generation occurs one at a time - it is [auto-regressive](<a class="reference external" href="https://arxiv.org/abs/1308.0850">https://arxiv.org/abs/1308.0850</a>), further consuming the previously generated symbols as additional input when generating the next. Encoder and decoder models usually use a recurrent architecture.</p>
+<p>According to Cho. 14, the encoding function <span class="math notranslate nohighlight">\(e\)</span> can be any non-linear function, but it is often implemented as an RNN.</p>
+<div class="math notranslate nohighlight">
+\[h_{&lt;t&gt;} = e(h_{&lt;t-1&gt;}, x_t)\]</div>
+<div class="figure align-center" id="id21">
+<img alt="../_images/encoder.svg" height="250px" src="../_images/encoder.svg" /><p class="caption"><span class="caption-text">Encoder architecture.</span></p>
+</div>
+<p>The input sentence <span class="math notranslate nohighlight">\(x\)</span> is encoded into the vector <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>. Depending on the implemention, we consider the final hidden states as the encoding, or some operation on all the hidden states.</p>
+<p>Next, we decode <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> into the output predictions <span class="math notranslate nohighlight">\(y\)</span>. Again, this uses a recurrent function (RNN).</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}h_{&lt;t&gt;} = d(h_{&lt;t-1&gt;}, y_{&lt;t-1&gt;}, z)\\
+y_{&lt;t&gt;} = g(h_{&lt;t&gt;}, y_{&lt;t-1&gt;}, z)\end{split}\]</div>
+<div class="figure align-center" id="id22">
+<img alt="../_images/decoder.svg" height="350px" src="../_images/decoder.svg" /><p class="caption"><span class="caption-text">Encoder architecture.</span></p>
+</div>
+<p>This structure has some issues.</p>
+<ol class="arabic simple">
+<li>Its sequential and for a given <span class="math notranslate nohighlight">\(x\)</span>, it cannot be parallelized.</li>
+<li>Often <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is input into each decoding function, and since <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is O(n) distance to each input symbol, it becomes difficult to learn long range dependencies.</li>
+<li>The path between an output symbol and its corresponding source symbol depends on the length of <span class="math notranslate nohighlight">\(x\)</span>.</li>
+</ol>
+<p>The transformer network uses a stateless auto-regressive strategy which will decode the encoded (but not summarized) source words and the current output words. This will allow the model to be highly parallelized.</p>
+<p>The primary featured used is scaled dot product attention.</p>
+</div>
+<div class="section" id="id7">
+<h2>Scaled Dot-Product Attention<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<p>The authors describe attention as follows:</p>
+<blockquote>
+<div>An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors.  The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key.</div></blockquote>
+<p>In addition to attention, they use a few techniques to regularize their network: layer normalization, residual connections, and dropout.</p>
+<p>As noted by the authors, attention maps a query to a combination of given outputs, as determined by the query’s corresponding compatibility with the input keys. As the autological “Scaled Dot-Product Attention” method implies, the authors use dot product for their compatibility function. One could use any metric, learned or otherwise. Cosine distance or a layer of MLP can be used.</p>
+<div class="figure align-center" id="id23">
+<img alt="../_images/attention-example.svg" height="350px" src="../_images/attention-example.svg" /><p class="caption"><span class="caption-text">Attention inuition.</span></p>
+</div>
+<p>As shown in the intuitive example above, the query <span class="math notranslate nohighlight">\(q_1\)</span> is most similar to <span class="math notranslate nohighlight">\(k_1\)</span>, thus it is mapped predimately to the corresponding value <span class="math notranslate nohighlight">\(v_1\)</span>. Note: these values are examples, not necessarily accurate.</p>
+<p>The scaled dot product attention is straight forward.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}A: Q \times K \times V \to O \\
+Q\in \mathbb{R}^{q \times d}, K \in \mathbb{R}^{n \times d}, V \in \mathbb{R}^{n \times v}, O \in \mathbb{R}^{q \times v} \\
+A = \text{SOFTMAX}(\frac{QK^{\intercal}}{\sqrt{d}}) V\end{split}\]</div>
+<p>The innovative aspect of scaled dot product - beyond the authors’ apt framing of the problem as an interaction between queries, keys, and values - is the scaling. The author motivate this scaling by noting that the variance of a dot product scales with the size of the input vectors. Increased variance will result in increased magnitude, “pushing the softmax function into regions where it has extremely small gradients.”</p>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">Why is the gradient small?</p>
+</div>
+<div class="figure align-center" id="id24">
+<img alt="../_images/scaled-dot-product.svg" height="350px" src="../_images/scaled-dot-product.svg" /><p class="caption"><span class="caption-text">Scaled dot product attention.</span></p>
+</div>
+<p>Below is an implementation for the scaled dot product. Each line corresponds to a box in the figure above.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">attention</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="s2">&quot;Compute &#39;Scaled Dot Product Attention&#39;&quot;</span>
+    <span class="c1"># Compatiblity function (dot product) between the query and keys.</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="c1"># Scale the scores depending on the size of the inputs.</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">scores</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="c1"># Optional mask. This is used to zero out values that should not be used by this function.</span>
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">masked_fill</span><span class="p">(</span><span class="n">mask</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1e9</span><span class="p">)</span>
+    <span class="c1"># Compute probability distribution across the final dimension.</span>
+    <span class="n">p_attn</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">dim</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># Output linear combinations of values, as determined by the distribution.</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">p_attn</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">p_attn</span>
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">class</span> <span class="nc">PositionalEncoding</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="s2">&quot;Implement the PE function.&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="n">dropout</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="mi">5000</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PositionalEncoding</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+</div>
+<div class="section" id="id8">
+<h2>Self Attention<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<p>With a single query, self attention will have no effect. This is because the attention mechanism will be a linear combination of the values, and it can only reproduce itself so it serves as an identity function.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">SelfAttention</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span>
+    <span class="k">return</span> <span class="n">attention</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">out</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">SelfAttention</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">([[</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.8</span><span class="p">]]))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="n">tensor</span><span class="p">([[</span><span class="mf">0.1000</span><span class="p">,</span> <span class="mf">0.1000</span><span class="p">,</span> <span class="mf">0.8000</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+<span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">]])</span>
+</pre></div>
+</div>
+<p>When there are multiple queries, the vectors that are most <em>compatible</em> will become even more similar as they will be mapped to combinations consisting mostly of the already compatible vectors.</p>
+<p>The remaining vector will also be normalized <em>different</em>.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">([</span>
+<span class="go">    [0,0,1],</span>
+<span class="go">    [0,0,2],</span>
+<span class="go">    [1,0,0]</span>
+<span class="go">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">SelfAttention</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+<span class="go">tensor([[0.2992, 0.5329, 0.1679],</span>
+<span class="go">      [0.2228, 0.7070, 0.0702],</span>
+<span class="go">      [0.2645, 0.2645, 0.4711]])</span>
+</pre></div>
+</div>
+<p>Note that, especially with values greater than 1, a vector can have a greater dot product with other vectors rather than itself. So, similarity is aptly not the correct word to describe this interaction (at least when using a dot product). Thus, the first vector is mapped to a construction consisting mostly of itself and the second vector follows the same trend but more extreme. Lastly, the third vector, less compatible than the others - becomes pseduo-normalized.</p>
+</div>
+<div class="section" id="id9">
+<h2>Multi Head Attention<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<p>The transformer uses “Multi-Head Attention” as its primary module. It is built up using scaled dot product attention.</p>
+<p>Rather than attend raw queries a single time, this method attends <em>h</em> linear projections of the input. For each of the <em>h</em> heads, the inputs (K,Q,V) are projected linearily with a learned mapping. This is great! Rather than using a single dot product, the multi-headed attention can learn to project vectors and attend them differently.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Ultimately, the compatiblity function and the projections are all linear - perhaps it would be worth the time to see if non-linear mappings would drastically effect the performance of this method. Does using a feed forward layer here help? hurt?</p>
+</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{out} = \texttt{Concat}(\text{head}_0, \dots, \text{head}_h) W^O \\
+\text{head}_i = \texttt{Attention}(QW_i^Q, KW_i^K, VW_i^V) \\
+Q \in \mathbb{R}^{q \times m}, K \in \mathbb{R}^{n \times m}, V \in \mathbb{R}^{n \times m} \\
+W_j^Q, W_j^K, W_j^V \in \mathbb{R}^{m \times d} \\
+W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MultiHeadedAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="s2">&quot;Take in model size and number of heads.&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MultiHeadedAttention</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">d_model</span> <span class="o">%</span> <span class="n">h</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="c1"># We assume d_v always equals d_k</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_k</span> <span class="o">=</span> <span class="n">d_model</span> <span class="o">//</span> <span class="n">h</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linears</span> <span class="o">=</span> <span class="n">clones</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">d_model</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attn</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">dropout</span><span class="p">)</span>
-        <span class="n">pe</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">max_len</span><span class="p">,</span> <span class="n">d_model</span><span class="p">)</span>
-        <span class="n">position</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">max_len</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">div_term</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="mf">2.</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">10000.0</span><span class="p">)</span> <span class="o">/</span> <span class="n">d_model</span><span class="p">))</span>
-        <span class="n">pe</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="n">div_term</span><span class="p">)</span>
-        <span class="n">pe</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">position</span> <span class="o">*</span> <span class="n">div_term</span><span class="p">)</span>
-        <span class="n">pe</span> <span class="o">=</span> <span class="n">pe</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s1">&#39;pe&#39;</span><span class="p">,</span> <span class="n">pe</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="s2">&quot;Implements Figure 2&quot;</span>
+        <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Same mask applied to all h heads.</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">nbatches</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># 1) Do all the linear projections in batch from d_model =&gt; h x d_k</span>
+        <span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> \
+            <span class="p">[</span><span class="n">l</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">nbatches</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_k</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linears</span><span class="p">,</span> <span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))]</span>
+
+        <span class="c1"># 2) Apply attention on all the projected vectors in batch.</span>
+        <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attn</span> <span class="o">=</span> <span class="n">attention</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span>
+                                <span class="n">dropout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">)</span>
+
+        <span class="c1"># 3) &quot;Concat&quot; using a view and apply a final linear.</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span> \
+            <span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">nbatches</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">d_k</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">linears</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">](</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Thus, the multi-headed attention is a function from <span class="math notranslate nohighlight">\(R^{q \times d}\)</span> to <span class="math notranslate nohighlight">\(R^{q \times v}\)</span>. Furthermore, like the scaled-dot-product attenion, it is able to concurrently operate on all the queries in parallel regardless of the size of the sentence.</p>
+<p>Additionally, this module is able to support <em>h</em> different heads, and still output a fixed-size vector for each query by concat and then matrix multiply to reduce the dimensionality.</p>
+<div class="figure align-center" id="id25">
+<img alt="../_images/multi-head.svg" height="350px" src="../_images/multi-head.svg" /><p class="caption"><span class="caption-text">Scaled dot product attention.</span></p>
+</div>
+</div>
+<div class="section" id="id10">
+<h2>Input Representation<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<p>This work used a Byte Pair Encoding scheme. This is a subword tokenization of your vocabulary. This is much more valuable than a UNK symbol. To build this representation, an iterative algorithm can be used to link together the most common segments, starting with character pairs.</p>
+</div>
+<div class="section" id="id11">
+<h2>Position-wise Feed-Forward Networks<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
+<p>This two linear transforms with a nonlinear (RELU) operation. The denotation of position-wise remarks on the fact that it is not a convolution, nor does it have any directly spatial functionality.</p>
+<div class="math notranslate nohighlight">
+\[\text{FFN}(x) = \max(0, xW_1 + b_1)W_2 + b_2\]</div>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">PositionwiseFeedForward</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="s2">&quot;Implements FFN equation.&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d_model</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">d_ff</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PositionwiseFeedForward</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">d_ff</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">d_ff</span><span class="p">,</span> <span class="n">d_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">Variable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pe</span><span class="p">[:,</span> <span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w_1</span><span class="p">(</span><span class="n">x</span><span class="p">))))</span>
 </pre></div>
 </div>
+<p>The remaining features used by the network is residual layers, layer normalization and positional encoding. The structure and features of the model all work to make short paths between inputs and outputs, while also being highly regularized. Layer normalization and residual layers are topics on-to-themselves.</p>
+<p>The positional encoding is used to represent the position of the queries in their embeddings. This is important because the attention mechanisms have no notion of order among the queries, and order determines the semantics of a sentence.</p>
+<p>The authors use a positional encoding that uses</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{PE}_{(pos,2i)} = \sin(pos / 10000^{2i/d_{\text{model}}})\\
+\text{PE}_{(pos,2i+1)} = \cos(pos / 10000^{2i/d_{\text{model}}})\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(pos\)</span> is the position and <span class="math notranslate nohighlight">\(i\)</span> is the dimension.</p>
+<p>As the authors describe:</p>
+<blockquote>
+<div>That is, each dimension of the positional encoding corresponds to a sinusoid.  The wavelengths form a geometric progression from <span class="math notranslate nohighlight">\(2\pi\)</span> to <span class="math notranslate nohighlight">\(10000 \cdot 2\pi\)</span>.  We chose this function because we hypothesized it would allow the model to easily learn to attend by relative positions, since for any fixed offset <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(PE_{pos+k}\)</span> can be represented as a linear function of <span class="math notranslate nohighlight">\(PE_{pos}\)</span>.</div></blockquote>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">How can this be represented as a linear function?</p>
 </div>
-<p>Again, each dimension corresponds to its location; in the diagram below,
-each vertical slice of the grapch would be added to the input word
-embeddings.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [16]:
-</pre></div>
+<div class="figure align-center" id="id26">
+<img alt="../_images/pe.png" src="../_images/pe.png" />
+<p class="caption"><span class="caption-text">Each dimension corresponds to its location; in the diagram below, each vertical slice of the grapch would be added to the input word embeddings.</span></p>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">pe</span> <span class="o">=</span> <span class="n">PositionalEncoding</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">pe</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">20</span><span class="p">)))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">5</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;dim </span><span class="si">%d</span><span class="s2">&quot;</span><span class="o">%</span><span class="k">p</span> for p in [5,6,7,8,9,10]])
-<span class="kc">None</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/posts_003_44_0.png" src="../_images/posts_003_44_0.png" />
+<div class="figure align-center" id="id27">
+<img alt="../_images/pe-dropout.png" src="../_images/pe-dropout.png" />
+<p class="caption"><span class="caption-text">The authors use dropout to reduce the strength of the signal; the figure demonstrates its effect.</span></p>
 </div>
 </div>
-<p>The authors use dropout to reduce the strength of the signal; the figure
-below demonstrates its effect.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [17]:
-</pre></div>
+<div class="section" id="id12">
+<h2>Architecture<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h2>
+<p>Each instance of the transformer will output a probability for the next symbol. As you can see, the encoder and decoder stacks are repeated N times each. In the paper the default was N = 6. The input and ouput of each stack is the of the same dimensionality.</p>
+<div class="figure align-center">
+<img alt="../_images/architecture.svg" height="650px" src="../_images/architecture.svg" /></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">pe</span> <span class="o">=</span> <span class="n">PositionalEncoding</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">pe</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">20</span><span class="p">)))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">5</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;dim </span><span class="si">%d</span><span class="s2">&quot;</span><span class="o">%</span><span class="k">p</span> for p in [5,6,7,8,9,10]])
-<span class="kc">None</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/posts_003_46_0.png" src="../_images/posts_003_46_0.png" />
-</div>
-</div>
-</div>
-<div class="section" id="Architecture">
-<h2>Architecture<a class="headerlink" href="#Architecture" title="Permalink to this headline">¶</a></h2>
-<p>Each instance of the transformer will output a probability for the next
-symbol. As you can see, the encoder and decoder stacks are repeated N
-times each. In the paper the default was N = 6. The input and ouput of
-each stack is the of the same dimensionality.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [18]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">SVG</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;images/003/architecture.svg&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[18]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/posts_003_49_0.svg" src="../_images/posts_003_49_0.svg" /></div>
-</div>
-<div class="section" id="Decoding">
-<h3>Decoding<a class="headerlink" href="#Decoding" title="Permalink to this headline">¶</a></h3>
-<p>The linear layer takes an input of <span class="math notranslate nohighlight">\(\mathbb{R}^{q \times m}\)</span> and
-has a weight shape of <span class="math notranslate nohighlight">\(\mathbb{R}^{m \times vocab}\)</span>, outputing
-<span class="math notranslate nohighlight">\(\mathbb{R}^{q \times vocab}\)</span>. During training, the decoding is
-set so that all subsequent positions are masked out during attention, so
-that a symbol could never see “into the future”. So, the final linear
-layer will output a probability distribution for each query (each symbol
-generated so far) starting with the start symbol. When decoding the next
-symbol will always be the right-most dimension.</p>
-<p>When decoding an output sequence, the network is run repeatedly. A
-greedy approach looks something like this:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [19]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">greedy_decode</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">,</span> <span class="n">max_len</span><span class="p">,</span> <span class="n">start_symbol</span><span class="p">):</span>
+<div class="section" id="id13">
+<h2>Decoding<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
+<p>The linear layer takes an input of <span class="math notranslate nohighlight">\(\mathbb{R}^{q \times m}\)</span> and has a weight shape of <span class="math notranslate nohighlight">\(\mathbb{R}^{m \times vocab}\)</span>, outputing <span class="math notranslate nohighlight">\(\mathbb{R}^{q \times vocab}\)</span>. During training, the decoding is set so that all subsequent positions are masked out during attention, so that a symbol could never see “into the future”. So, the final linear layer will output a probability distribution for each query (each symbol generated so far) starting with the start symbol. When decoding the next symbol will always be the right-most dimension.</p>
+<p>When decoding an output sequence, the network is run repeatedly. A greedy approach looks something like this:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">greedy_decode</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">,</span> <span class="n">max_len</span><span class="p">,</span> <span class="n">start_symbol</span><span class="p">):</span>
     <span class="n">memory</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">)</span>
     <span class="n">ys</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="n">start_symbol</span><span class="p">)</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
     <span class="c1"># generate a word up to the max length. the system could represent stop symbols to stop early.</span>
@@ -923,11 +598,7 @@ greedy approach looks something like this:</p>
     <span class="k">return</span> <span class="n">ys</span>
 </pre></div>
 </div>
-</div>
-<p>Using <a class="reference internal" href="004.html"><span class="doc">beam search</span></a> (as the authors did do), a path is
-selected by maintaining <em>k</em> beams - i.e.&nbsp;the best-so-far <span class="math notranslate nohighlight">\(k\)</span>
-options.</p>
-</div>
+<p>Using <a class="reference internal" href="002.html"><span class="doc">beam search</span></a> (as the authors did do), a path is selected by maintaining <em>k</em> beams - i.e. the best-so-far <span class="math notranslate nohighlight">\(k\)</span> options.</p>
 </div>
 </div>
 
@@ -944,7 +615,7 @@ options.</p>
         <br/>
         
 <div id="sourcelink">
-  <a href="../_sources/posts/003.ipynb.txt"
+  <a href="../_sources/posts/003.rst.txt"
      rel="nofollow">Source</a>
 </div>
       

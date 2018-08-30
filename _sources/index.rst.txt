@@ -25,7 +25,7 @@ cjlovering
    :maxdepth: 2
 
    posts/001.rst
-   posts/002.ipynb
+   posts/002.rst
 
 .. raw:: html
 
@@ -34,7 +34,7 @@ cjlovering
 .. toctree::
    :maxdepth: 2
 
-   posts/003.ipynb
+   posts/003.rst
 
 .. raw:: html
 

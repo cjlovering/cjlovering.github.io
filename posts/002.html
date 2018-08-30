@@ -20,7 +20,7 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Transformer Networks" href="003.html" />
+    <link rel="next" title="Transformer Network" href="003.html" />
     <link rel="prev" title="Byte-Encoding Representation" href="001.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -60,7 +60,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Beam Search</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="003.html">Transformer Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003.html">Transformer Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003.html#id2">Transformer Network</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../profile/research.html">Research</a></li>
@@ -111,210 +112,16 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  
-<style>
-/* CSS for nbsphinx extension */
-
-/* remove conflicting styling from Sphinx themes */
-div.nbinput,
-div.nbinput div.prompt,
-div.nbinput div.input_area,
-div.nbinput div[class*=highlight],
-div.nbinput div[class*=highlight] pre,
-div.nboutput,
-div.nbinput div.prompt,
-div.nbinput div.output_area,
-div.nboutput div[class*=highlight],
-div.nboutput div[class*=highlight] pre {
-    background: none;
-    border: none;
-    padding: 0 0;
-    margin: 0;
-    box-shadow: none;
-}
-
-/* avoid gaps between output lines */
-div.nboutput div[class*=highlight] pre {
-    line-height: normal;
-}
-
-/* input/output containers */
-div.nbinput,
-div.nboutput {
-    display: -webkit-flex;
-    display: flex;
-    align-items: flex-start;
-    margin: 0;
-    width: 100%;
-}
-@media (max-width: 540px) {
-    div.nbinput,
-    div.nboutput {
-        flex-direction: column;
-    }
-}
-
-/* input container */
-div.nbinput {
-    padding-top: 5px;
-}
-
-/* last container */
-div.nblast {
-    padding-bottom: 5px;
-}
-
-/* input prompt */
-div.nbinput div.prompt pre {
-    color: #303F9F;
-}
-
-/* output prompt */
-div.nboutput div.prompt pre {
-    color: #D84315;
-}
-
-/* all prompts */
-div.nbinput div.prompt,
-div.nboutput div.prompt {
-    min-width: 9ex;
-    padding-top: 0.4em;
-    padding-right: 0.4em;
-    text-align: right;
-    flex: 0;
-}
-@media (max-width: 540px) {
-    div.nbinput div.prompt,
-    div.nboutput div.prompt {
-        text-align: left;
-        padding: 0.4em;
-    }
-    div.nboutput div.prompt.empty {
-        padding: 0;
-    }
-}
-
-/* disable scrollbars on prompts */
-div.nbinput div.prompt pre,
-div.nboutput div.prompt pre {
-    overflow: hidden;
-}
-
-/* input/output area */
-div.nbinput div.input_area,
-div.nboutput div.output_area {
-    padding: 0.4em;
-    -webkit-flex: 1;
-    flex: 1;
-    overflow: auto;
-}
-@media (max-width: 540px) {
-    div.nbinput div.input_area,
-    div.nboutput div.output_area {
-        width: 100%;
-    }
-}
-
-/* input area */
-div.nbinput div.input_area {
-    border: 1px solid #cfcfcf;
-    border-radius: 2px;
-    background: #f7f7f7;
-}
-
-/* override MathJax center alignment in output cells */
-div.nboutput div[class*=MathJax] {
-    text-align: left !important;
-}
-
-/* override sphinx.ext.pngmath center alignment in output cells */
-div.nboutput div.math p {
-    text-align: left;
-}
-
-/* standard error */
-div.nboutput div.output_area.stderr {
-    background: #fdd;
-}
-
-/* ANSI colors */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-default-inverse-fg { color: #FFFFFF; }
-.ansi-default-inverse-bg { background-color: #000000; }
-
-.ansi-bold { font-weight: bold; }
-.ansi-underline { text-decoration: underline; }
-</style>
-<div class="section" id="Beam-Search">
-<h1>Beam Search<a class="headerlink" href="#Beam-Search" title="Permalink to this headline">¶</a></h1>
-<p>Beam search is a method for decoding a sequence, and it is often used
-translation. In the main, beam search is used at test time, not during
-training. The algorithm is also described in this
-<a class="reference external" href="https://arxiv.org/pdf/1409.3215v1.pdf%3B">paper</a>. For a full
-implementation see
-<a class="reference external" href="https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py">OpenNMT</a>,
-otherwise I provide an instructive implementation below.</p>
-<p>Given a function <span class="math notranslate nohighlight">\(f\)</span>, which takes a sequence and outputs a
-probability distribution of output symbols for the next item in the
-sequence, beam-search is an approximate algorithm which searches for the
-path that results in the most probable sequence. The path with the
-highest probability to start with, may not end up being the most likely
-sequence.</p>
-<p>For example, if there were 3 possible symbols to output (A, B, C), and
-given a start symbol the first output is [0.90, 0.05, 0.05]. However, if
-in the next time step, the probability for all the sequences that start
-with A are all equal, [0.33, 0.33, 0.33], and the probabilities if we
-had selected B or C are much higher [0.,0.,0.99] for many steps, we
-would have preferred to select another path. Note that often the scores
-we use are in the log space to avoid floating point issues with small
-probabilities.</p>
-<p>If one used depth-first search, each path would be evaluated, but at
-exponential cost. For example, with a vocabulary of 3 possible output
-symbols, and a maximum length of 10 symbols, finding the most likely
-path would cost <span class="math notranslate nohighlight">\(3^{10}\)</span> operations. Beam search instead does not
-maintain all possibilities. Instead it keeps the current best-so-far
-<span class="math notranslate nohighlight">\(h\)</span> possibilties. This instead requires a linear number of
-operations (around 30 in this example.)</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">torch</span>
+  <div class="section" id="beam-search">
+<h1>Beam Search<a class="headerlink" href="#beam-search" title="Permalink to this headline">¶</a></h1>
+<p>Beam search is a method for decoding a sequence, and it is often used translation. In the main, beam search is used at test time, not during training. The algorithm is also described in this paper. For a full implementation see OpenNMT <a class="footnote-reference" href="#id2" id="id1">[1]</a>, otherwise I provide an instructive implementation below.</p>
+<p>Given a function f, which takes a prefix of a sequence and outputs a probability distribution of output symbols for the next item in the sequence, beam-search is an approximate algorithm which searches for the path that results in the most probable sequence. The path with the highest probability to start with, may not end up being the most likely sequence.</p>
+<p>For example, if there were 3 possible symbols to output (A, B, C), and given a start symbol the first output is [0.90, 0.05, 0.05]. However, if in the next time step, the probability for all the sequences that start with A are all equal, [0.33, 0.33, 0.33], and the probabilities if we had selected B or C are much higher [0.,0.,0.99] for many steps, we would have preferred to select another path. Note that often the scores we use are in the log space to avoid floating point issues with small probabilities.</p>
+<p>If one used depth-first search, each path would be evaluated, but at exponential cost. For example, with a vocabulary of 3 possible output symbols, and a maximum length of 10 symbols, finding the most likely path would cost 310 operations. Beam search instead does not maintain all possibilities. Instead it keeps the current best-so-far h possibilties. This instead requires a linear number of operations (around 30 in this example.)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">heapq</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="k">import</span> <span class="n">Variable</span>
+
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
 <span class="n">Beam</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Beam&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;ys&#39;</span><span class="p">,</span> <span class="s1">&#39;log_prob_seq&#39;</span><span class="p">])</span>
 
@@ -331,7 +138,7 @@ operations (around 30 in this example.)</p>
                 <span class="n">memory</span><span class="p">,</span>
                 <span class="n">src_mask</span><span class="p">,</span>
                 <span class="n">Variable</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">ys</span><span class="p">),</span>
-                <span class="n">Variable</span><span class="p">(</span><span class="n">subsequent_mask</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">ys</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span>
+                <span class="n">Variable</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">ys</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">candidates</span>
         <span class="p">]</span>
         <span class="c1"># select the most probable words</span>
@@ -345,14 +152,19 @@ operations (around 30 in this example.)</p>
                 <span class="n">log_prob</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">prob</span><span class="p">)</span>
                 <span class="n">next_word</span> <span class="o">=</span> <span class="n">next_word</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">dist</span><span class="p">[</span><span class="n">next_word</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e9</span> <span class="c1"># zero out.</span>
-                <span class="n">ys</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">output</span><span class="o">.</span><span class="n">ys</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="n">next_word</span><span class="p">)],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                <span class="n">log_prob_seq</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">log_prob_seq</span> <span class="o">+</span> <span class="n">log_prob</span>
+                <span class="n">ys</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">out</span><span class="o">.</span><span class="n">ys</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="n">next_word</span><span class="p">)],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">log_prob_seq</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">log_prob_seq</span> <span class="o">+</span> <span class="n">log_prob</span>
                 <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Beam</span><span class="p">(</span><span class="n">ys</span><span class="p">,</span> <span class="n">log_prob_seq</span><span class="p">))</span>
         <span class="n">candidates</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="n">beam_count</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="o">.</span><span class="n">log_prob_seq</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ys</span>
 </pre></div>
 </div>
-</div>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>(<a class="reference external" href="https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py">https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py</a>)</td></tr>
+</tbody>
+</table>
 </div>
 
 
@@ -368,7 +180,7 @@ operations (around 30 in this example.)</p>
         <br/>
         
 <div id="sourcelink">
-  <a href="../_sources/posts/002.ipynb.txt"
+  <a href="../_sources/posts/002.rst.txt"
      rel="nofollow">Source</a>
 </div>
       
