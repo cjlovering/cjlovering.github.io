@@ -1,0 +1,14 @@
+Beam Search
+~~~~~~~~~~~
+
+Beam search is a method for decoding a sequence, and it is often used translation. In the main, beam search is used at test time, not during training. The algorithm is also described in this paper. For a full implementation see OpenNMT [1]_, otherwise I provide an instructive implementation below.
+
+Given a function f, which takes a prefix of a sequence and outputs a probability distribution of output symbols for the next item in the sequence, beam-search is an approximate algorithm which searches for the path that results in the most probable sequence. The path with the highest probability to start with, may not end up being the most likely sequence.
+
+For example, if there were 3 possible symbols to output (A, B, C), and given a start symbol the first output is [0.90, 0.05, 0.05]. However, if in the next time step, the probability for all the sequences that start with A are all equal, [0.33, 0.33, 0.33], and the probabilities if we had selected B or C are much higher [0.,0.,0.99] for many steps, we would have preferred to select another path. Note that often the scores we use are in the log space to avoid floating point issues with small probabilities.
+
+If one used depth-first search, each path would be evaluated, but at exponential cost. For example, with a vocabulary of 3 possible output symbols, and a maximum length of 10 symbols, finding the most likely path would cost 310 operations. Beam search instead does not maintain all possibilities. Instead it keeps the current best-so-far h possibilties. This instead requires a linear number of operations (around 30 in this example.)
+
+.. literalinclude:: assets/code/002/beam_search.py
+
+.. [1] (https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py)
