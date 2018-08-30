@@ -26,6 +26,7 @@ cjlovering
 
    posts/001.rst
    posts/002.rst
+   posts/003.rst
    posts/004.ipynb
 
 .. raw:: html
