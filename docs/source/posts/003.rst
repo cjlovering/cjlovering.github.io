@@ -20,12 +20,18 @@ This work focuses on the task of natural language translation (e.g. english to g
 
 .. note:: 
 
-  I modify implementations from the [tensor2tensor](https://github.com/tensorflow/tensor2tensor) library and [The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html) post, focusing on my interpretation of the paper. For a complete view and implementation of this system, please visit the mentioned sources above. All diagrams were created by me. Some are re-intepretations from the orginal paper. 
+  I modify implementations from the tensor2tensor_ library and `The Annotated Transformer`_ post, focusing on my interpretation of the paper. For a complete view and implementation of this system, please visit the mentioned sources above. All diagrams were created by me. Some are re-intepretations from the orginal paper.
+
+.. _`The Annotated Transformer`: http://nlp.seas.harvard.edu/2018/04/03/attention.html
+.. _tensor2tensor: https://github.com/tensorflow/tensor2tensor
 
 Encoder Decoder
 ---------------
 
-A encoder-decoder [structure](https://arxiv.org/abs/1409.0473) is used: an input sequence of symbols, :math:`x = { x_1, x_2, \dots, x_n }`, is encoded into a sequence of continuous variables,  :math:`\mathbf{z} = { z_1, z_2, \dots, z_n }`. This is then decoded into a sequence of symbols, :math:`y = { y_1, y_2, \dots, y_n }`. In some cases, :math:`\mathbf{z}` is a single continuous variable. This generation occurs one at a time - it is [auto-regressive](https://arxiv.org/abs/1308.0850), further consuming the previously generated symbols as additional input when generating the next. Encoder and decoder models usually use a recurrent architecture.
+The transformer uses a `encoder-decoder`_ structure: an input sequence of symbols, :math:`x = { x_1, x_2, \dots, x_n }`, is encoded into a sequence of continuous variables,  :math:`\mathbf{z} = { z_1, z_2, \dots, z_n }`. This is then decoded into a sequence of symbols, :math:`y = { y_1, y_2, \dots, y_n }`. In some cases, :math:`\mathbf{z}` is a single continuous variable. This generation occurs one at a time - it is `auto-regressive`_, further consuming the previously generated symbols as additional input when generating the next. Encoder and decoder models usually use a recurrent architecture.
+
+.. _`encoder-decoder`: https://arxiv.org/abs/1409.0473
+.. _`auto-regressive`: https://arxiv.org/abs/1308.0850
 
 According to Cho. 14, the encoding function :math:`e` can be any non-linear function, but it is often implemented as an RNN.
 
@@ -33,10 +39,10 @@ According to Cho. 14, the encoding function :math:`e` can be any non-linear func
   h_{<t>} = e(h_{<t-1>}, x_t)
 
 .. figure:: /_static/images/003/encoder.svg
-   :height: 250px
-   :align: center
+  :height: 250px
+  :align: center
 
-   Encoder architecture.
+  Encoder architecture.
 
 The input sentence :math:`x` is encoded into the vector :math:`\mathbf{z}`. Depending on the implemention, we consider the final hidden states as the encoding, or some operation on all the hidden states.
 
@@ -248,8 +254,8 @@ The positional encoding is used to represent the position of the queries in thei
 The authors use a positional encoding that uses 
 
 .. math::
-  \text{PE}_{(pos,2i)} =& \sin(pos / 10000^{2i/d_{\text{model}}})
-  \text{PE}{(pos,2i+1)} =& \cos(pos / 10000^{2i/d_{\text{model}}})
+  \text{PE}_{(pos,2i)} = \sin(pos / 10000^{2i/d_{\text{model}}})
+  \text{PE}_{(pos,2i+1)} = \cos(pos / 10000^{2i/d_{\text{model}}})
 
 where :math:`pos` is the position and :math:`i` is the dimension.  
 
@@ -488,7 +494,7 @@ Rather than attend raw queries a single time, this method attends *h* linear pro
               .view(nbatches, -1, self.h * self.d_k)
           return self.linears[-1](x)
 
-Thus, the multi-headed attention is a function from :math:`R^{q \times d}` to :math:`R^{q\ times v}`. Furthermore, like the scaled-dot-product attenion, it is able to concurrently operate on all the queries in parallel regardless of the size of the sentence.
+Thus, the multi-headed attention is a function from :math:`R^{q \times d}` to :math:`R^{q \times v}`. Furthermore, like the scaled-dot-product attenion, it is able to concurrently operate on all the queries in parallel regardless of the size of the sentence.
 
 Additionally, this module is able to support *h* different heads, and still output a fixed-size vector for each query by concat and then matrix multiply to reduce the dimensionality.
 
@@ -532,8 +538,8 @@ The positional encoding is used to represent the position of the queries in thei
 The authors use a positional encoding that uses 
 
 .. math::
-  \text{PE}_{(pos,2i)} =& \sin(pos / 10000^{2i/d_{\text{model}}})
-  \text{PE}{(pos,2i+1)} =& \cos(pos / 10000^{2i/d_{\text{model}}})
+  \text{PE}_{(pos,2i)} = \sin(pos / 10000^{2i/d_{\text{model}}})\\
+  \text{PE}_{(pos,2i+1)} = \cos(pos / 10000^{2i/d_{\text{model}}})
 
 where :math:`pos` is the position and :math:`i` is the dimension.  
 
@@ -590,4 +596,4 @@ When decoding an output sequence, the network is run repeatedly. A greedy approa
           ys = torch.cat([ys, torch.ones(1, 1).type_as(src.data).fill_(next_word)], dim=1)
       return ys
 
-Using [beam search](004.ipynb) (as the authors did do), a path is selected by maintaining *k* beams - i.e. the best-so-far :math:`k` options.
+Using `beam search`_ (as the authors did do), a path is selected by maintaining *k* beams - i.e. the best-so-far :math:`k` options.
