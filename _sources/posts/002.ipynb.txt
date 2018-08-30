@@ -4,120 +4,65 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Byte-Encoding Representation\n",
+    "# Beam Search\n",
     "\n",
-    "This is a subword tokenization of a vocabulary. An example of how this would work and be useful at test time from Sennrich et al. is as follows:\n",
-    "\n",
-    "> vocab = ‘low’, ‘lowest’, ‘newer’, ‘wider’\n",
-    "\n",
-    "> OOV = 'lower' --> 'low_', 'er_'\n",
-    "\n",
-    "This is much more valuable than a symbol for a generic unknown word (UNK). It would not be surpirising if given a large enough corpus a model would be able to intepret `lower` correctly.\n",
-    "\n",
-    "To build this representation, an iterative algorithm can be used to link together the most common segments, starting with character pairs. Below is the pseudo code provided by the original authors with a few changes."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 1,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "import re\n",
-    "import sys\n",
-    "import collections"
+    "Beam search is a method for decoding a sequence, and it is often used translation. In the main, beam search is used at test time, not during training. The algorithm is also described in this [paper](https://arxiv.org/pdf/1409.3215v1.pdf%3B). For a full implementation see [OpenNMT](https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py), otherwise I provide an instructive implementation below."
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "This algorithm is iterative. The author provides a more optimized implementation that batches and avoids recomputation. It starts bottom up, getting the bigram counts for every pair of symbols. These symbols will startout as characters but in later steps be common strings."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 2,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "def get_stats(vocab):\n",
-    "    \"\"\"For the given merge step, get the bigram counts, for every pair of symbols (strings).\n",
+    "Given a function $f$, which takes a sequence and outputs a probability distribution of output symbols for the next item in the sequence, beam-search is an approximate algorithm which searches for the path that results in the most probable sequence. The path with the highest probability to start with, may not end up being the most likely sequence.\n",
     "\n",
-    "    For each word and its freq in the corpus, add the number of instances for each of its subword parts.\n",
-    "    \"\"\"\n",
-    "    pairs = collections.defaultdict(int)\n",
-    "    for word, freq in vocab.items():\n",
-    "        symbols = word.split()\n",
-    "        for i in range(len(symbols)-1):\n",
-    "            pairs[symbols[i],symbols[i+1]] += freq\n",
-    "    return pairs"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Next, given the bi-counts of a vocabulary, merge the vocabulary to remove repetitions of this bigram."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 3,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "def merge_vocab(pair, v_in):\n",
-    "    v_out = {}\n",
-    "    bigram_pattern = re.escape(' '.join(pair))\n",
-    "    print(bigram_pattern)\n",
-    "    p = re.compile(r'(?<!\\S)' + bigram_pattern + r'(?!\\S)')\n",
-    "    for word in v_in:\n",
-    "        w_out = p.sub(''.join(pair), word)\n",
-    "        v_out[w_out] = v_in[word]\n",
-    "    print(v_out)\n",
-    "    return v_out"
+    "For example, if there were 3 possible symbols to output (A, B, C), and given a start symbol the first output is [0.90, 0.05, 0.05]. However, if in the next time step, the probability for all the sequences that start with A are all equal, [0.33, 0.33, 0.33], and the probabilities if we had selected B or C are much higher [0.,0.,0.99] for many steps, we would have preferred to select another path. Note that often the scores we use are in the log space to avoid floating point issues with small probabilities.\n",
+    "\n",
+    "If one used depth-first search, each path would be evaluated, but at exponential cost. For example, with a vocabulary of 3 possible output symbols, and a maximum length of 10 symbols, finding the most likely path would cost $3^{10}$ operations. Beam search instead does not maintain all possibilities. Instead it keeps the current best-so-far $h$ possibilties. This instead requires a linear number of operations (around 30 in this example.)"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 4,
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "e\\ r\n",
-      "{'l o w </w>': 5, 'f a r t h e s t </w>': 5, 'n e w er </w>': 5, 'w i d er </w>': 5}\n",
-      "er\\ </w>\n",
-      "{'l o w </w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}\n",
-      "l\\ o\n",
-      "{'lo w </w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}\n",
-      "lo\\ w\n",
-      "{'low </w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}\n",
-      "low\\ </w>\n",
-      "{'low</w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}\n",
-      "{'low</w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
-    "def byte_pair(vocab, num_merges=5):\n",
-    "    for i in range(num_merges):\n",
-    "        pairs = get_stats(vocab)\n",
-    "        best = max(pairs, key=pairs.get)\n",
-    "        if pairs[best] < 2:\n",
-    "            print('no pair has frequency > 1. Stopping\\n')\n",
-    "            break\n",
-    "        vocab = merge_vocab(best, vocab)\n",
-    "    print(vocab)\n",
-    "vocab = {\n",
-    "  'l o w </w>' : 5, \n",
-    "  'f a r t h e s t </w>' : 5,\n",
-    "  'n e w e r </w>': 5,\n",
-    "  'w i d e r </w>': 5 }\n",
-    "byte_pair(vocab)"
+    "import torch\n",
+    "import heapq\n",
+    "from collections import namedtuple\n",
+    "Beam = namedtuple('Beam', ['ys', 'log_prob_seq'])\n",
+    "\n",
+    "def beam_search_decode(model, src, src_mask, max_len, start_symbol, beam_count=3):\n",
+    "    \"\"\"Basic beam search decode function. (Untested).\n",
+    "    \"\"\"\n",
+    "    memory = model.encode(src, src_mask)\n",
+    "    candidates = [ Beam(torch.ones(1, 1).fill_(start_symbol).type_as(src.data), 0) ]\n",
+    "    # generate a word up to the max length. the system could represent stop symbols to stop early.\n",
+    "    for i in range(max_len-1):\n",
+    "        # for each path, operate on that path (autoregressive).\n",
+    "        outputs = [\n",
+    "            model.decode(\n",
+    "                memory, \n",
+    "                src_mask,\n",
+    "                Variable(c.ys),\n",
+    "                Variable(subsequent_mask(c.ys.size(1)).type_as(src.data)))\n",
+    "            for c in candidates\n",
+    "        ]\n",
+    "        # select the most probable words\n",
+    "        results = []\n",
+    "        for out in outputs:\n",
+    "            # generate a probability distribution over the possible output symbols.\n",
+    "            dist = model.generator(out[:, -1])\n",
+    "            # look at the top beam_count possibilities in each path.\n",
+    "            for _ in range(beam_count):\n",
+    "                prob, next_word = torch.max(dist, dim = 1)\n",
+    "                log_prob = torch.log(prob)\n",
+    "                next_word = next_word.data[0]\n",
+    "                dist[next_word] = -1e9 # zero out.\n",
+    "                ys = torch.cat([output.ys, torch.ones(1, 1).type_as(src.data).fill_(next_word)], dim=1)\n",
+    "                log_prob_seq = output.log_prob_seq + log_prob\n",
+    "                results.append(Beam(ys, log_prob_seq))\n",
+    "        candidates = heapq.nlargest(beam_count, results, key=lambda b: b.log_prob_seq)\n",
+    "    return ys"
    ]
   }
  ],

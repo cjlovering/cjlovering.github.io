@@ -4,16 +4,79 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Playground"
+    "# Byte-Encoding Representation\n",
+    "\n",
+    "This is a subword tokenization of a vocabulary. An example of how this would work and be useful at test time from Sennrich et al. is as follows:\n",
+    "\n",
+    "> vocab = ‘low’, ‘lowest’, ‘newer’, ‘wider’\n",
+    "\n",
+    "> OOV = 'lower' --> 'low_', 'er_'\n",
+    "\n",
+    "This is much more valuable than a symbol for a generic unknown word (UNK). It would not be surpirising if given a large enough corpus a model would be able to intepret `lower` correctly.\n",
+    "\n",
+    "To build this representation, an iterative algorithm can be used to link together the most common segments, starting with character pairs. Below is the pseudo code provided by the original authors with a few changes."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import re\n",
+    "import sys\n",
+    "import collections"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "This is a *playground* of different animations I created a couple years ago. Now its my first *test* post for this site.\n",
+    "This algorithm is iterative. The author provides a more optimized implementation that batches and avoids recomputation. It starts bottom up, getting the bigram counts for every pair of symbols. These symbols will startout as characters but in later steps be common strings."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def get_stats(vocab):\n",
+    "    \"\"\"For the given merge step, get the bigram counts, for every pair of symbols (strings).\n",
     "\n",
-    "You can visit the site directly [here!](http://playground.vision)"
+    "    For each word and its freq in the corpus, add the number of instances for each of its subword parts.\n",
+    "    \"\"\"\n",
+    "    pairs = collections.defaultdict(int)\n",
+    "    for word, freq in vocab.items():\n",
+    "        symbols = word.split()\n",
+    "        for i in range(len(symbols)-1):\n",
+    "            pairs[symbols[i],symbols[i+1]] += freq\n",
+    "    return pairs"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Next, given the bi-counts of a vocabulary, merge the vocabulary to remove repetitions of this bigram."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def merge_vocab(pair, v_in):\n",
+    "    v_out = {}\n",
+    "    bigram_pattern = re.escape(' '.join(pair))\n",
+    "    print(bigram_pattern)\n",
+    "    p = re.compile(r'(?<!\\S)' + bigram_pattern + r'(?!\\S)')\n",
+    "    for word in v_in:\n",
+    "        w_out = p.sub(''.join(pair), word)\n",
+    "        v_out[w_out] = v_in[word]\n",
+    "    print(v_out)\n",
+    "    return v_out"
    ]
   },
   {
@@ -22,39 +85,39 @@
    "metadata": {},
    "outputs": [
     {
-     "data": {
-      "text/html": [
-       "\n",
-       "        <iframe\n",
-       "            width=\"900\"\n",
-       "            height=\"550\"\n",
-       "            src=\"http://playground.vision\"\n",
-       "            frameborder=\"0\"\n",
-       "            allowfullscreen\n",
-       "        ></iframe>\n",
-       "        "
-      ],
-      "text/plain": [
-       "<IPython.lib.display.IFrame at 0x10cffb358>"
-      ]
-     },
-     "execution_count": 4,
-     "metadata": {},
-     "output_type": "execute_result"
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "e\\ r\n",
+      "{'l o w </w>': 5, 'f a r t h e s t </w>': 5, 'n e w er </w>': 5, 'w i d er </w>': 5}\n",
+      "er\\ </w>\n",
+      "{'l o w </w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}\n",
+      "l\\ o\n",
+      "{'lo w </w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}\n",
+      "lo\\ w\n",
+      "{'low </w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}\n",
+      "low\\ </w>\n",
+      "{'low</w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}\n",
+      "{'low</w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}\n"
+     ]
     }
    ],
    "source": [
-    "from IPython.display import IFrame\n",
-    "IFrame('http://playground.vision', width=900, height=550)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "The event system and modules are built using React. The actual animations are manually created using the canvas. Each drawing runs on a loop that changes the pixels. It was a great way to learn javascript!\n",
-    "\n",
-    "You can click on the individual panes to expand the "
+    "def byte_pair(vocab, num_merges=5):\n",
+    "    for i in range(num_merges):\n",
+    "        pairs = get_stats(vocab)\n",
+    "        best = max(pairs, key=pairs.get)\n",
+    "        if pairs[best] < 2:\n",
+    "            print('no pair has frequency > 1. Stopping\\n')\n",
+    "            break\n",
+    "        vocab = merge_vocab(best, vocab)\n",
+    "    print(vocab)\n",
+    "vocab = {\n",
+    "  'l o w </w>' : 5, \n",
+    "  'f a r t h e s t </w>' : 5,\n",
+    "  'n e w e r </w>': 5,\n",
+    "  'w i d e r </w>': 5 }\n",
+    "byte_pair(vocab)"
    ]
   }
  ],

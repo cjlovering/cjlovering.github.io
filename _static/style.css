@@ -66,6 +66,7 @@ ul.dropdown-menu {
     padding-right: 10%;
 }
 
+/* Hack font for code. */
 @font-face {
     font-family: Hack;
     src: url(//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css);
