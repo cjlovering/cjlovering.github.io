@@ -52,6 +52,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.intersphinx',
     'matplotlib.sphinxext.plot_directive',
+    'sphinxcontrib.bibtex',
     'nbsphinx'
 ]
 

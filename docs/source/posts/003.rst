@@ -1,7 +1,7 @@
 Transformer Network
 ~~~~~~~~~~~~~~~~~~~
 
-Most of the paper was clear. However, it was difficult to see how it would work across sequences of different length. I don't mean how or why the positional encoding would work - this is intuitive, but rather how they construct the matrices to fit together :).
+Attention is all you need :cite:`vaswani2017attention` introduces the Transformer Network. It was difficult to see how it would work across sequences of different length. I don't mean how or why the positional encoding would work - this is intuitive, but rather how they construct the matrices to fit together :).
 
 This notebook focuses on the unique modules the authors present, and how the system fits together. Other dependencies of this post:
 
@@ -33,7 +33,7 @@ The transformer uses a `encoder-decoder`_ structure: an input sequence of symbol
 .. _`encoder-decoder`: https://arxiv.org/abs/1409.0473
 .. _`auto-regressive`: https://arxiv.org/abs/1308.0850
 
-According to Cho. 14, the encoding function :math:`e` can be any non-linear function, but it is often implemented as an RNN.
+According to Cho et. al :cite:`cho2014learning`, the encoding function :math:`e` can be any non-linear function, but it is often implemented as an RNN.
 
 .. math::
   h_{<t>} = e(h_{<t-1>}, x_t)
@@ -317,3 +317,9 @@ When decoding an output sequence, the network is run repeatedly. A greedy approa
       return ys
 
 Using `beam search`_ (as the authors did do), a path is selected by maintaining *k* beams - i.e. the best-so-far :math:`k` options.
+
+
+.. rubric:: References
+
+.. bibliography:: assets/refs/refs_003.bib
+  :style: unsrt

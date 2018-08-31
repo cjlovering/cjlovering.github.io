@@ -1,7 +1,7 @@
 Byte-Encoding Representation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This is a subword tokenization of a vocabulary. An example of how this would work and be useful at test time from Sennrich et al. is as follows:
+This is a subword tokenization of a vocabulary. An example of how this would work and be useful at test time from Sennrich et al. :cite:`sennrich2015neural` is as follows:
 
 .. code-block:: python3
 
@@ -35,3 +35,8 @@ Next, given the bi-counts of a vocabulary, merge the vocabulary to remove repeti
     {'lo w </w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}
     {'low </w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}
     {'low</w>': 5, 'f a r t h e s t </w>': 5, 'n e w er</w>': 5, 'w i d er</w>': 5}
+
+.. rubric:: References
+
+.. bibliography:: assets/refs/refs_001.bib
+  :style: unsrt
