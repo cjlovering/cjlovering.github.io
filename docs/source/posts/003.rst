@@ -214,7 +214,7 @@ Rather than attend raw queries a single time, this method attends *h* linear pro
               .view(nbatches, -1, self.h * self.d_k)
           return self.linears[-1](x)
 
-Thus, the multi-headed attention is a function from :math:`R^{q \times d}` to :math:`R^{q\ times v}`. Furthermore, like the scaled-dot-product attenion, it is able to concurrently operate on all the queries in parallel regardless of the size of the sentence.
+Thus, the multi-headed attention is a function from :math:`R^{q \times d}` to :math:`R^{q \times v}`. Furthermore, like the scaled-dot-product attenion, it is able to concurrently operate on all the queries in parallel regardless of the size of the sentence.
 
 Additionally, this module is able to support *h* different heads, and still output a fixed-size vector for each query by concat and then matrix multiply to reduce the dimensionality.
 
