@@ -124,7 +124,7 @@
       
   <div class="section" id="transformer-network">
 <h1>Transformer Network<a class="headerlink" href="#transformer-network" title="Permalink to this headline">¶</a></h1>
-<p>Most of the paper was clear. However, it was difficult to see how it would work across sequences of different length. I don’t mean how or why the positional encoding would work - this is intuitive, but rather how they construct the matrices to fit together :).</p>
+<p>Attention is all you need <a class="reference internal" href="#vaswani2017attention" id="id1">[1]</a> introduces the Transformer Network. It was difficult to see how it would work across sequences of different length. I don’t mean how or why the positional encoding would work - this is intuitive, but rather how they construct the matrices to fit together :).</p>
 <p>This notebook focuses on the unique modules the authors present, and how the system fits together. Other dependencies of this post:</p>
 <ul class="simple">
 <li><a class="reference internal" href="001.html"><span class="doc">Byte-Encoding</span></a></li>
@@ -143,10 +143,10 @@
 <div class="section" id="encoder-decoder">
 <h2>Encoder Decoder<a class="headerlink" href="#encoder-decoder" title="Permalink to this headline">¶</a></h2>
 <p>The transformer uses a <a class="reference external" href="https://arxiv.org/abs/1409.0473">encoder-decoder</a> structure: an input sequence of symbols, <span class="math notranslate nohighlight">\(x = { x_1, x_2, \dots, x_n }\)</span>, is encoded into a sequence of continuous variables,  <span class="math notranslate nohighlight">\(\mathbf{z} = { z_1, z_2, \dots, z_n }\)</span>. This is then decoded into a sequence of symbols, <span class="math notranslate nohighlight">\(y = { y_1, y_2, \dots, y_n }\)</span>. In some cases, <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is a single continuous variable. This generation occurs one at a time - it is <a class="reference external" href="https://arxiv.org/abs/1308.0850">auto-regressive</a>, further consuming the previously generated symbols as additional input when generating the next. Encoder and decoder models usually use a recurrent architecture.</p>
-<p>According to Cho. 14, the encoding function <span class="math notranslate nohighlight">\(e\)</span> can be any non-linear function, but it is often implemented as an RNN.</p>
+<p>According to Cho et. al <a class="reference internal" href="#cho2014learning" id="id3">[2]</a>, the encoding function <span class="math notranslate nohighlight">\(e\)</span> can be any non-linear function, but it is often implemented as an RNN.</p>
 <div class="math notranslate nohighlight">
 \[h_{&lt;t&gt;} = e(h_{&lt;t-1&gt;}, x_t)\]</div>
-<div class="figure align-center" id="id2">
+<div class="figure align-center" id="id4">
 <img alt="../_images/encoder.svg" height="250px" src="../_images/encoder.svg" /><p class="caption"><span class="caption-text">Encoder architecture.</span></p>
 </div>
 <p>The input sentence <span class="math notranslate nohighlight">\(x\)</span> is encoded into the vector <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>. Depending on the implemention, we consider the final hidden states as the encoding, or some operation on all the hidden states.</p>
@@ -154,7 +154,7 @@
 <div class="math notranslate nohighlight">
 \[\begin{split}h_{&lt;t&gt;} = d(h_{&lt;t-1&gt;}, y_{&lt;t-1&gt;}, z)\\
 y_{&lt;t&gt;} = g(h_{&lt;t&gt;}, y_{&lt;t-1&gt;}, z)\end{split}\]</div>
-<div class="figure align-center" id="id3">
+<div class="figure align-center" id="id5">
 <img alt="../_images/decoder.svg" height="350px" src="../_images/decoder.svg" /><p class="caption"><span class="caption-text">Encoder architecture.</span></p>
 </div>
 <p>This structure has some issues.</p>
@@ -173,7 +173,7 @@ y_{&lt;t&gt;} = g(h_{&lt;t&gt;}, y_{&lt;t-1&gt;}, z)\end{split}\]</div>
 <div>An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors.  The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key.</div></blockquote>
 <p>In addition to attention, they use a few techniques to regularize their network: layer normalization, residual connections, and dropout.</p>
 <p>As noted by the authors, attention maps a query to a combination of given outputs, as determined by the query’s corresponding compatibility with the input keys. As the autological “Scaled Dot-Product Attention” method implies, the authors use dot product for their compatibility function. One could use any metric, learned or otherwise. Cosine distance or a layer of MLP can be used.</p>
-<div class="figure align-center" id="id4">
+<div class="figure align-center" id="id6">
 <img alt="../_images/attention-explained.svg" height="350px" src="../_images/attention-explained.svg" /><p class="caption"><span class="caption-text">Attention inuition.</span></p>
 </div>
 <ol class="arabic simple">
@@ -192,7 +192,7 @@ A = \text{SOFTMAX}(\frac{QK^{\intercal}}{\sqrt{d}}) V\end{split}\]</div>
 <p class="first admonition-title">Note</p>
 <p class="last">Why is the gradient small?</p>
 </div>
-<div class="figure align-center" id="id5">
+<div class="figure align-center" id="id7">
 <img alt="../_images/scaled-dot-product.svg" height="350px" src="../_images/scaled-dot-product.svg" /><p class="caption"><span class="caption-text">Scaled dot product attention.</span></p>
 </div>
 <p>Below is an implementation for the scaled dot product. Each line corresponds to a box in the figure above.</p>
@@ -291,7 +291,7 @@ W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
 </div>
 <p>Thus, the multi-headed attention is a function from <span class="math notranslate nohighlight">\(R^{q \times d}\)</span> to <span class="math notranslate nohighlight">\(R^{q\ times v}\)</span>. Furthermore, like the scaled-dot-product attenion, it is able to concurrently operate on all the queries in parallel regardless of the size of the sentence.</p>
 <p>Additionally, this module is able to support <em>h</em> different heads, and still output a fixed-size vector for each query by concat and then matrix multiply to reduce the dimensionality.</p>
-<div class="figure align-center" id="id6">
+<div class="figure align-center" id="id8">
 <img alt="../_images/multi-head.svg" height="350px" src="../_images/multi-head.svg" /><p class="caption"><span class="caption-text">Scaled dot product attention.</span></p>
 </div>
 </div>
@@ -330,11 +330,11 @@ W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
 <p class="first admonition-title">Attention</p>
 <p class="last">How can this be represented as a linear function?</p>
 </div>
-<div class="figure align-center" id="id7">
+<div class="figure align-center" id="id9">
 <img alt="../_images/pe.png" src="../_images/pe.png" />
 <p class="caption"><span class="caption-text">Each dimension corresponds to its location; in the diagram below, each vertical slice of the grapch would be added to the input word embeddings.</span></p>
 </div>
-<div class="figure align-center" id="id8">
+<div class="figure align-center" id="id10">
 <img alt="../_images/pe-dropout.png" src="../_images/pe-dropout.png" />
 <p class="caption"><span class="caption-text">The authors use dropout to reduce the strength of the signal; the figure demonstrates its effect.</span></p>
 </div>
@@ -369,6 +369,20 @@ W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
 </pre></div>
 </div>
 <p>Using <a class="reference internal" href="002.html"><span class="doc">beam search</span></a> (as the authors did do), a path is selected by maintaining <em>k</em> beams - i.e. the best-so-far <span class="math notranslate nohighlight">\(k\)</span> options.</p>
+<p class="rubric">References</p>
+<p id="bibtex-bibliography-posts/003-0"><table class="docutils citation" frame="void" id="vaswani2017attention" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan&nbsp;N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In <em>Advances in Neural Information Processing Systems</em>, 5998–6008. 2017. URL: <a class="reference external" href="https://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf">https://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf</a>.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="cho2014learning" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>Kyunghyun Cho, Bart Van&nbsp;Merriënboer, Caglar Gulcehre, Dzmitry Bahdanau, Fethi Bougares, Holger Schwenk, and Yoshua Bengio. Learning phrase representations using rnn encoder-decoder for statistical machine translation. <em>arXiv preprint arXiv:1406.1078</em>, 2014. URL: <a class="reference external" href="https://arxiv.org/pdf/1406.1078.pdf">https://arxiv.org/pdf/1406.1078.pdf</a>.</td></tr>
+</tbody>
+</table>
+</p>
 </div>
 </div>
 
@@ -392,7 +406,7 @@ W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
     </p>
     <p>
         &copy; Copyright 2018, Charles J. Lovering.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.7.<br/>
     </p>
   </div>
 </footer>

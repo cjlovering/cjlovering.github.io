@@ -61,7 +61,6 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="003.html">Transformer Network</a></li>
-<li class="toctree-l1"><a class="reference internal" href="003.html#id2">Transformer Network</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../profile/research.html">Research</a></li>
@@ -114,7 +113,7 @@
       
   <div class="section" id="byte-encoding-representation">
 <h1>Byte-Encoding Representation<a class="headerlink" href="#byte-encoding-representation" title="Permalink to this headline">¶</a></h1>
-<p>This is a subword tokenization of a vocabulary. An example of how this would work and be useful at test time from Sennrich et al. is as follows:</p>
+<p>This is a subword tokenization of a vocabulary. An example of how this would work and be useful at test time from Sennrich et al. <a class="reference internal" href="#sennrich2015neural" id="id1">[1]</a> is as follows:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">V</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;low&quot;</span><span class="p">,</span> <span class="s2">&quot;lowest&quot;</span><span class="p">,</span> <span class="s2">&quot;newer&quot;</span><span class="p">,</span> <span class="s2">&quot;wider&quot;</span> <span class="p">}</span>
 <span class="n">BCE</span><span class="p">(</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>
 <span class="o">&gt;</span> <span class="s2">&quot;low&quot;</span><span class="p">,</span> <span class="s2">&quot;er&quot;</span>
@@ -180,6 +179,14 @@
 <span class="go">{&#39;low&lt;/w&gt;&#39;: 5, &#39;f a r t h e s t &lt;/w&gt;&#39;: 5, &#39;n e w er&lt;/w&gt;&#39;: 5, &#39;w i d er&lt;/w&gt;&#39;: 5}</span>
 </pre></div>
 </div>
+<p class="rubric">References</p>
+<p id="bibtex-bibliography-posts/001-0"><table class="docutils citation" frame="void" id="sennrich2015neural" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Rico Sennrich, Barry Haddow, and Alexandra Birch. Neural machine translation of rare words with subword units. <em>arXiv preprint arXiv:1508.07909</em>, 2015. URL: <a class="reference external" href="https://arxiv.org/pdf/1508.07909.pdf">https://arxiv.org/pdf/1508.07909.pdf</a>.</td></tr>
+</tbody>
+</table>
+</p>
 </div>
 
 
@@ -202,7 +209,7 @@
     </p>
     <p>
         &copy; Copyright 2018, Charles J. Lovering.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.7.<br/>
     </p>
   </div>
 </footer>
