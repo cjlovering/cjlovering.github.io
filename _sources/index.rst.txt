@@ -22,7 +22,7 @@ cjlovering
   <div class="panel-body">
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    posts/001.rst
    posts/002.rst
@@ -32,12 +32,11 @@ cjlovering
   <hr />
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    posts/003.rst
 
 .. raw:: html
-
 
   </div>
   </div>
