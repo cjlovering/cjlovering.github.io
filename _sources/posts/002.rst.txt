@@ -36,13 +36,6 @@ Further, it is possible that if we searched all the paths, extending out from op
 
 Below is a demonstration of how the algorithm searches through the graph of paths, pruning all but the number of parameterized number of beams at each time step.
 
-A
-
-.. raw:: html
-  :file: /_static/beam-search-graph.html
-
-B
-
 .. raw:: html
   :file: assets/viz/beam-search-graph.html
 
