@@ -34,6 +34,16 @@ Finally, beam search will select the path with total lowest log probability.
 
 Further, it is possible that if we searched all the paths, extending out from options we pruned early on by keeping only the top beams, we may have recieved a different result. If one used depth-first search, each path would be evaluated, but at exponential cost. For example, with a vocabulary of 3 possible output symbols, and a maximum length of 4 symbols, finding the most likely path would cost 81 operations, compared to the 8 we demonstrate above. Beam search does not maintain all possibilities. It keeps the current best-so-far h possibilties, only requiring a linear number of operations.
 
+.. raw:: html
+  :file: /_static/beam-search-graph.html
+
+.. raw:: html
+  :file: assets/viz/beam-search-graph.html
+
+.. raw:: html
+
+  <iframe src="/_static/beam-search-graph.html" height="345px" width="100%"></iframe>
+
 .. literalinclude:: assets/code/002/beam_search.py
 
 .. [1] https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py
