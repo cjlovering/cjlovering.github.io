@@ -61,6 +61,15 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Transformer Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#encoder-decoder">Encoder Decoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#scaled-dot-product-attention">Scaled Dot-Product Attention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#self-attention">Self Attention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#multi-head-attention">Multi Head Attention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#input-representation">Input Representation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#position-wise-feed-forward-networks">Position-wise Feed-Forward Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#architecture">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#decoding">Decoding</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../profile/research.html">Research</a></li>
@@ -81,7 +90,7 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Transformer Network</a><ul>
+<li><a class="reference internal" href="#">Transformer Network</a></li>
 <li><a class="reference internal" href="#overview">Overview</a></li>
 <li><a class="reference internal" href="#encoder-decoder">Encoder Decoder</a></li>
 <li><a class="reference internal" href="#scaled-dot-product-attention">Scaled Dot-Product Attention</a></li>
@@ -91,8 +100,6 @@
 <li><a class="reference internal" href="#position-wise-feed-forward-networks">Position-wise Feed-Forward Networks</a></li>
 <li><a class="reference internal" href="#architecture">Architecture</a></li>
 <li><a class="reference internal" href="#decoding">Decoding</a></li>
-</ul>
-</li>
 </ul>
 </ul>
 </li>
@@ -132,8 +139,9 @@
 <li>Residual Connections</li>
 <li><a class="reference internal" href="002.html"><span class="doc">Beam Search</span></a></li>
 </ul>
+</div>
 <div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
 <p>This work focuses on the task of natural language translation (e.g. english to german or vice versa.)</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -141,7 +149,7 @@
 </div>
 </div>
 <div class="section" id="encoder-decoder">
-<h2>Encoder Decoder<a class="headerlink" href="#encoder-decoder" title="Permalink to this headline">¶</a></h2>
+<h1>Encoder Decoder<a class="headerlink" href="#encoder-decoder" title="Permalink to this headline">¶</a></h1>
 <p>The transformer uses a <a class="reference external" href="https://arxiv.org/abs/1409.0473">encoder-decoder</a> structure: an input sequence of symbols, <span class="math notranslate nohighlight">\(x = { x_1, x_2, \dots, x_n }\)</span>, is encoded into a sequence of continuous variables,  <span class="math notranslate nohighlight">\(\mathbf{z} = { z_1, z_2, \dots, z_n }\)</span>. This is then decoded into a sequence of symbols, <span class="math notranslate nohighlight">\(y = { y_1, y_2, \dots, y_n }\)</span>. In some cases, <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is a single continuous variable. This generation occurs one at a time - it is <a class="reference external" href="https://arxiv.org/abs/1308.0850">auto-regressive</a>, further consuming the previously generated symbols as additional input when generating the next. Encoder and decoder models usually use a recurrent architecture.</p>
 <p>According to Cho et. al <a class="reference internal" href="#cho2014learning" id="id3">[2]</a>, the encoding function <span class="math notranslate nohighlight">\(e\)</span> can be any non-linear function, but it is often implemented as an RNN.</p>
 <div class="math notranslate nohighlight">
@@ -167,7 +175,7 @@ y_{&lt;t&gt;} = g(h_{&lt;t&gt;}, y_{&lt;t-1&gt;}, z)\end{split}\]</div>
 <p>The primary featured used is scaled dot product attention.</p>
 </div>
 <div class="section" id="scaled-dot-product-attention">
-<h2>Scaled Dot-Product Attention<a class="headerlink" href="#scaled-dot-product-attention" title="Permalink to this headline">¶</a></h2>
+<h1>Scaled Dot-Product Attention<a class="headerlink" href="#scaled-dot-product-attention" title="Permalink to this headline">¶</a></h1>
 <p>The authors describe attention as follows:</p>
 <blockquote>
 <div>An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors.  The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key.</div></blockquote>
@@ -213,7 +221,7 @@ A = \text{SOFTMAX}(\frac{QK^{\intercal}}{\sqrt{d}}) V\end{split}\]</div>
 </div>
 </div>
 <div class="section" id="self-attention">
-<h2>Self Attention<a class="headerlink" href="#self-attention" title="Permalink to this headline">¶</a></h2>
+<h1>Self Attention<a class="headerlink" href="#self-attention" title="Permalink to this headline">¶</a></h1>
 <p>With a single query, self attention will have no effect. This is because the attention mechanism will be a linear combination of the values, and it can only reproduce itself so it serves as an identity function.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">SelfAttention</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
     <span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span>
@@ -242,7 +250,7 @@ A = \text{SOFTMAX}(\frac{QK^{\intercal}}{\sqrt{d}}) V\end{split}\]</div>
 <p>Note that, especially with values greater than 1, a vector can have a greater dot product with other vectors rather than itself. So, similarity is aptly not the correct word to describe this interaction (at least when using a dot product). Thus, the first vector is mapped to a construction consisting mostly of itself and the second vector follows the same trend but more extreme. Lastly, the third vector, less compatible than the others - becomes pseduo-normalized.</p>
 </div>
 <div class="section" id="multi-head-attention">
-<h2>Multi Head Attention<a class="headerlink" href="#multi-head-attention" title="Permalink to this headline">¶</a></h2>
+<h1>Multi Head Attention<a class="headerlink" href="#multi-head-attention" title="Permalink to this headline">¶</a></h1>
 <p>The transformer uses “Multi-Head Attention” as its primary module. It is built up using scaled dot product attention.</p>
 <p>Rather than attend raw queries a single time, this method attends <em>h</em> linear projections of the input. For each of the <em>h</em> heads, the inputs (K,Q,V) are projected linearily with a learned mapping. This is great! Rather than using a single dot product, the multi-headed attention can learn to project vectors and attend them differently.</p>
 <div class="admonition note">
@@ -289,18 +297,18 @@ W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">linears</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">](</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Thus, the multi-headed attention is a function from <span class="math notranslate nohighlight">\(R^{q \times d}\)</span> to <span class="math notranslate nohighlight">\(R^{q\ times v}\)</span>. Furthermore, like the scaled-dot-product attenion, it is able to concurrently operate on all the queries in parallel regardless of the size of the sentence.</p>
+<p>Thus, the multi-headed attention is a function from <span class="math notranslate nohighlight">\(R^{q \times d}\)</span> to <span class="math notranslate nohighlight">\(R^{q \times v}\)</span>. Furthermore, like the scaled-dot-product attenion, it is able to concurrently operate on all the queries in parallel regardless of the size of the sentence.</p>
 <p>Additionally, this module is able to support <em>h</em> different heads, and still output a fixed-size vector for each query by concat and then matrix multiply to reduce the dimensionality.</p>
 <div class="figure align-center" id="id8">
 <img alt="../_images/multi-head.svg" height="350px" src="../_images/multi-head.svg" /><p class="caption"><span class="caption-text">Scaled dot product attention.</span></p>
 </div>
 </div>
 <div class="section" id="input-representation">
-<h2>Input Representation<a class="headerlink" href="#input-representation" title="Permalink to this headline">¶</a></h2>
+<h1>Input Representation<a class="headerlink" href="#input-representation" title="Permalink to this headline">¶</a></h1>
 <p>This work used a Byte Pair Encoding scheme. This is a subword tokenization of your vocabulary. This is much more valuable than a UNK symbol. To build this representation, an iterative algorithm can be used to link together the most common segments, starting with character pairs.</p>
 </div>
 <div class="section" id="position-wise-feed-forward-networks">
-<h2>Position-wise Feed-Forward Networks<a class="headerlink" href="#position-wise-feed-forward-networks" title="Permalink to this headline">¶</a></h2>
+<h1>Position-wise Feed-Forward Networks<a class="headerlink" href="#position-wise-feed-forward-networks" title="Permalink to this headline">¶</a></h1>
 <p>This two linear transforms with a nonlinear (RELU) operation. The denotation of position-wise remarks on the fact that it is not a convolution, nor does it have any directly spatial functionality.</p>
 <div class="math notranslate nohighlight">
 \[\text{FFN}(x) = \max(0, xW_1 + b_1)W_2 + b_2\]</div>
@@ -340,13 +348,13 @@ W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
 </div>
 </div>
 <div class="section" id="architecture">
-<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
+<h1>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h1>
 <p>Each instance of the transformer will output a probability for the next symbol. As you can see, the encoder and decoder stacks are repeated N times each. In the paper the default was N = 6. The input and ouput of each stack is the of the same dimensionality.</p>
 <div class="figure align-center">
 <img alt="../_images/architecture.svg" height="650px" src="../_images/architecture.svg" /></div>
 </div>
 <div class="section" id="decoding">
-<h2>Decoding<a class="headerlink" href="#decoding" title="Permalink to this headline">¶</a></h2>
+<h1>Decoding<a class="headerlink" href="#decoding" title="Permalink to this headline">¶</a></h1>
 <p>The linear layer takes an input of <span class="math notranslate nohighlight">\(\mathbb{R}^{q \times m}\)</span> and has a weight shape of <span class="math notranslate nohighlight">\(\mathbb{R}^{m \times vocab}\)</span>, outputing <span class="math notranslate nohighlight">\(\mathbb{R}^{q \times vocab}\)</span>. During training, the decoding is set so that all subsequent positions are masked out during attention, so that a symbol could never see “into the future”. So, the final linear layer will output a probability distribution for each query (each symbol generated so far) starting with the start symbol. When decoding the next symbol will always be the right-most dimension.</p>
 <p>When decoding an output sequence, the network is run repeatedly. A greedy approach looks something like this:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">greedy_decode</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">,</span> <span class="n">max_len</span><span class="p">,</span> <span class="n">start_symbol</span><span class="p">):</span>
@@ -383,7 +391,6 @@ W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
 </tbody>
 </table>
 </p>
-</div>
 </div>
 
 

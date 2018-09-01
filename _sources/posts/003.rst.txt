@@ -1,5 +1,6 @@
 Transformer Network
-~~~~~~~~~~~~~~~~~~~
+-------------------
+
 
 Attention is all you need :cite:`vaswani2017attention` introduces the Transformer Network. It was difficult to see how it would work across sequences of different length. I don't mean how or why the positional encoding would work - this is intuitive, but rather how they construct the matrices to fit together :).
 
@@ -214,7 +215,7 @@ Rather than attend raw queries a single time, this method attends *h* linear pro
               .view(nbatches, -1, self.h * self.d_k)
           return self.linears[-1](x)
 
-Thus, the multi-headed attention is a function from :math:`R^{q \times d}` to :math:`R^{q\ times v}`. Furthermore, like the scaled-dot-product attenion, it is able to concurrently operate on all the queries in parallel regardless of the size of the sentence.
+Thus, the multi-headed attention is a function from :math:`R^{q \times d}` to :math:`R^{q \times v}`. Furthermore, like the scaled-dot-product attenion, it is able to concurrently operate on all the queries in parallel regardless of the size of the sentence.
 
 Additionally, this module is able to support *h* different heads, and still output a fixed-size vector for each query by concat and then matrix multiply to reduce the dimensionality.
 

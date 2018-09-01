@@ -61,6 +61,15 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="003.html">Transformer Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003.html#overview">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003.html#encoder-decoder">Encoder Decoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003.html#scaled-dot-product-attention">Scaled Dot-Product Attention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003.html#self-attention">Self Attention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003.html#multi-head-attention">Multi Head Attention</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003.html#input-representation">Input Representation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003.html#position-wise-feed-forward-networks">Position-wise Feed-Forward Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003.html#architecture">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003.html#decoding">Decoding</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../profile/research.html">Research</a></li>
@@ -81,7 +90,10 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Beam Search</a></li>
+<li><a class="reference internal" href="#">Beam Search</a><ul>
+<li><a class="reference internal" href="#walkthrough">Walkthrough</a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
@@ -114,10 +126,95 @@
   <div class="section" id="beam-search">
 <h1>Beam Search<a class="headerlink" href="#beam-search" title="Permalink to this headline">¶</a></h1>
 <p>Beam search is a method for decoding a sequence, and it is often used translation. In the main, beam search is used at test time, not during training. The algorithm is also described in this paper. For a full implementation see OpenNMT <a class="footnote-reference" href="#id2" id="id1">[1]</a>, otherwise I provide an instructive implementation below.</p>
-<p>Given a function f, which takes a prefix of a sequence and outputs a probability distribution of output symbols for the next item in the sequence, beam-search is an approximate algorithm which searches for the path that results in the most probable sequence. The path with the highest probability to start with, may not end up being the most likely sequence.</p>
-<p>For example, if there were 3 possible symbols to output (A, B, C), and given a start symbol the first output is [0.90, 0.05, 0.05]. However, if in the next time step, the probability for all the sequences that start with A are all equal, [0.33, 0.33, 0.33], and the probabilities if we had selected B or C are much higher [0.,0.,0.99] for many steps, we would have preferred to select another path. Note that often the scores we use are in the log space to avoid floating point issues with small probabilities.</p>
-<p>If one used depth-first search, each path would be evaluated, but at exponential cost. For example, with a vocabulary of 3 possible output symbols, and a maximum length of 10 symbols, finding the most likely path would cost 310 operations. Beam search instead does not maintain all possibilities. Instead it keeps the current best-so-far h possibilties. This instead requires a linear number of operations (around 30 in this example.)</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<p>Given a function f, which takes a prefix of a sequence and outputs a probability distribution of output symbols for the next item in the sequence, beam-search is an approximate algorithm which searches for the path that results in the most probable sequence. The path with the highest probability to start with, may not end up being the most likely sequence. As is common in such methods, log probability is used so that we can sum together the probabilities and avoid floating point errors.</p>
+<div class="section" id="walkthrough">
+<h2>Walkthrough<a class="headerlink" href="#walkthrough" title="Permalink to this headline">¶</a></h2>
+<p>In this example, we will compute symbols until we reach the maximum length of 4, and maintain 2 beams (or hypotheses). There are three possible output symbols (A, B, C). The log probabilities from the start symbol are -0.39, -0.60, and -0.45.</p>
+<div class="figure align-center">
+<img alt="../_images/beam-search-table-01.svg" src="../_images/beam-search-table-01.svg" width="650px" /></div>
+<p>The selected options are those with the highest log probabilities. Now, we will generate the next steps probabilities given these two prefixes (S-A and S-C). Here the search will now continue in different branches. The outputs that are highlighted green indicate that they are the paths with the current highest log probabilities.</p>
+<div class="figure align-center">
+<img alt="../_images/beam-search-table-02.svg" src="../_images/beam-search-table-02.svg" width="650px" /></div>
+<p>Note that in this time step that one branch will fade completely, as the other branch contains all the top options.</p>
+<div class="figure align-center">
+<img alt="../_images/beam-search-table-03.svg" src="../_images/beam-search-table-03.svg" width="650px" /></div>
+<p>Finally, beam search will select the path with total lowest log probability.</p>
+<div class="figure align-center">
+<img alt="../_images/beam-search-table-04.svg" src="../_images/beam-search-table-04.svg" width="650px" /></div>
+<p>Further, it is possible that if we searched all the paths, extending out from options we pruned early on by keeping only the top beams, we may have recieved a different result. If one used depth-first search, each path would be evaluated, but at exponential cost. For example, with a vocabulary of 3 possible output symbols, and a maximum length of 4 symbols, finding the most likely path would cost 81 operations, compared to the 8 we demonstrate above. Beam search does not maintain all possibilities. It keeps the current best-so-far h possibilties, only requiring a linear number of operations.</p>
+<div id="target">
+</div>
+<style>
+circle:hover {
+  stroke-width: 2px;
+}
+</style>
+
+<script src="https://d3js.org/d3.v4.js"></script>
+<script>
+
+const animate = function(images, file_names) {
+  const buttons = d3.select('#target')
+    .append("svg")
+    .attr("width", 700)
+    .attr("height", 100);
+  
+  const canvas = d3.select('#target')
+    .append("svg")
+    .attr("width", 700)
+    .attr("height", 500);
+
+  const show = (i) => {
+    const img = images[file_names[i]];
+    canvas.selectAll('svg').remove();
+    canvas.node().appendChild(img);
+  }
+
+  buttons.selectAll("circle")
+    .data([0,1,2,3])
+    .enter()
+    .append('circle')
+    .attr('r', 15)
+    .attr('stroke', 'grey')
+    .attr('fill', 'white')
+    .attr('cx', d => { console.log(d); return d*70 + 65; } )
+    .attr('cy', 75)
+    .on("mouseover", d => show(d));
+}
+
+const getImage = function(file_path, saveImage) {
+  d3.xml(file_path).mimeType("image/svg+xml").get((error, xml) => {
+    if (error) throw error;
+    const svg = xml.documentElement;
+    svg.setAttribute("height", "400px");
+    svg.setAttribute("preserveAspectRatio", "xMinYMin meet");
+    svg.id = file_path;
+    saveImage(file_path, svg);
+  });
+}
+
+const getImages = function(file_names) {
+  let images = {};
+  const saveImage = (file_path, img) => {
+    images[file_path] = img;
+    if (Object.keys(images).length >= file_names.length) {
+      animate(images, file_names);
+    }
+  }
+  file_names.forEach(name => getImage(name, saveImage));
+  return images;
+}
+
+const file_names = [
+  '_static/images/002/beam-search-graph-01.svg',
+  '_static/images/002/beam-search-graph-02.svg',
+  '_static/images/002/beam-search-graph-03.svg',
+  '_static/images/002/beam-search-graph-04.svg',
+  '_static/images/002/beam-search-graph-05.svg'
+];
+getImages(file_names);
+</script>
+<iframe src="/_static/beam-search-graph.html" height="345px" width="100%"></iframe><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">heapq</span>
 <span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="k">import</span> <span class="n">Variable</span>
 
@@ -164,6 +261,7 @@
 <tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><a class="reference external" href="https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py">https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py</a></td></tr>
 </tbody>
 </table>
+</div>
 </div>
 
 
