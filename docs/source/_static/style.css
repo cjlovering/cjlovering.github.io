@@ -69,7 +69,7 @@ ul.dropdown-menu {
 /* Hack font for code. */
 @font-face {
     font-family: Hack;
-    src: url(//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css);
+    src: url(//cdn.jsdelivr.net/npm/hack-font/build/web/hack.css);
 }
 
 pre, code { font-family: Hack, monospace; }
