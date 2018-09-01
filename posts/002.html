@@ -132,11 +132,14 @@
 <p>Finally, beam search will select the path with total lowest log probability.</p>
 <div class="figure align-center">
 <img alt="../_images/beam-search-table-04.svg" src="../_images/beam-search-table-04.svg" width="650px" /></div>
-<p>Further, it is possible that if we searched all the paths, extending out from options we pruned early on by keeping only the top beams, we may have recieved a different result. If one used depth-first search, each path would be evaluated, but at exponential cost. For example, with a vocabulary of 3 possible output symbols, and a maximum length of 4 symbols, finding the most likely path would cost 81 operations, compared to the 8 we demonstrate above. Beam search does not maintain all possibilities. It keeps the current best-so-far h possibilties, only requiring a linear number of operations.</p>
 <p>Below is a demonstration of how the algorithm searches through the graph of paths, pruning all but the number of parameterized number of beams at each time step.</p>
 <html>
-<div id="target">
+
+<div id="target" style="text-align:center;">
 </div>
+<div id="target2" style="text-align:center;">
+</div>
+
 <style>
 circle:hover {
   stroke-width: 2px;
@@ -149,17 +152,14 @@ circle:hover {
 const animate = function(images, file_names) {
   const buttons = d3.select('#target')
     .append("svg")
-    .attr("width", 600)
-    .attr("height", 100)
-    .attr("display", "block")
-    .attr("margin", "auto");
-  
-  const canvas = d3.select('#target')
+    .attr("width", 350)
+    .attr("height", 40);
+    //.attr("class", "center-viz");
+
+  const canvas = d3.select('#target2')
     .append("svg")
-    .attr("width", 600)
-    .attr("height", 450)
-    .attr("display", "block")
-    .attr("margin", "auto");
+    .attr("width", 350)
+    .attr("height", 425);
 
   const show = (i) => {
     const img = images[file_names[i]];
@@ -175,8 +175,10 @@ const animate = function(images, file_names) {
     .attr('stroke', 'grey')
     .attr('fill', 'white')
     .attr('cx', d => { console.log(d); return d*70 + 65; } )
-    .attr('cy', 75)
+    .attr('cy', 17)
     .on("mouseover", d => show(d));
+
+  show(4);
 }
 
 const getImage = function(file_path, saveImage) {
@@ -210,8 +212,10 @@ const file_names = [
   '../_static/images/002/beam-search-graph-05.svg'
 ];
 getImages(file_names);
+
 </script>
 </html>
+<p>Further, it is possible that if we searched all the paths, extending out from options we pruned early on by keeping only the top beams, we may have recieved a different result. If one used depth-first search, each path would be evaluated, but at exponential cost. For example, with a vocabulary of 3 possible output symbols, and a maximum length of 4 symbols, finding the most likely path would cost 81 operations, compared to the 8 we demonstrate above. Beam search does not maintain all possibilities. It keeps the current best-so-far h possibilties, only requiring a linear number of operations.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">heapq</span>
 <span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="k">import</span> <span class="n">Variable</span>
