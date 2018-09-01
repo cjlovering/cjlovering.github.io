@@ -1,0 +1,20 @@
+Test
+----
+
+A
+~
+
+.. raw:: html
+  :file: /_static/beam-search-graph.html
+
+B
+~
+
+.. raw:: html
+  :file: assets/viz/beam-search-graph.html
+
+C
+~
+
+.. raw:: html
+  :file: assets/viz/v2.html

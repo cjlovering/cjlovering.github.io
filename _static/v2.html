@@ -1,0 +1,90 @@
+<html>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+
+<svg>
+<defs>
+  <marker
+    id="arrow"
+    markerUnits="strokeWidth"
+    markerWidth="12"
+    markerHeight="12"
+    viewBox="0 0 12 12"
+    refX="6"
+    refY="6"
+    orient="auto">
+    <path d="M2,2 L10,6 L2,10 L6,6 L2,2" style="fill: grey;"></path>
+  </marker>
+</defs>
+</svg>
+
+<script>
+  //Make an SVG Container
+  
+  let canvas = d3.select("svg")
+      .attr("width", 500)
+      .attr("height", 500);
+
+ //Draw the Rectangle
+ const word_embeddings = function(words, bottom=200){
+  const BOTTOM = bottom;
+  const HEIGHT = 55;
+  const WIDTH = 55;
+  const PADDING = 5;
+  const START = 50;
+  const E_WIDTH = 15;
+
+  const getX = (_,i) => {
+    return START + (PADDING + WIDTH) * i;
+  }
+  const getEmbedX = (_,i) => {
+    return START + (PADDING + WIDTH) * i + WIDTH / 2 - E_WIDTH / 2;
+  }
+  const getArrowX = (_,i) => {
+    return getX(_,i) + (WIDTH + 2) / 2;
+  }
+
+  let text = canvas
+    .selectAll("text")
+    .data(words)
+    .enter()
+    .append("text");
+
+  let labels = text
+    .attr("x", getX)
+    .attr("y", BOTTOM - PADDING)
+    .text(function (d) { return d;})
+    .attr("font-family", "monospace")
+    .attr("font-size", "25px")
+    .attr("fill", "black");
+
+  let rects = canvas
+    .selectAll("rect")
+    .data(words)
+    .enter()
+    .append("rect");
+
+  let circleAttributes = rects
+    .attr("x", getEmbedX)
+    .attr("y", BOTTOM - 55 - HEIGHT - PADDING)
+    .attr("height", HEIGHT)
+    .attr("width", E_WIDTH)
+    .attr("fill", "lightblue");
+
+  let arrows = canvas
+    .selectAll("line")
+    .data(words)
+    .enter()
+    .append("line")
+    .attr("x1",getArrowX)
+    .attr("y1",BOTTOM - 25)
+    .attr("x2",getArrowX)
+    .attr("y2",BOTTOM - 50)
+    .attr("stroke","grey")
+    .attr("stroke-width",2)
+    .attr("marker-end","url(#arrow)");
+  }
+  word_embeddings(["the", "cat", "in", "the", "hat"]);
+
+</script>
+
+</html>
