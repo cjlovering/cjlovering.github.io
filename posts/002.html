@@ -149,13 +149,17 @@ circle:hover {
 const animate = function(images, file_names) {
   const buttons = d3.select('#target')
     .append("svg")
-    .attr("width", 700)
-    .attr("height", 100);
+    .attr("width", 600)
+    .attr("height", 100)
+    .attr("display", "block")
+    .attr("margin", "auto");
   
   const canvas = d3.select('#target')
     .append("svg")
-    .attr("width", 700)
-    .attr("height", 500);
+    .attr("width", 600)
+    .attr("height", 400)
+    .attr("display", "block")
+    .attr("margin", "auto");
 
   const show = (i) => {
     const img = images[file_names[i]];
