@@ -60,7 +60,7 @@ ul.dropdown-menu {
     color: #2c3e50 !important;
 }
 
-/* This moves text in notebooks closer together in the middle. */
+/* This moves text in notebooks closer together in the middle (notebooks). */
 .content {
     padding-left: 10%;
     padding-right: 10%;
@@ -69,7 +69,7 @@ ul.dropdown-menu {
 /* Hack font for code. */
 @font-face {
     font-family: Hack;
-    src: url(//cdn.jsdelivr.net/npm/hack-font/build/web/hack.css);
+    src: url(https://cdn.jsdelivr.net/npm/hack-font/build/web/hack.css);
 }
 
 pre, code { font-family: Hack, monospace; }
