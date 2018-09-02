@@ -1,12 +1,14 @@
 Beam Search
 -----------
 
-Beam search is a method for decoding a sequence, and it is often used translation. In the main, beam search is used at test time, not during training. The algorithm is also described in this paper. For a full implementation see OpenNMT [1]_, otherwise I provide an instructive implementation below.
+Beam search is a method for decoding a sequence given am auto-regressive function which outputs a probability distribution over the next possible symbols. This works by inserting the already-generated symbols into the function iteratively. Naturally, this can change depending on the algorithm being used: a hidden markov model with a memory of 1 will only take the previous symbol; most recurrent neural networks will be stateful; transformer networks will take the entire prefix.
 
-Given a function f, which takes a prefix of a sequence and outputs a probability distribution of output symbols for the next item in the sequence, beam-search is an approximate algorithm which searches for the path that results in the most probable sequence. The path with the highest probability to start with, may not end up being the most likely sequence. As is common in such methods, log probability is used so that we can sum together the probabilities and avoid floating point errors.
+This search algorithm is often used translation. Beam search is most often used at test time, not during training. The algorithm is also described in this paper :cite:`TODO`. For a full implementation see OpenNMT [1]_. I provide a basic implementation below for reference.
 
 Walkthrough
 ~~~~~~~~~~~
+
+Given a function which takes a prefix of a sequence and outputs a probability distribution of output symbols for the next item in the sequence, beam-search is an approximate algorithm which searches for the path that results in the most probable sequence. The path with the highest probability to start with, may not end up being the most likely sequence. Log probability is used so that we can sum together the probabilities and avoid floating point errors.
 
 In this example, we will compute symbols until we reach the maximum length of 4, and maintain 2 beams (or hypotheses). There are three possible output symbols (A, B, C). The log probabilities from the start symbol are -0.39, -0.60, and -0.45. 
 
@@ -20,7 +22,7 @@ The selected options are those with the highest log probabilities. Now, we will 
    :width: 650px
    :align: center
 
-Note that in this time step that one branch will fade completely, as the other branch contains all the top options.
+Note that in this time step that one branch will fade completely, as the other branch contains the options with lowest probabilities.
 
 .. figure:: /_static/images/002/beam-search-table-03.svg
    :width: 650px
@@ -32,13 +34,21 @@ Finally, beam search will select the path with total lowest log probability.
    :width: 650px
    :align: center
 
-Below is a demonstration of how the algorithm searches through the graph of paths, pruning all but the number of parameterized number of beams at each time step.
+Below is a demonstration of how the algorithm searches through the graph, pruning all but the number of parameterized number of beams at each time step.
 
 .. raw:: html
   :file: assets/viz/beam-search-graph.html
 
-Further, it is possible that if we searched all the paths, extending out from options we pruned early on by keeping only the top beams, we may have recieved a different result. If one used depth-first search, each path would be evaluated, but at exponential cost. For example, with a vocabulary of 3 possible output symbols, and a maximum length of 4 symbols, finding the most likely path would cost 81 operations, compared to the 8 we demonstrate above. Beam search does not maintain all possibilities. It keeps the current best-so-far h possibilties, only requiring a linear number of operations.
+Code
+~~~~
+
+This a reference for how this might look in code.
 
 .. literalinclude:: assets/code/002/beam_search.py
+
+Conclusion
+~~~~~~~~~~
+
+It is possible that if we searched all the paths, extending out from options we pruned early on by keeping only the top beams, we may have recieved a different result. If one used depth-first search, each path would be evaluated, but at exponential cost. For example, with a vocabulary of 3 possible output symbols, and a maximum length of 4 symbols, finding the most likely path would cost 81 operations, compared to the 8 we demonstrate above. Beam search does not maintain all possibilities. It keeps the current best-so-far h possibilties, only requiring a linear number of operations.
 
 .. [1] https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py
