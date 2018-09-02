@@ -14,24 +14,28 @@ circle:hover {
 <script src="https://d3js.org/d3.v4.js"></script>
 <script>
 
-const animate = function(images, file_names) {
-  const buttons = d3.select('#target')
-    .append("svg")
-    .attr("width", 350)
-    .attr("height", 40);
-    //.attr("class", "center-viz");
+// Animates the @images a dictionary of file_name to image, which corresponds
+// to the list of images @file_names.   
+const animate = (images, file_names) => {  
+   const WIDTH = 350;
 
+   const buttons = d3.select('#target')
+    .append("svg")
+    .attr("width", WIDTH)
+    .attr("height", 40);
   const canvas = d3.select('#target2')
     .append("svg")
-    .attr("width", 350)
+    .attr("width", WIDTH)
     .attr("height", 425);
 
-  const show = (i) => {
+  // Shows the given image @i, appending it to the canvas.
+  const show = i => {
     const img = images[file_names[i]];
     canvas.selectAll('svg').remove();
     canvas.node().appendChild(img);
   }
 
+  // Add buttons which on click will show the corresponding step of the search.
   buttons.selectAll("circle")
     .data([0,1,2,3])
     .enter()
@@ -39,13 +43,16 @@ const animate = function(images, file_names) {
     .attr('r', 15)
     .attr('stroke', 'grey')
     .attr('fill', 'white')
-    .attr('cx', d => { console.log(d); return d*70 + 65; } )
+    .attr('cx', d => { return d*70 + 65; } )
     .attr('cy', 17)
     .on("mouseover", d => show(d));
 
+  // By default, show the full search graph.
   show(4);
 }
 
+// Loads image from the file path, and then saves the image with the 
+// given saveImage callback.
 const getImage = function(file_path, saveImage) {
   d3.xml(file_path).mimeType("image/svg+xml").get((error, xml) => {
     if (error) throw error;
@@ -57,6 +64,9 @@ const getImage = function(file_path, saveImage) {
   });
 }
 
+
+// Load all the images, given @file_names. Store them into a dictionary, 
+// file_name to svg object, for future manipulation.
 const getImages = function(file_names) {
   let images = {};
   const saveImage = (file_path, img) => {

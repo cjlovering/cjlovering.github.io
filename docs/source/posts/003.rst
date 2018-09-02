@@ -259,7 +259,7 @@ The positional encoding is used to represent the position of the queries in thei
 The authors use a positional encoding that uses 
 
 .. math::
-  \text{PE}_{(pos,2i)} = \sin(pos / 10000^{2i/d_{\text{model}}})
+  \text{PE}_{(pos,2i)} = \sin(pos / 10000^{2i/d_{\text{model}}})\\
   \text{PE}_{(pos,2i+1)} = \cos(pos / 10000^{2i/d_{\text{model}}})
 
 where :math:`pos` is the position and :math:`i` is the dimension.  
