@@ -83,9 +83,11 @@
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">Transformer Network</a><ul>
 <li><a class="reference internal" href="#overview">Overview</a></li>
-<li><a class="reference internal" href="#encoder-decoder">Encoder Decoder</a></li>
-<li><a class="reference internal" href="#scaled-dot-product-attention">Scaled Dot-Product Attention</a></li>
+<li><a class="reference internal" href="#encoder-decoder-structure">Encoder-Decoder Structure</a></li>
+<li><a class="reference internal" href="#scaled-dot-product-attention">Scaled Dot-Product Attention</a><ul>
 <li><a class="reference internal" href="#self-attention">Self Attention</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#multi-head-attention">Multi Head Attention</a></li>
 <li><a class="reference internal" href="#input-representation">Input Representation</a></li>
 <li><a class="reference internal" href="#position-wise-feed-forward-networks">Position-wise Feed-Forward Networks</a></li>
@@ -124,56 +126,93 @@
       
   <div class="section" id="transformer-network">
 <h1>Transformer Network<a class="headerlink" href="#transformer-network" title="Permalink to this headline">¶</a></h1>
-<p>Attention is all you need <a class="reference internal" href="#vaswani2017attention" id="id1">[1]</a> introduces the Transformer Network. It was difficult to see how it would work across sequences of different length. I don’t mean how or why the positional encoding would work - this is intuitive, but rather how they construct the matrices to fit together :).</p>
-<p>This notebook focuses on the unique modules the authors present, and how the system fits together. Other dependencies of this post:</p>
+<hr />
+<table>
+  <thead>
+    <tr>
+      <th width="150px"> Authors </th> 
+      <th width="150px"> Affliation </th> 
+      <th width="300px"> Links </th> </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ashish Vaswani</td>
+      <td>Google</td>
+      <td><a href="https://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf"> PDF </a> </td>
+    </tr>
+    <tr>
+      <td>Noam Shazeer</td>
+    </tr>
+    <tr>
+      <td>Niki Parmar</td>
+    </tr>
+    <tr>
+      <td>Jakob Uszkoreit</td>
+    </tr>
+    <tr>
+      <td>Llion Jones</td>
+    </tr>
+    <tr>
+      <td>Aidan N Gomez</td>
+    </tr>
+    <tr>
+      <td>Łukasz Kaiser</td>
+    </tr>
+    <tr>
+      <td>Illia Polosukhin</td>
+    </tr>
+  </tbody>
+</table>
+<hr /><p>Attention is all you need <a class="reference internal" href="#vaswani2017attention" id="id1">[1]</a> introduces the Transformer Network. This network is a shift from recurrent networks; economy inspired its design. It is formulated so that it does not need to use any state or recurrent functions, and is parallelized across all the symbols in an input sequence. However, it is difficult to see how this works across sequences of different length; demonstrating how the Transformer Network fits together is my primary goal for this notebook.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This work focuses on the task of natural language translation (e.g. english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together.</p>
+<p>Attention is all you need presents a new neural model call the Transformer Network (TN). It is composed of attention modules, linear mappings, features for increased regularization and an Encoder-Decoder structure.</p>
+<p>External dependencies:</p>
 <ul class="simple">
 <li><a class="reference internal" href="001.html"><span class="doc">Byte-Encoding</span></a></li>
 <li>Layer Normalization</li>
 <li>Residual Connections</li>
 <li><a class="reference internal" href="002.html"><span class="doc">Beam Search</span></a></li>
 </ul>
-<div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>This work focuses on the task of natural language translation (e.g. english to german or vice versa.)</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">I modify implementations from the <a class="reference external" href="https://github.com/tensorflow/tensor2tensor">tensor2tensor</a> library and <a class="reference external" href="http://nlp.seas.harvard.edu/2018/04/03/attention.html">The Annotated Transformer</a> post, focusing on my interpretation of the paper. For a complete view and implementation of this system, please visit the mentioned sources above. All diagrams were created by me. Some are re-intepretations from the orginal paper.</p>
+<p class="last">I modify and present implementations from the <a class="reference external" href="https://github.com/tensorflow/tensor2tensor">tensor2tensor</a> library and <a class="reference external" href="http://nlp.seas.harvard.edu/2018/04/03/attention.html">The Annotated Transformer</a> . For a complete view and implementation of this system, please visit these sources.</p>
 </div>
 </div>
-<div class="section" id="encoder-decoder">
-<h2>Encoder Decoder<a class="headerlink" href="#encoder-decoder" title="Permalink to this headline">¶</a></h2>
-<p>The transformer uses a <a class="reference external" href="https://arxiv.org/abs/1409.0473">encoder-decoder</a> structure: an input sequence of symbols, <span class="math notranslate nohighlight">\(x = { x_1, x_2, \dots, x_n }\)</span>, is encoded into a sequence of continuous variables,  <span class="math notranslate nohighlight">\(\mathbf{z} = { z_1, z_2, \dots, z_n }\)</span>. This is then decoded into a sequence of symbols, <span class="math notranslate nohighlight">\(y = { y_1, y_2, \dots, y_n }\)</span>. In some cases, <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is a single continuous variable. This generation occurs one at a time - it is <a class="reference external" href="https://arxiv.org/abs/1308.0850">auto-regressive</a>, further consuming the previously generated symbols as additional input when generating the next. Encoder and decoder models usually use a recurrent architecture.</p>
-<p>According to Cho et. al <a class="reference internal" href="#cho2014learning" id="id3">[2]</a>, the encoding function <span class="math notranslate nohighlight">\(e\)</span> can be any non-linear function, but it is often implemented as an RNN.</p>
+<div class="section" id="encoder-decoder-structure">
+<h2>Encoder-Decoder Structure<a class="headerlink" href="#encoder-decoder-structure" title="Permalink to this headline">¶</a></h2>
+<p>The transformer uses a <a class="reference external" href="https://arxiv.org/abs/1409.0473">encoder-decoder</a> <a class="reference internal" href="#bahdanau2014neural" id="id2">[2]</a> structure: an input sequence of symbols, <span class="math notranslate nohighlight">\(x = { x_1, x_2, \dots, x_n }\)</span>, is encoded into a sequence of continuous variables,  <span class="math notranslate nohighlight">\(\mathbf{z} = { z_1, z_2, \dots, z_n }\)</span>. This is then decoded into a sequence of symbols, <span class="math notranslate nohighlight">\(y = { y_1, y_2, \dots, y_n }\)</span>. In some cases, <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is a single continuous variable. This generation of these symbols occurs one at a time - it is <a class="reference external" href="https://arxiv.org/abs/1308.0850">auto-regressive</a> <a class="reference internal" href="#graves" id="id3">[3]</a>, consuming previously generated symbols as additional input when generating the next. Encoder-decoder structures usually use a recurrent architectures.</p>
+<p>According to Cho et. al <a class="reference internal" href="#cho2014learning" id="id4">[4]</a>, the encoding function <span class="math notranslate nohighlight">\(e\)</span> can be any non-linear function, but it is often implemented as an RNN.</p>
 <div class="math notranslate nohighlight">
 \[h_{&lt;t&gt;} = e(h_{&lt;t-1&gt;}, x_t)\]</div>
-<div class="figure align-center" id="id4">
+<div class="figure align-center" id="id5">
 <img alt="../_images/encoder.svg" height="250px" src="../_images/encoder.svg" /><p class="caption"><span class="caption-text">Encoder architecture.</span></p>
 </div>
 <p>The input sentence <span class="math notranslate nohighlight">\(x\)</span> is encoded into the vector <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>. Depending on the implemention, we consider the final hidden states as the encoding, or some operation on all the hidden states.</p>
-<p>Next, we decode <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> into the output predictions <span class="math notranslate nohighlight">\(y\)</span>. Again, this uses a recurrent function (RNN).</p>
+<p>Next, we decode <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> into the output predictions <span class="math notranslate nohighlight">\(y\)</span>. Again, this typically uses a recurrent function (RNN).</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}h_{&lt;t&gt;} = d(h_{&lt;t-1&gt;}, y_{&lt;t-1&gt;}, z)\\
 y_{&lt;t&gt;} = g(h_{&lt;t&gt;}, y_{&lt;t-1&gt;}, z)\end{split}\]</div>
-<div class="figure align-center" id="id5">
+<div class="figure align-center" id="id6">
 <img alt="../_images/decoder.svg" height="350px" src="../_images/decoder.svg" /><p class="caption"><span class="caption-text">Encoder architecture.</span></p>
 </div>
 <p>This structure has some issues.</p>
 <ol class="arabic simple">
-<li>Its sequential and for a given <span class="math notranslate nohighlight">\(x\)</span>, it cannot be parallelized.</li>
-<li>Often <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is input into each decoding function, and since <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is O(n) distance to each input symbol, it becomes difficult to learn long range dependencies.</li>
+<li>Its sequential and cannot be easily parallelized.</li>
+<li>Often <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is input into each instance of the decoding function. Because from <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> there is O(n) distance to each input symbol, it becomes difficult to learn long range dependencies.</li>
 <li>The path between an output symbol and its corresponding source symbol depends on the length of <span class="math notranslate nohighlight">\(x\)</span>.</li>
 </ol>
-<p>The transformer network uses a stateless auto-regressive strategy which will decode the encoded (but not summarized) source words and the current output words. This will allow the model to be highly parallelized.</p>
-<p>The primary featured used is scaled dot product attention.</p>
+<p>TN’s stateless auto-regressive strategy decodes encoded (but not summarized) source words and the current output words ouputting probability distributions for new symbols. This allows the model to be parallelized.</p>
 </div>
 <div class="section" id="scaled-dot-product-attention">
 <h2>Scaled Dot-Product Attention<a class="headerlink" href="#scaled-dot-product-attention" title="Permalink to this headline">¶</a></h2>
 <p>The authors describe attention as follows:</p>
 <blockquote>
-<div>An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors.  The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key.</div></blockquote>
-<p>In addition to attention, they use a few techniques to regularize their network: layer normalization, residual connections, and dropout.</p>
-<p>As noted by the authors, attention maps a query to a combination of given outputs, as determined by the query’s corresponding compatibility with the input keys. As the autological “Scaled Dot-Product Attention” method implies, the authors use dot product for their compatibility function. One could use any metric, learned or otherwise. Cosine distance or a layer of MLP can be used.</p>
-<div class="figure align-center" id="id6">
+<div>An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key.</div></blockquote>
+<p>As noted by the authors, attention maps a query to a combination of given outputs, as determined by the query’s corresponding compatibility with the input keys. As the autological “Scaled Dot-Product Attention” method implies, the authors use dot product for their compatibility function. One could use any metric, learned or otherwise, for example cosine distance or a feedforward neural network layer.</p>
+<p>For their formulation of attention to work, there are a few requirements for the inputs. There must be mapping between the keys and values, and the compatibility function must be valid (be defined for) the queries and the keys. In the paper, there is 1:1 mapping between the keys and values (by index), and the dot-product compatibility function requires that the queries and the keys have the same dimensionality.</p>
+<div class="figure align-center" id="id7">
 <img alt="../_images/attention-explained.svg" height="350px" src="../_images/attention-explained.svg" /><p class="caption"><span class="caption-text">Attention inuition.</span></p>
 </div>
 <ol class="arabic simple">
@@ -181,21 +220,21 @@ y_{&lt;t&gt;} = g(h_{&lt;t&gt;}, y_{&lt;t-1&gt;}, z)\end{split}\]</div>
 <li>Each query <span class="math notranslate nohighlight">\(Q_j\)</span> will operate on all the keys with a compatibility function (dot product). As shown in (b), the closer the vectors are in high-dimensional space, the more compatible. These scores will be transformed into a probability distribution by a softmax.</li>
 <li>Then, each query will be mapped to a linear combination of the values as determined by the probability distribution (c).</li>
 </ol>
-<p>As shown in the intuitive example above, the query <span class="math notranslate nohighlight">\(q_1\)</span> is most similar to <span class="math notranslate nohighlight">\(k_1\)</span>, thus it is mapped predimately to the corresponding value <span class="math notranslate nohighlight">\(v_1\)</span>. Note: these values are examples, not necessarily accurate.</p>
+<p>As shown in the example above, the query <span class="math notranslate nohighlight">\(q_1\)</span> is most similar to <span class="math notranslate nohighlight">\(k_1\)</span>, thus it is predominantly mapped to the corresponding value <span class="math notranslate nohighlight">\(v_1\)</span>. Note: these values are examples, not accurate.</p>
 <p>The scaled dot product attention is straight forward.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}A: Q \times K \times V \to O \\
 Q\in \mathbb{R}^{q \times d}, K \in \mathbb{R}^{n \times d}, V \in \mathbb{R}^{n \times v}, O \in \mathbb{R}^{q \times v} \\
 A = \text{SOFTMAX}(\frac{QK^{\intercal}}{\sqrt{d}}) V\end{split}\]</div>
-<p>The innovative aspect of scaled dot product - beyond the authors’ apt framing of the problem as an interaction between queries, keys, and values - is the scaling. The author motivate this scaling by noting that the variance of a dot product scales with the size of the input vectors. Increased variance will result in increased magnitude, “pushing the softmax function into regions where it has extremely small gradients.”</p>
+<p>The authors note that the variance of a dot product scales with the size of the input vectors. Increased variance will result in increased magnitude, “pushing the softmax function into regions where it has extremely small gradients.” This motivates the scaling of the dot-product based on the dimensionality of the input vectors.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Why is the gradient small?</p>
 </div>
-<div class="figure align-center" id="id7">
+<div class="figure align-center" id="id8">
 <img alt="../_images/scaled-dot-product.svg" height="350px" src="../_images/scaled-dot-product.svg" /><p class="caption"><span class="caption-text">Scaled dot product attention.</span></p>
 </div>
-<p>Below is an implementation for the scaled dot product. Each line corresponds to a box in the figure above.</p>
+<p>Below is an implementation for scaled dot product attention. Each line corresponds to a box in the figure above.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">attention</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="s2">&quot;Compute &#39;Scaled Dot Product Attention&#39;&quot;</span>
     <span class="c1"># Compatiblity function (dot product) between the query and keys.</span>
@@ -211,9 +250,8 @@ A = \text{SOFTMAX}(\frac{QK^{\intercal}}{\sqrt{d}}) V\end{split}\]</div>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">p_attn</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">p_attn</span>
 </pre></div>
 </div>
-</div>
 <div class="section" id="self-attention">
-<h2>Self Attention<a class="headerlink" href="#self-attention" title="Permalink to this headline">¶</a></h2>
+<h3>Self Attention<a class="headerlink" href="#self-attention" title="Permalink to this headline">¶</a></h3>
 <p>With a single query, self attention will have no effect. This is because the attention mechanism will be a linear combination of the values, and it can only reproduce itself so it serves as an identity function.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">SelfAttention</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
     <span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span>
@@ -225,8 +263,7 @@ A = \text{SOFTMAX}(\frac{QK^{\intercal}}{\sqrt{d}}) V\end{split}\]</div>
 <span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">]])</span>
 </pre></div>
 </div>
-<p>When there are multiple queries, the vectors that are most <em>compatible</em> will become even more similar as they will be mapped to combinations consisting mostly of the already compatible vectors.</p>
-<p>The remaining vector will also be normalized <em>different</em>.</p>
+<p>When there are multiple queries, the vectors that are most <em>compatible</em> will become more similar because they are mapped to combinations consisting mostly of the already-compatible vectors. The remaining vectors will also be normalized.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">([</span>
 <span class="go">    [0,0,1],</span>
 <span class="go">    [0,0,2],</span>
@@ -241,20 +278,20 @@ A = \text{SOFTMAX}(\frac{QK^{\intercal}}{\sqrt{d}}) V\end{split}\]</div>
 </div>
 <p>Note that, especially with values greater than 1, a vector can have a greater dot product with other vectors rather than itself. So, similarity is aptly not the correct word to describe this interaction (at least when using a dot product). Thus, the first vector is mapped to a construction consisting mostly of itself and the second vector follows the same trend but more extreme. Lastly, the third vector, less compatible than the others - becomes pseduo-normalized.</p>
 </div>
+</div>
 <div class="section" id="multi-head-attention">
 <h2>Multi Head Attention<a class="headerlink" href="#multi-head-attention" title="Permalink to this headline">¶</a></h2>
-<p>The transformer uses “Multi-Head Attention” as its primary module. It is built up using scaled dot product attention.</p>
-<p>Rather than attend raw queries a single time, this method attends <em>h</em> linear projections of the input. For each of the <em>h</em> heads, the inputs (K,Q,V) are projected linearily with a learned mapping. This is great! Rather than using a single dot product, the multi-headed attention can learn to project vectors and attend them differently.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Ultimately, the compatiblity function and the projections are all linear - perhaps it would be worth the time to see if non-linear mappings would drastically effect the performance of this method. Does using a feed forward layer here help? hurt?</p>
-</div>
+<p>The transformer uses “Multi-Head Attention” as its primary module for representational power. It is built up using scaled dot product attention. But, rather than attend raw queries a single time, this method attends <em>h</em> linear projections of the input. For each of the <em>h</em> heads, the inputs (K,Q,V) are  linearily projected with a learned mapping.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\text{out} = \texttt{Concat}(\text{head}_0, \dots, \text{head}_h) W^O \\
 \text{head}_i = \texttt{Attention}(QW_i^Q, KW_i^K, VW_i^V) \\
 Q \in \mathbb{R}^{q \times m}, K \in \mathbb{R}^{n \times m}, V \in \mathbb{R}^{n \times m} \\
 W_j^Q, W_j^K, W_j^V \in \mathbb{R}^{m \times d} \\
 W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The compatiblity function and the projections are linear. Does including a non-linearity effect the performance of this method? How well would the transformer perform using a feed forward layer?</p>
+</div>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MultiHeadedAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
         <span class="s2">&quot;Take in model size and number of heads.&quot;</span>
@@ -290,14 +327,14 @@ W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
 </pre></div>
 </div>
 <p>Thus, the multi-headed attention is a function from <span class="math notranslate nohighlight">\(R^{q \times d}\)</span> to <span class="math notranslate nohighlight">\(R^{q \times v}\)</span>. Furthermore, like the scaled-dot-product attenion, it is able to concurrently operate on all the queries in parallel regardless of the size of the sentence.</p>
-<p>Additionally, this module is able to support <em>h</em> different heads, and still output a fixed-size vector for each query by concat and then matrix multiply to reduce the dimensionality.</p>
-<div class="figure align-center" id="id8">
+<p>Additionally, this module is able to support <em>h</em> different heads, and still output a fixed-size vector for each query by concatenation, and then applying a linear mapping to the output.</p>
+<div class="figure align-center" id="id9">
 <img alt="../_images/multi-head.svg" height="350px" src="../_images/multi-head.svg" /><p class="caption"><span class="caption-text">Scaled dot product attention.</span></p>
 </div>
 </div>
 <div class="section" id="input-representation">
 <h2>Input Representation<a class="headerlink" href="#input-representation" title="Permalink to this headline">¶</a></h2>
-<p>This work used a Byte Pair Encoding scheme. This is a subword tokenization of your vocabulary. This is much more valuable than a UNK symbol. To build this representation, an iterative algorithm can be used to link together the most common segments, starting with character pairs.</p>
+<p>This work used a Byte Pair Encoding scheme. This is a subword tokenization of your vocabulary. This is much more valuable than a UNK symbol. To build this representation, an iterative algorithm links together common segments, starting with character pairs.</p>
 </div>
 <div class="section" id="position-wise-feed-forward-networks">
 <h2>Position-wise Feed-Forward Networks<a class="headerlink" href="#position-wise-feed-forward-networks" title="Permalink to this headline">¶</a></h2>
@@ -320,28 +357,26 @@ W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
 <p>The positional encoding is used to represent the position of the queries in their embeddings. This is important because the attention mechanisms have no notion of order among the queries, and order determines the semantics of a sentence.</p>
 <p>The authors use a positional encoding that uses</p>
 <div class="math notranslate nohighlight">
-\[\text{PE}_{(pos,2i)} = \sin(pos / 10000^{2i/d_{\text{model}}})
-\text{PE}_{(pos,2i+1)} = \cos(pos / 10000^{2i/d_{\text{model}}})\]</div>
+\[\begin{split}\text{PE}_{(pos,2i)} = \sin(pos / 10000^{2i/d_{\text{model}}})\\
+\text{PE}_{(pos,2i+1)} = \cos(pos / 10000^{2i/d_{\text{model}}})\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(pos\)</span> is the position and <span class="math notranslate nohighlight">\(i\)</span> is the dimension.</p>
 <p>As the authors describe:</p>
 <blockquote>
-<div>That is, each dimension of the positional encoding corresponds to a sinusoid.  The wavelengths form a geometric progression from <span class="math notranslate nohighlight">\(2\pi\)</span> to <span class="math notranslate nohighlight">\(10000 \cdot 2\pi\)</span>.  We chose this function because we hypothesized it would allow the model to easily learn to attend by relative positions, since for any fixed offset <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(PE_{pos+k}\)</span> can be represented as a linear function of <span class="math notranslate nohighlight">\(PE_{pos}\)</span>.</div></blockquote>
+<div>That is, each dimension of the positional encoding corresponds to a sinusoid. The wavelengths form a geometric progression from <span class="math notranslate nohighlight">\(2\pi\)</span> to <span class="math notranslate nohighlight">\(10000 \cdot 2\pi\)</span>. We chose this function because we hypothesized it would allow the model to easily learn to attend by relative positions, since for any fixed offset <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(PE_{pos+k}\)</span> can be represented as a linear function of <span class="math notranslate nohighlight">\(PE_{pos}\)</span>.</div></blockquote>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
 <p class="last">How can this be represented as a linear function?</p>
 </div>
-<div class="figure align-center" id="id9">
-<img alt="../_images/pe.png" src="../_images/pe.png" />
-<p class="caption"><span class="caption-text">Each dimension corresponds to its location; in the diagram below, each vertical slice of the grapch would be added to the input word embeddings.</span></p>
-</div>
 <div class="figure align-center" id="id10">
-<img alt="../_images/pe-dropout.png" src="../_images/pe-dropout.png" />
-<p class="caption"><span class="caption-text">The authors use dropout to reduce the strength of the signal; the figure demonstrates its effect.</span></p>
+<img alt="../_images/pe.svg" height="350px" src="../_images/pe.svg" /><p class="caption"><span class="caption-text">Each dimension corresponds to its location; in the diagram below, each vertical slice of the graph would be added to the input word embeddings.</span></p>
+</div>
+<div class="figure align-center" id="id11">
+<img alt="../_images/pe-dropout.svg" height="350px" src="../_images/pe-dropout.svg" /><p class="caption"><span class="caption-text">The authors use dropout to reduce the strength of the signal; the figure demonstrates its effect.</span></p>
 </div>
 </div>
 <div class="section" id="architecture">
 <h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
-<p>Each instance of the transformer will output a probability for the next symbol. As you can see, the encoder and decoder stacks are repeated N times each. In the paper the default was N = 6. The input and ouput of each stack is the of the same dimensionality.</p>
+<p>Each instance of the transformer will output a probability for the next symbol. As you can see, the encoder and decoder stacks are repeated N times each. In the paper the default was N = 6. The input and ouput of each stack is the of the same dimensionality. In addition to attention modules, they use a few techniques to regularize their network: layer normalization, residual connections, and dropout.</p>
 <div class="figure align-center">
 <img alt="../_images/architecture.svg" height="650px" src="../_images/architecture.svg" /></div>
 </div>
@@ -369,6 +404,15 @@ W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
 </pre></div>
 </div>
 <p>Using <a class="reference internal" href="002.html"><span class="doc">beam search</span></a> (as the authors did do), a path is selected by maintaining <em>k</em> beams - i.e. the best-so-far <span class="math notranslate nohighlight">\(k\)</span> options.</p>
+<p class="rubric">Footnotes</p>
+<ul class="simple">
+<li><a class="reference internal" href="001.html"><span class="doc">Byte-Encoding</span></a></li>
+<li>Layer Normalization</li>
+<li>Residual Connections</li>
+<li><a class="reference internal" href="002.html"><span class="doc">Beam Search</span></a></li>
+<li><a class="reference external" href="https://github.com/tensorflow/tensor2tensor">tensor2tensor</a></li>
+<li><a class="reference external" href="http://nlp.seas.harvard.edu/2018/04/03/attention.html">The Annotated Transformer</a></li>
+</ul>
 <p class="rubric">References</p>
 <p id="bibtex-bibliography-posts/003-0"><table class="docutils citation" frame="void" id="vaswani2017attention" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
@@ -376,10 +420,22 @@ W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
 <tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan&nbsp;N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In <em>Advances in Neural Information Processing Systems</em>, 5998–6008. 2017. URL: <a class="reference external" href="https://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf">https://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf</a>.</td></tr>
 </tbody>
 </table>
+<table class="docutils citation" frame="void" id="bahdanau2014neural" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Dzmitry Bahdanau, Kyunghyun Cho, and Yoshua Bengio. Neural machine translation by jointly learning to align and translate. <em>arXiv preprint arXiv:1409.0473</em>, 2014. URL: <a class="reference external" href="https://arxiv.org/pdf/1409.0473">https://arxiv.org/pdf/1409.0473</a>.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="graves" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>Alex Graves. Generating sequences with recurrent neural networks. <em>arXiv preprint arXiv:1308.0850</em>, 2013. URL: <a class="reference external" href="https://arxiv.org/pdf/1308.0850">https://arxiv.org/pdf/1308.0850</a>.</td></tr>
+</tbody>
+</table>
 <table class="docutils citation" frame="void" id="cho2014learning" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>Kyunghyun Cho, Bart Van&nbsp;Merriënboer, Caglar Gulcehre, Dzmitry Bahdanau, Fethi Bougares, Holger Schwenk, and Yoshua Bengio. Learning phrase representations using rnn encoder-decoder for statistical machine translation. <em>arXiv preprint arXiv:1406.1078</em>, 2014. URL: <a class="reference external" href="https://arxiv.org/pdf/1406.1078.pdf">https://arxiv.org/pdf/1406.1078.pdf</a>.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td>Kyunghyun Cho, Bart Van&nbsp;Merriënboer, Caglar Gulcehre, Dzmitry Bahdanau, Fethi Bougares, Holger Schwenk, and Yoshua Bengio. Learning phrase representations using rnn encoder-decoder for statistical machine translation. <em>arXiv preprint arXiv:1406.1078</em>, 2014. URL: <a class="reference external" href="https://arxiv.org/pdf/1406.1078.pdf">https://arxiv.org/pdf/1406.1078.pdf</a>.</td></tr>
 </tbody>
 </table>
 </p>

@@ -83,6 +83,8 @@
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">Beam Search</a><ul>
 <li><a class="reference internal" href="#walkthrough">Walkthrough</a></li>
+<li><a class="reference internal" href="#code">Code</a></li>
+<li><a class="reference internal" href="#conclusion">Conclusion</a></li>
 </ul>
 </li>
 </ul>
@@ -116,23 +118,24 @@
       
   <div class="section" id="beam-search">
 <h1>Beam Search<a class="headerlink" href="#beam-search" title="Permalink to this headline">¶</a></h1>
-<p>Beam search is a method for decoding a sequence, and it is often used translation. In the main, beam search is used at test time, not during training. The algorithm is also described in this paper. For a full implementation see OpenNMT <a class="footnote-reference" href="#id2" id="id1">[1]</a>, otherwise I provide an instructive implementation below.</p>
-<p>Given a function f, which takes a prefix of a sequence and outputs a probability distribution of output symbols for the next item in the sequence, beam-search is an approximate algorithm which searches for the path that results in the most probable sequence. The path with the highest probability to start with, may not end up being the most likely sequence. As is common in such methods, log probability is used so that we can sum together the probabilities and avoid floating point errors.</p>
+<p>Beam search is a method for decoding a sequence given am auto-regressive function which outputs a probability distribution over the next possible symbols. This works by inserting the already-generated symbols into the function iteratively. Naturally, this can change depending on the algorithm being used: a hidden markov model with a memory of 1 will only take the previous symbol; most recurrent neural networks will be stateful; transformer networks will take the entire prefix.</p>
+<p>This search algorithm is often used translation. Beam search is most often used at test time, not during training. The algorithm is also described in this paper [TODO]. For a full implementation see OpenNMT <a class="footnote-reference" href="#id3" id="id2">[1]</a>. I provide a basic implementation below for reference.</p>
 <div class="section" id="walkthrough">
 <h2>Walkthrough<a class="headerlink" href="#walkthrough" title="Permalink to this headline">¶</a></h2>
+<p>Given a function which takes a prefix of a sequence and outputs a probability distribution of output symbols for the next item in the sequence, beam-search is an approximate algorithm which searches for the path that results in the most probable sequence. The path with the highest probability to start with, may not end up being the most likely sequence. Log probability is used so that we can sum together the probabilities and avoid floating point errors.</p>
 <p>In this example, we will compute symbols until we reach the maximum length of 4, and maintain 2 beams (or hypotheses). There are three possible output symbols (A, B, C). The log probabilities from the start symbol are -0.39, -0.60, and -0.45.</p>
 <div class="figure align-center">
 <img alt="../_images/beam-search-table-01.svg" src="../_images/beam-search-table-01.svg" width="650px" /></div>
 <p>The selected options are those with the highest log probabilities. Now, we will generate the next steps probabilities given these two prefixes (S-A and S-C). Here the search will now continue in different branches. The outputs that are highlighted green indicate that they are the paths with the current highest log probabilities.</p>
 <div class="figure align-center">
 <img alt="../_images/beam-search-table-02.svg" src="../_images/beam-search-table-02.svg" width="650px" /></div>
-<p>Note that in this time step that one branch will fade completely, as the other branch contains all the top options.</p>
+<p>Note that in this time step that one branch will fade completely, as the other branch contains the options with lowest probabilities.</p>
 <div class="figure align-center">
 <img alt="../_images/beam-search-table-03.svg" src="../_images/beam-search-table-03.svg" width="650px" /></div>
 <p>Finally, beam search will select the path with total lowest log probability.</p>
 <div class="figure align-center">
 <img alt="../_images/beam-search-table-04.svg" src="../_images/beam-search-table-04.svg" width="650px" /></div>
-<p>Below is a demonstration of how the algorithm searches through the graph of paths, pruning all but the number of parameterized number of beams at each time step.</p>
+<p>Below is a demonstration of how the algorithm searches through the graph, pruning all but the number of parameterized number of beams at each time step.</p>
 <html>
 
 <div id="target" style="text-align:center;">
@@ -149,24 +152,28 @@ circle:hover {
 <script src="https://d3js.org/d3.v4.js"></script>
 <script>
 
-const animate = function(images, file_names) {
-  const buttons = d3.select('#target')
-    .append("svg")
-    .attr("width", 350)
-    .attr("height", 40);
-    //.attr("class", "center-viz");
+// Animates the @images a dictionary of file_name to image, which corresponds
+// to the list of images @file_names.   
+const animate = (images, file_names) => {  
+   const WIDTH = 350;
 
+   const buttons = d3.select('#target')
+    .append("svg")
+    .attr("width", WIDTH)
+    .attr("height", 40);
   const canvas = d3.select('#target2')
     .append("svg")
-    .attr("width", 350)
+    .attr("width", WIDTH)
     .attr("height", 425);
 
-  const show = (i) => {
+  // Shows the given image @i, appending it to the canvas.
+  const show = i => {
     const img = images[file_names[i]];
     canvas.selectAll('svg').remove();
     canvas.node().appendChild(img);
   }
 
+  // Add buttons which on click will show the corresponding step of the search.
   buttons.selectAll("circle")
     .data([0,1,2,3])
     .enter()
@@ -174,13 +181,16 @@ const animate = function(images, file_names) {
     .attr('r', 15)
     .attr('stroke', 'grey')
     .attr('fill', 'white')
-    .attr('cx', d => { console.log(d); return d*70 + 65; } )
+    .attr('cx', d => { return d*70 + 65; } )
     .attr('cy', 17)
     .on("mouseover", d => show(d));
 
+  // By default, show the full search graph.
   show(4);
 }
 
+// Loads image from the file path, and then saves the image with the 
+// given saveImage callback.
 const getImage = function(file_path, saveImage) {
   d3.xml(file_path).mimeType("image/svg+xml").get((error, xml) => {
     if (error) throw error;
@@ -192,6 +202,9 @@ const getImage = function(file_path, saveImage) {
   });
 }
 
+
+// Load all the images, given @file_names. Store them into a dictionary, 
+// file_name to svg object, for future manipulation.
 const getImages = function(file_names) {
   let images = {};
   const saveImage = (file_path, img) => {
@@ -215,7 +228,10 @@ getImages(file_names);
 
 </script>
 </html>
-<p>Further, it is possible that if we searched all the paths, extending out from options we pruned early on by keeping only the top beams, we may have recieved a different result. If one used depth-first search, each path would be evaluated, but at exponential cost. For example, with a vocabulary of 3 possible output symbols, and a maximum length of 4 symbols, finding the most likely path would cost 81 operations, compared to the 8 we demonstrate above. Beam search does not maintain all possibilities. It keeps the current best-so-far h possibilties, only requiring a linear number of operations.</p>
+</div>
+<div class="section" id="code">
+<h2>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
+<p>This a reference for how this might look in code.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">heapq</span>
 <span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="k">import</span> <span class="n">Variable</span>
@@ -257,10 +273,14 @@ getImages(file_names);
     <span class="k">return</span> <span class="n">ys</span>
 </pre></div>
 </div>
-<table class="docutils footnote" frame="void" id="id2" rules="none">
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>It is possible that if we searched all the paths, extending out from options we pruned early on by keeping only the top beams, we may have recieved a different result. If one used depth-first search, each path would be evaluated, but at exponential cost. For example, with a vocabulary of 3 possible output symbols, and a maximum length of 4 symbols, finding the most likely path would cost 81 operations, compared to the 8 we demonstrate above. Beam search does not maintain all possibilities. It keeps the current best-so-far h possibilties, only requiring a linear number of operations.</p>
+<table class="docutils footnote" frame="void" id="id3" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><a class="reference external" href="https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py">https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py</a></td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td><a class="reference external" href="https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py">https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py</a></td></tr>
 </tbody>
 </table>
 </div>
