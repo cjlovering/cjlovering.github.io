@@ -16,13 +16,14 @@ a.reference {
 }
 
 blockquote p {
-    font-size: 14px !important;
+    font-size: 13px !important;
 }
 
 blockquote {
     padding-top: 4px !important;
     padding-bottom: 4px !important;
     margin: 0 0 0px !important;
+    font-size: 13px !important;
 }
 
 pre {
@@ -53,6 +54,10 @@ ul {
 ul.dropdown-menu {
     padding-left: 0px !important;
 } */
+
+.label {
+    display: flex;
+}
 
 .alert-info {
     background-color: #adb8cb !important;
