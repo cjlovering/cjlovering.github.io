@@ -1,5 +1,5 @@
 # Minimal makefile for Sphinx documentation
-gh-pages:
+docs:
 	python3 -m sphinx source/ ../../gh-pages
 
 serve:

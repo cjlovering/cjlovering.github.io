@@ -7,6 +7,9 @@ This search algorithm is often used translation. Beam search is most often used 
 
 Walkthrough
 ~~~~~~~~~~~
+.. raw:: html
+
+  <hr />
 
 Given a function which takes a prefix of a sequence and outputs a probability distribution of output symbols for the next item in the sequence, beam-search is an approximate algorithm which searches for the path that results in the most probable sequence. The path with the highest probability to start with, may not end up being the most likely sequence. Log probability is used so that we can sum together the probabilities and avoid floating point errors.
 
@@ -41,6 +44,9 @@ Below is a demonstration of how the algorithm searches through the graph, prunin
 
 Code
 ~~~~
+.. raw:: html
+
+  <hr />
 
 This a reference for how this might look in code.
 
@@ -48,6 +54,9 @@ This a reference for how this might look in code.
 
 Conclusion
 ~~~~~~~~~~
+.. raw:: html
+
+  <hr />
 
 It is possible that if we searched all the paths, extending out from options we pruned early on by keeping only the top beams, we may have recieved a different result. If one used depth-first search, each path would be evaluated, but at exponential cost. For example, with a vocabulary of 3 possible output symbols, and a maximum length of 4 symbols, finding the most likely path would cost 81 operations, compared to the 8 we demonstrate above. Beam search does not maintain all possibilities. It keeps the current best-so-far h possibilties, only requiring a linear number of operations.
 
