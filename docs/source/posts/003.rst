@@ -1,12 +1,19 @@
 Transformer Network
 -------------------
 
-Attention is all you need :cite:`vaswani2017attention` introduces the Transformer Network. This network is a shift from recurrent networks; economy inspired its design. It is formulated so that it does not need to use any state or recurrent functions, and is parallelized across all the symbols in an input sequence. However, it is difficult to see how this works across sequences of different length; demonstrating how the Transformer Network fits together is my primary goals in this notebook.
+.. raw:: html
+  :file: assets/header/003.html
+
+Attention is all you need :cite:`vaswani2017attention` introduces the Transformer Network. This network is a shift from recurrent networks; economy inspired its design. It is formulated so that it does not need to use any state or recurrent functions, and is parallelized across all the symbols in an input sequence. However, it is difficult to see how this works across sequences of different length; demonstrating how the Transformer Network fits together is my primary goal for this notebook.
 
 Overview
 ~~~~~~~~
 
-This work focuses on the task of natural language translation (e.g. english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together. External dependencies:
+This work focuses on the task of natural language translation (e.g. english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together. 
+
+Attention is all you need presents a new neural model call the Transformer Network (TN). It is composed of attention modules, linear mappings, features for increased regularization and an Encoder-Decoder structure. 
+
+External dependencies:
 
 * `Byte-Encoding`_
 * Layer Normalization
@@ -15,10 +22,10 @@ This work focuses on the task of natural language translation (e.g. english to g
 
 .. note:: 
 
-  I modify implementations from the tensor2tensor_ library and `The Annotated Transformer`_ post, focusing on my interpretation of the paper. For a complete view and implementation of this system, please visit the mentioned sources above. All diagrams were created by me. Some are re-intepretations from the orginal paper.
+  I modify and present implementations from the tensor2tensor_ library and `The Annotated Transformer`_ . For a complete view and implementation of this system, please visit these sources.
 
-Encoder Decoder
-~~~~~~~~~~~~~~~
+Encoder-Decoder Structure
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The transformer uses a `encoder-decoder`_ :cite:`bahdanau2014neural` structure: an input sequence of symbols, :math:`x = { x_1, x_2, \dots, x_n }`, is encoded into a sequence of continuous variables,  :math:`\mathbf{z} = { z_1, z_2, \dots, z_n }`. This is then decoded into a sequence of symbols, :math:`y = { y_1, y_2, \dots, y_n }`. In some cases, :math:`\mathbf{z}` is a single continuous variable. This generation of these symbols occurs one at a time - it is `auto-regressive`_ :cite:`graves`, consuming previously generated symbols as additional input when generating the next. Encoder-decoder structures usually use a recurrent architectures.
 
@@ -53,10 +60,10 @@ Next, we decode :math:`\mathbf{z}` into the output predictions :math:`y`. Again,
 This structure has some issues.
 
 1. Its sequential and cannot be easily parallelized.
-2. Often :math:`\mathbf{z}` is input into each decoding function, and since :math:`\mathbf{z}` is O(n) distance to each input symbol, it becomes difficult to learn long range dependencies.
+2. Often :math:`\mathbf{z}` is input into each instance of the decoding function. Because from :math:`\mathbf{z}` there is O(n) distance to each input symbol, it becomes difficult to learn long range dependencies.
 3. The path between an output symbol and its corresponding source symbol depends on the length of :math:`x`.
 
-The transformer network uses a stateless auto-regressive strategy which will decode the encoded (but not summarized) source words and the current output words. This allows the model to be parallelized. The authors used scaled dot product attention
+TN's stateless auto-regressive strategy decodes encoded (but not summarized) source words and the current output words ouputting probability distributions for new symbols. This allows the model to be parallelized. 
 
 Scaled Dot-Product Attention
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,7 +95,7 @@ The scaled dot product attention is straight forward.
   Q\in \mathbb{R}^{q \times d}, K \in \mathbb{R}^{n \times d}, V \in \mathbb{R}^{n \times v}, O \in \mathbb{R}^{q \times v} \\
   A = \text{SOFTMAX}(\frac{QK^{\intercal}}{\sqrt{d}}) V
 
-The innovative aspect of scaled dot product - beyond the authors' apt framing of the problem as an interaction between queries, keys, and values - is the scaling. The author motivate this scaling by noting that the variance of a dot product scales with the size of the input vectors. Increased variance will result in increased magnitude, "pushing the softmax function into regions where it has extremely small gradients."
+The authors note that the variance of a dot product scales with the size of the input vectors. Increased variance will result in increased magnitude, "pushing the softmax function into regions where it has extremely small gradients." This motivates the scaling of the dot-product based on the dimensionality of the input vectors.
 
 .. note::
   Why is the gradient small?
@@ -255,12 +262,14 @@ As the authors describe:
 .. attention::
   How can this be represented as a linear function?
 
-.. figure:: /_static/images/003/pe.png
+.. figure:: /_static/images/003/pe.svg
+  :height: 350px
   :align: center
 
-  Each dimension corresponds to its location; in the diagram below, each vertical slice of the grapch would be added to the input word embeddings.
+  Each dimension corresponds to its location; in the diagram below, each vertical slice of the graph would be added to the input word embeddings.
 
-.. figure:: /_static/images/003/pe-dropout.png
+.. figure:: /_static/images/003/pe-dropout.svg
+  :height: 350px
   :align: center
 
   The authors use dropout to reduce the strength of the signal; the figure demonstrates its effect.
@@ -269,7 +278,6 @@ Architecture
 ~~~~~~~~~~~~
 
 Each instance of the transformer will output a probability for the next symbol. As you can see, the encoder and decoder stacks are repeated N times each. In the paper the default was N = 6. The input and ouput of each stack is the of the same dimensionality. In addition to attention modules, they use a few techniques to regularize their network: layer normalization, residual connections, and dropout.
-
 
 .. figure:: /_static/images/003/architecture.svg
    :height: 650px
