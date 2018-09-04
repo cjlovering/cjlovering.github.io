@@ -279,6 +279,7 @@ Architecture
 
 Each instance of the transformer will output a probability for the next symbol. As you can see, the encoder and decoder stacks are repeated N times each. In the paper the default was N = 6. The input and ouput of each stack is the of the same dimensionality. In addition to attention modules, they use a few techniques to regularize their network: layer normalization, residual connections, and dropout.
 
+
 .. figure:: /_static/images/003/architecture.svg
    :height: 650px
    :align: center
