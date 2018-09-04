@@ -166,7 +166,7 @@
 <hr /><p>Attention is all you need <a class="reference internal" href="#vaswani2017attention" id="id1">[1]</a> introduces the Transformer Network. This network is a shift from recurrent networks; economy inspired its design. It is formulated so that it does not need to use any state or recurrent functions, and is parallelized across all the symbols in an input sequence. However, it is difficult to see how this works across sequences of different length; demonstrating how the Transformer Network fits together is my primary goal for this notebook.</p>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>This work focuses on the task of natural language translation (e.g. english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together.</p>
+<hr /><p>This work focuses on the task of natural language translation (e.g. english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together.</p>
 <p>Attention is all you need presents a new neural model call the Transformer Network (TN). It is composed of attention modules, linear mappings, features for increased regularization and an Encoder-Decoder structure.</p>
 <p>External dependencies:</p>
 <ul class="simple">
@@ -182,7 +182,7 @@
 </div>
 <div class="section" id="encoder-decoder-structure">
 <h2>Encoder-Decoder Structure<a class="headerlink" href="#encoder-decoder-structure" title="Permalink to this headline">¶</a></h2>
-<p>The transformer uses a <a class="reference external" href="https://arxiv.org/abs/1409.0473">encoder-decoder</a> <a class="reference internal" href="#bahdanau2014neural" id="id2">[2]</a> structure: an input sequence of symbols, <span class="math notranslate nohighlight">\(x = { x_1, x_2, \dots, x_n }\)</span>, is encoded into a sequence of continuous variables,  <span class="math notranslate nohighlight">\(\mathbf{z} = { z_1, z_2, \dots, z_n }\)</span>. This is then decoded into a sequence of symbols, <span class="math notranslate nohighlight">\(y = { y_1, y_2, \dots, y_n }\)</span>. In some cases, <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is a single continuous variable. This generation of these symbols occurs one at a time - it is <a class="reference external" href="https://arxiv.org/abs/1308.0850">auto-regressive</a> <a class="reference internal" href="#graves" id="id3">[3]</a>, consuming previously generated symbols as additional input when generating the next. Encoder-decoder structures usually use a recurrent architectures.</p>
+<hr /><p>The transformer uses a <a class="reference external" href="https://arxiv.org/abs/1409.0473">encoder-decoder</a> <a class="reference internal" href="#bahdanau2014neural" id="id2">[2]</a> structure: an input sequence of symbols, <span class="math notranslate nohighlight">\(x = { x_1, x_2, \dots, x_n }\)</span>, is encoded into a sequence of continuous variables,  <span class="math notranslate nohighlight">\(\mathbf{z} = { z_1, z_2, \dots, z_n }\)</span>. This is then decoded into a sequence of symbols, <span class="math notranslate nohighlight">\(y = { y_1, y_2, \dots, y_n }\)</span>. In some cases, <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> is a single continuous variable. This generation of these symbols occurs one at a time - it is <a class="reference external" href="https://arxiv.org/abs/1308.0850">auto-regressive</a> <a class="reference internal" href="#graves" id="id3">[3]</a>, consuming previously generated symbols as additional input when generating the next. Encoder-decoder structures usually use a recurrent architectures.</p>
 <p>According to Cho et. al <a class="reference internal" href="#cho2014learning" id="id4">[4]</a>, the encoding function <span class="math notranslate nohighlight">\(e\)</span> can be any non-linear function, but it is often implemented as an RNN.</p>
 <div class="math notranslate nohighlight">
 \[h_{&lt;t&gt;} = e(h_{&lt;t-1&gt;}, x_t)\]</div>
@@ -207,7 +207,7 @@ y_{&lt;t&gt;} = g(h_{&lt;t&gt;}, y_{&lt;t-1&gt;}, z)\end{split}\]</div>
 </div>
 <div class="section" id="scaled-dot-product-attention">
 <h2>Scaled Dot-Product Attention<a class="headerlink" href="#scaled-dot-product-attention" title="Permalink to this headline">¶</a></h2>
-<p>The authors describe attention as follows:</p>
+<hr /><p>The authors describe attention as follows:</p>
 <blockquote>
 <div>An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key.</div></blockquote>
 <p>As noted by the authors, attention maps a query to a combination of given outputs, as determined by the query’s corresponding compatibility with the input keys. As the autological “Scaled Dot-Product Attention” method implies, the authors use dot product for their compatibility function. One could use any metric, learned or otherwise, for example cosine distance or a feedforward neural network layer.</p>
@@ -252,7 +252,7 @@ A = \text{SOFTMAX}(\frac{QK^{\intercal}}{\sqrt{d}}) V\end{split}\]</div>
 </div>
 <div class="section" id="self-attention">
 <h3>Self Attention<a class="headerlink" href="#self-attention" title="Permalink to this headline">¶</a></h3>
-<p>With a single query, self attention will have no effect. This is because the attention mechanism will be a linear combination of the values, and it can only reproduce itself so it serves as an identity function.</p>
+<hr /><p>With a single query, self attention will have no effect. This is because the attention mechanism will be a linear combination of the values, and it can only reproduce itself so it serves as an identity function.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">SelfAttention</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
     <span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span>
     <span class="k">return</span> <span class="n">attention</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
@@ -334,11 +334,11 @@ W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
 </div>
 <div class="section" id="input-representation">
 <h2>Input Representation<a class="headerlink" href="#input-representation" title="Permalink to this headline">¶</a></h2>
-<p>This work used a Byte Pair Encoding scheme. This is a subword tokenization of your vocabulary. This is much more valuable than a UNK symbol. To build this representation, an iterative algorithm links together common segments, starting with character pairs.</p>
+<hr /><p>This work used a Byte Pair Encoding scheme. This is a subword tokenization of your vocabulary. This is much more valuable than a UNK symbol. To build this representation, an iterative algorithm links together common segments, starting with character pairs.</p>
 </div>
 <div class="section" id="position-wise-feed-forward-networks">
 <h2>Position-wise Feed-Forward Networks<a class="headerlink" href="#position-wise-feed-forward-networks" title="Permalink to this headline">¶</a></h2>
-<p>This two linear transforms with a nonlinear (RELU) operation. The denotation of position-wise remarks on the fact that it is not a convolution, nor does it have any directly spatial functionality.</p>
+<hr /><p>This two linear transforms with a nonlinear (RELU) operation. The denotation of position-wise remarks on the fact that it is not a convolution, nor does it have any directly spatial functionality.</p>
 <div class="math notranslate nohighlight">
 \[\text{FFN}(x) = \max(0, xW_1 + b_1)W_2 + b_2\]</div>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">PositionwiseFeedForward</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -376,13 +376,13 @@ W^O \in \mathbb{R}^{(h*v)\times m}\end{split}\]</div>
 </div>
 <div class="section" id="architecture">
 <h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
-<p>Each instance of the transformer will output a probability for the next symbol. As you can see, the encoder and decoder stacks are repeated N times each. In the paper the default was N = 6. The input and ouput of each stack is the of the same dimensionality. In addition to attention modules, they use a few techniques to regularize their network: layer normalization, residual connections, and dropout.</p>
+<hr /><p>Each instance of the transformer will output a probability for the next symbol. As you can see, the encoder and decoder stacks are repeated N times each. In the paper the default was N = 6. The input and ouput of each stack is the of the same dimensionality. In addition to attention modules, they use a few techniques to regularize their network: layer normalization, residual connections, and dropout.</p>
 <div class="figure align-center">
 <img alt="../_images/architecture.svg" height="650px" src="../_images/architecture.svg" /></div>
 </div>
 <div class="section" id="decoding">
 <h2>Decoding<a class="headerlink" href="#decoding" title="Permalink to this headline">¶</a></h2>
-<p>The linear layer takes an input of <span class="math notranslate nohighlight">\(\mathbb{R}^{q \times m}\)</span> and has a weight shape of <span class="math notranslate nohighlight">\(\mathbb{R}^{m \times vocab}\)</span>, outputing <span class="math notranslate nohighlight">\(\mathbb{R}^{q \times vocab}\)</span>. During training, the decoding is set so that all subsequent positions are masked out during attention, so that a symbol could never see “into the future”. So, the final linear layer will output a probability distribution for each query (each symbol generated so far) starting with the start symbol. When decoding the next symbol will always be the right-most dimension.</p>
+<hr /><p>The linear layer takes an input of <span class="math notranslate nohighlight">\(\mathbb{R}^{q \times m}\)</span> and has a weight shape of <span class="math notranslate nohighlight">\(\mathbb{R}^{m \times vocab}\)</span>, outputing <span class="math notranslate nohighlight">\(\mathbb{R}^{q \times vocab}\)</span>. During training, the decoding is set so that all subsequent positions are masked out during attention, so that a symbol could never see “into the future”. So, the final linear layer will output a probability distribution for each query (each symbol generated so far) starting with the start symbol. When decoding the next symbol will always be the right-most dimension.</p>
 <p>When decoding an output sequence, the network is run repeatedly. A greedy approach looks something like this:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">greedy_decode</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">,</span> <span class="n">max_len</span><span class="p">,</span> <span class="n">start_symbol</span><span class="p">):</span>
     <span class="n">memory</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">src_mask</span><span class="p">)</span>

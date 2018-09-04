@@ -8,6 +8,9 @@ Attention is all you need :cite:`vaswani2017attention` introduces the Transforme
 
 Overview
 ~~~~~~~~
+.. raw:: html
+
+  <hr />
 
 This work focuses on the task of natural language translation (e.g. english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together. 
 
@@ -26,6 +29,9 @@ External dependencies:
 
 Encoder-Decoder Structure
 ~~~~~~~~~~~~~~~~~~~~~~~~~
+.. raw:: html
+
+  <hr />
 
 The transformer uses a `encoder-decoder`_ :cite:`bahdanau2014neural` structure: an input sequence of symbols, :math:`x = { x_1, x_2, \dots, x_n }`, is encoded into a sequence of continuous variables,  :math:`\mathbf{z} = { z_1, z_2, \dots, z_n }`. This is then decoded into a sequence of symbols, :math:`y = { y_1, y_2, \dots, y_n }`. In some cases, :math:`\mathbf{z}` is a single continuous variable. This generation of these symbols occurs one at a time - it is `auto-regressive`_ :cite:`graves`, consuming previously generated symbols as additional input when generating the next. Encoder-decoder structures usually use a recurrent architectures.
 
@@ -67,11 +73,13 @@ TN's stateless auto-regressive strategy decodes encoded (but not summarized) sou
 
 Scaled Dot-Product Attention
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. raw:: html
+
+  <hr />
 
 The authors describe attention as follows:
 
   An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key.
-
 
 As noted by the authors, attention maps a query to a combination of given outputs, as determined by the query's corresponding compatibility with the input keys. As the autological "Scaled Dot-Product Attention" method implies, the authors use dot product for their compatibility function. One could use any metric, learned or otherwise, for example cosine distance or a feedforward neural network layer.
 
@@ -127,6 +135,9 @@ Below is an implementation for scaled dot product attention. Each line correspon
 
 Self Attention
 ##############
+.. raw:: html
+
+  <hr />
 
 With a single query, self attention will have no effect. This is because the attention mechanism will be a linear combination of the values, and it can only reproduce itself so it serves as an identity function.
 
@@ -220,11 +231,17 @@ Additionally, this module is able to support *h* different heads, and still outp
 
 Input Representation
 ~~~~~~~~~~~~~~~~~~~~
+.. raw:: html
+
+  <hr />
 
 This work used a Byte Pair Encoding scheme. This is a subword tokenization of your vocabulary. This is much more valuable than a UNK symbol. To build this representation, an iterative algorithm links together common segments, starting with character pairs.
 
 Position-wise Feed-Forward Networks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. raw:: html
+
+  <hr />
 
 This two linear transforms with a nonlinear (RELU) operation. The denotation of position-wise remarks on the fact that it is not a convolution, nor does it have any directly spatial functionality.
 
@@ -277,6 +294,9 @@ As the authors describe:
 
 Architecture
 ~~~~~~~~~~~~
+.. raw:: html
+
+  <hr />
 
 Each instance of the transformer will output a probability for the next symbol. As you can see, the encoder and decoder stacks are repeated N times each. In the paper the default was N = 6. The input and ouput of each stack is the of the same dimensionality. In addition to attention modules, they use a few techniques to regularize their network: layer normalization, residual connections, and dropout.
 
@@ -287,6 +307,9 @@ Each instance of the transformer will output a probability for the next symbol. 
 
 Decoding
 ~~~~~~~~
+.. raw:: html
+
+  <hr />
 
 The linear layer takes an input of :math:`\mathbb{R}^{q \times m}` and has a weight shape of :math:`\mathbb{R}^{m \times vocab}`, outputing :math:`\mathbb{R}^{q \times vocab}`. During training, the decoding is set so that all subsequent positions are masked out during attention, so that a symbol could never see "into the future". So, the final linear layer will output a probability distribution for each query (each symbol generated so far) starting with the start symbol. When decoding the next symbol will always be the right-most dimension.
 
