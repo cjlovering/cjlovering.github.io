@@ -1,35 +1,26 @@
 Transformer Network
 -------------------
 
+Attention is all you need :cite:`vaswani2017attention` introduces the Transformer Network. This network is a shift from recurrent networks; economy inspired its design. It is formulated so that it does not need to use any state or recurrent functions, and is parallelized across all the symbols in an input sequence. However, it is difficult to see how this works across sequences of different length; demonstrating how the Transformer Network fits together is my primary goals in this notebook.
 
-Attention is all you need :cite:`vaswani2017attention` introduces the Transformer Network. It was difficult to see how it would work across sequences of different length. I don't mean how or why the positional encoding would work - this is intuitive, but rather how they construct the matrices to fit together :).
+Overview
+~~~~~~~~
 
-This notebook focuses on the unique modules the authors present, and how the system fits together. Other dependencies of this post:
+This work focuses on the task of natural language translation (e.g. english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together. External dependencies:
 
 * `Byte-Encoding`_
 * Layer Normalization
 * Residual Connections
 * `Beam Search`_
 
-.. _`Byte-Encoding`: 001.rst
-.. _`Beam Search`: 002.rst
-
-Overview
-~~~~~~~~
-
-This work focuses on the task of natural language translation (e.g. english to german or vice versa.)
-
 .. note:: 
 
   I modify implementations from the tensor2tensor_ library and `The Annotated Transformer`_ post, focusing on my interpretation of the paper. For a complete view and implementation of this system, please visit the mentioned sources above. All diagrams were created by me. Some are re-intepretations from the orginal paper.
 
-.. _`The Annotated Transformer`: http://nlp.seas.harvard.edu/2018/04/03/attention.html
-.. _tensor2tensor: https://github.com/tensorflow/tensor2tensor
-
 Encoder Decoder
 ~~~~~~~~~~~~~~~
 
-The transformer uses a `encoder-decoder`_ structure: an input sequence of symbols, :math:`x = { x_1, x_2, \dots, x_n }`, is encoded into a sequence of continuous variables,  :math:`\mathbf{z} = { z_1, z_2, \dots, z_n }`. This is then decoded into a sequence of symbols, :math:`y = { y_1, y_2, \dots, y_n }`. In some cases, :math:`\mathbf{z}` is a single continuous variable. This generation occurs one at a time - it is `auto-regressive`_, further consuming the previously generated symbols as additional input when generating the next. Encoder and decoder models usually use a recurrent architecture.
+The transformer uses a `encoder-decoder`_ :cite:`bahdanau2014neural` structure: an input sequence of symbols, :math:`x = { x_1, x_2, \dots, x_n }`, is encoded into a sequence of continuous variables,  :math:`\mathbf{z} = { z_1, z_2, \dots, z_n }`. This is then decoded into a sequence of symbols, :math:`y = { y_1, y_2, \dots, y_n }`. In some cases, :math:`\mathbf{z}` is a single continuous variable. This generation of these symbols occurs one at a time - it is `auto-regressive`_ :cite:`graves`, consuming previously generated symbols as additional input when generating the next. Encoder-decoder structures usually use a recurrent architectures.
 
 .. _`encoder-decoder`: https://arxiv.org/abs/1409.0473
 .. _`auto-regressive`: https://arxiv.org/abs/1308.0850
@@ -47,7 +38,7 @@ According to Cho et. al :cite:`cho2014learning`, the encoding function :math:`e`
 
 The input sentence :math:`x` is encoded into the vector :math:`\mathbf{z}`. Depending on the implemention, we consider the final hidden states as the encoding, or some operation on all the hidden states.
 
-Next, we decode :math:`\mathbf{z}` into the output predictions :math:`y`. Again, this uses a recurrent function (RNN). 
+Next, we decode :math:`\mathbf{z}` into the output predictions :math:`y`. Again, this typically uses a recurrent function (RNN).
 
 .. math::
   h_{<t>} = d(h_{<t-1>}, y_{<t-1>}, z)\\
@@ -61,24 +52,22 @@ Next, we decode :math:`\mathbf{z}` into the output predictions :math:`y`. Again,
 
 This structure has some issues.
 
-1. Its sequential and for a given :math:`x`, it cannot be parallelized.
+1. Its sequential and cannot be easily parallelized.
 2. Often :math:`\mathbf{z}` is input into each decoding function, and since :math:`\mathbf{z}` is O(n) distance to each input symbol, it becomes difficult to learn long range dependencies.
 3. The path between an output symbol and its corresponding source symbol depends on the length of :math:`x`.
 
-The transformer network uses a stateless auto-regressive strategy which will decode the encoded (but not summarized) source words and the current output words. This will allow the model to be highly parallelized.
-
-The primary featured used is scaled dot product attention.
+The transformer network uses a stateless auto-regressive strategy which will decode the encoded (but not summarized) source words and the current output words. This allows the model to be parallelized. The authors used scaled dot product attention
 
 Scaled Dot-Product Attention
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The authors describe attention as follows:
 
-  An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors.  The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key.
+  An attention function can be described as mapping a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key.
 
-In addition to attention, they use a few techniques to regularize their network: layer normalization, residual connections, and dropout.
+As noted by the authors, attention maps a query to a combination of given outputs, as determined by the query's corresponding compatibility with the input keys. As the autological "Scaled Dot-Product Attention" method implies, the authors use dot product for their compatibility function. One could use any metric, learned or otherwise, for example cosine distance or a feedforward neural network layer.
 
-As noted by the authors, attention maps a query to a combination of given outputs, as determined by the query's corresponding compatibility with the input keys. As the autological "Scaled Dot-Product Attention" method implies, the authors use dot product for their compatibility function. One could use any metric, learned or otherwise. Cosine distance or a layer of MLP can be used.
+For their formulation of attention to work, there are a few requirements for the inputs. There must be mapping between the keys and values, and the compatibility function must be valid (be defined for) the queries and the keys. In the paper, there is 1:1 mapping between the keys and values (by index), and the dot-product compatibility function requires that the queries and the keys have the same dimensionality.
 
 .. figure:: /_static/images/003/attention-explained.svg
   :height: 350px
@@ -90,7 +79,7 @@ As noted by the authors, attention maps a query to a combination of given output
 2. Each query :math:`Q_j` will operate on all the keys with a compatibility function (dot product). As shown in (b), the closer the vectors are in high-dimensional space, the more compatible. These scores will be transformed into a probability distribution by a softmax.
 3. Then, each query will be mapped to a linear combination of the values as determined by the probability distribution (c).
 
-As shown in the intuitive example above, the query :math:`q_1` is most similar to :math:`k_1`, thus it is mapped predimately to the corresponding value :math:`v_1`. Note: these values are examples, not necessarily accurate.
+As shown in the example above, the query :math:`q_1` is most similar to :math:`k_1`, thus it is predominantly mapped to the corresponding value :math:`v_1`. Note: these values are examples, not accurate.
 
 The scaled dot product attention is straight forward.
 
@@ -110,7 +99,7 @@ The innovative aspect of scaled dot product - beyond the authors' apt framing of
 
    Scaled dot product attention.
 
-Below is an implementation for the scaled dot product. Each line corresponds to a box in the figure above.
+Below is an implementation for scaled dot product attention. Each line corresponds to a box in the figure above.
 
 .. code-block:: python3
 
@@ -129,7 +118,7 @@ Below is an implementation for the scaled dot product. Each line corresponds to 
       return torch.matmul(p_attn, value), p_attn
 
 Self Attention
-~~~~~~~~~~~~~~
+##############
 
 With a single query, self attention will have no effect. This is because the attention mechanism will be a linear combination of the values, and it can only reproduce itself so it serves as an identity function.
 
@@ -144,9 +133,7 @@ With a single query, self attention will have no effect. This is because the att
   >>> print(alpha)
   tensor([[1.]])
 
-When there are multiple queries, the vectors that are most *compatible* will become even more similar as they will be mapped to combinations consisting mostly of the already compatible vectors. 
-
-The remaining vector will also be normalized *different*.
+When there are multiple queries, the vectors that are most *compatible* will become more similar because they are mapped to combinations consisting mostly of the already-compatible vectors. The remaining vectors will also be normalized.
 
 .. code-block:: python3
 
@@ -166,12 +153,7 @@ Note that, especially with values greater than 1, a vector can have a greater do
 Multi Head Attention
 ~~~~~~~~~~~~~~~~~~~~
 
-The transformer uses "Multi-Head Attention" as its primary module. It is built up using scaled dot product attention.
-
-Rather than attend raw queries a single time, this method attends *h* linear projections of the input. For each of the *h* heads, the inputs (K,Q,V) are projected linearily with a learned mapping. This is great! Rather than using a single dot product, the multi-headed attention can learn to project vectors and attend them differently. 
-
-.. note:: 
-  Ultimately, the compatiblity function and the projections are all linear - perhaps it would be worth the time to see if non-linear mappings would drastically effect the performance of this method. Does using a feed forward layer here help? hurt?
+The transformer uses "Multi-Head Attention" as its primary module for representational power. It is built up using scaled dot product attention. But, rather than attend raw queries a single time, this method attends *h* linear projections of the input. For each of the *h* heads, the inputs (K,Q,V) are  linearily projected with a learned mapping.
 
 .. math::
   \text{out} = \texttt{Concat}(\text{head}_0, \dots, \text{head}_h) W^O \\
@@ -179,6 +161,9 @@ Rather than attend raw queries a single time, this method attends *h* linear pro
   Q \in \mathbb{R}^{q \times m}, K \in \mathbb{R}^{n \times m}, V \in \mathbb{R}^{n \times m} \\
   W_j^Q, W_j^K, W_j^V \in \mathbb{R}^{m \times d} \\
   W^O \in \mathbb{R}^{(h*v)\times m}
+
+.. note:: 
+  The compatiblity function and the projections are linear. Does including a non-linearity effect the performance of this method? How well would the transformer perform using a feed forward layer?
 
 .. code-block:: python3
 
@@ -217,8 +202,7 @@ Rather than attend raw queries a single time, this method attends *h* linear pro
 
 Thus, the multi-headed attention is a function from :math:`R^{q \times d}` to :math:`R^{q \times v}`. Furthermore, like the scaled-dot-product attenion, it is able to concurrently operate on all the queries in parallel regardless of the size of the sentence.
 
-Additionally, this module is able to support *h* different heads, and still output a fixed-size vector for each query by concat and then matrix multiply to reduce the dimensionality.
-
+Additionally, this module is able to support *h* different heads, and still output a fixed-size vector for each query by concatenation, and then applying a linear mapping to the output.
 
 .. figure:: /_static/images/003/multi-head.svg
    :height: 350px
@@ -229,7 +213,7 @@ Additionally, this module is able to support *h* different heads, and still outp
 Input Representation
 ~~~~~~~~~~~~~~~~~~~~
 
-This work used a Byte Pair Encoding scheme. This is a subword tokenization of your vocabulary. This is much more valuable than a UNK symbol. To build this representation, an iterative algorithm can be used to link together the most common segments, starting with character pairs.
+This work used a Byte Pair Encoding scheme. This is a subword tokenization of your vocabulary. This is much more valuable than a UNK symbol. To build this representation, an iterative algorithm links together common segments, starting with character pairs.
 
 Position-wise Feed-Forward Networks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -266,25 +250,26 @@ where :math:`pos` is the position and :math:`i` is the dimension.
 
 As the authors describe:
 
-  That is, each dimension of the positional encoding corresponds to a sinusoid.  The wavelengths form a geometric progression from :math:`2\pi` to :math:`10000 \cdot 2\pi`.  We chose this function because we hypothesized it would allow the model to easily learn to attend by relative positions, since for any fixed offset :math:`k`, :math:`PE_{pos+k}` can be represented as a linear function of :math:`PE_{pos}`.
+  That is, each dimension of the positional encoding corresponds to a sinusoid. The wavelengths form a geometric progression from :math:`2\pi` to :math:`10000 \cdot 2\pi`. We chose this function because we hypothesized it would allow the model to easily learn to attend by relative positions, since for any fixed offset :math:`k`, :math:`PE_{pos+k}` can be represented as a linear function of :math:`PE_{pos}`.
 
 .. attention::
   How can this be represented as a linear function?
 
 .. figure:: /_static/images/003/pe.png
-   :align: center
+  :align: center
 
-   Each dimension corresponds to its location; in the diagram below, each vertical slice of the grapch would be added to the input word embeddings.
+  Each dimension corresponds to its location; in the diagram below, each vertical slice of the grapch would be added to the input word embeddings.
 
 .. figure:: /_static/images/003/pe-dropout.png
-   :align: center
+  :align: center
 
-   The authors use dropout to reduce the strength of the signal; the figure demonstrates its effect.
+  The authors use dropout to reduce the strength of the signal; the figure demonstrates its effect.
 
 Architecture
 ~~~~~~~~~~~~
 
-Each instance of the transformer will output a probability for the next symbol. As you can see, the encoder and decoder stacks are repeated N times each. In the paper the default was N = 6. The input and ouput of each stack is the of the same dimensionality. 
+Each instance of the transformer will output a probability for the next symbol. As you can see, the encoder and decoder stacks are repeated N times each. In the paper the default was N = 6. The input and ouput of each stack is the of the same dimensionality. In addition to attention modules, they use a few techniques to regularize their network: layer normalization, residual connections, and dropout.
+
 
 .. figure:: /_static/images/003/architecture.svg
    :height: 650px
@@ -319,6 +304,19 @@ When decoding an output sequence, the network is run repeatedly. A greedy approa
 
 Using `beam search`_ (as the authors did do), a path is selected by maintaining *k* beams - i.e. the best-so-far :math:`k` options.
 
+.. rubric:: Footnotes
+
+* `Byte-Encoding`_
+* Layer Normalization
+* Residual Connections
+* `Beam Search`_
+* tensor2tensor_ 
+* `The Annotated Transformer`_
+
+.. _`Byte-Encoding`: 001.rst
+.. _`Beam Search`: 002.rst
+.. _`The Annotated Transformer`: http://nlp.seas.harvard.edu/2018/04/03/attention.html
+.. _tensor2tensor: https://github.com/tensorflow/tensor2tensor
 
 .. rubric:: References
 
