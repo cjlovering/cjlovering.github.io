@@ -338,6 +338,14 @@ Decoder
 
   Transformer Network Decoder Architecture.
 
+The decoder resembles the encoder. All symbols already generated (beginning with a start symbol) are embedded and combined with the positional encoding. 
+
+Next, masked self-attention is computed. A mask is applied so that only the right-most output can see previous outputs, preventing any contamination. After this, multi-headed attenion is applied, where the output sequences are the queries, and the encoded symbols are the keys and the queries. This maps the dimensionality of the vectors to be the same as those outputted by the encoder. The previous outputs served to mark what information has already been regressed; the linear maps intrinsic to the multi-head attention could make the compatibility *negative* in some sense, ignoring already generated content. After a feed forward layer, this process is repeated N times. 
+
+For future work, it would be interesting to see adaptive computation employed here. Would the additional complexity be of any use or save any computation? It seems like some sentences might require less "decoding".
+
+After decoding the encoded inputs, a linear map is applied to the vectors and a softmax generates an output probability distribution.
+
 Decoding
 ########
 
