@@ -1,11 +1,11 @@
 Beam Search
 -----------
 
-Beam search is a method for decoding a sequence given an auto-regressive function that outputs a probability distribution over the next possible symbols. Ideally, a search algorithm would traverse the different possible paths and select the most probable sequence. However, this would be prohibatively expensive. 
+Beam search is a method for decoding a sequence given an auto-regressive function that outputs a probability distribution over the next possible symbols. Ideally, a search algorithm would traverse the all paths and select the most probable sequence. However, this is prohibatively expensive. 
 
 This search algorithm is often used translation. Beam search is most often used at test time, not during training. For a full implementation see OpenNMT [1]_. I provide a basic implementation below for reference.
 
-Beam search works iteratively. Naturally, the details depend on the decoding function: a hidden markov model with a memory of 1 consumes the previous symbol :cite:`markov`; recurrent neural networks are stateful :cite:`cho2014learning`; and transformer networks consume the entire prefix :cite:`vaswani2017attention`.
+Beam search works iteratively. Naturally, the details depend on the decoding function: a hidden markov model with a memory of 1 consumes the previous symbol :cite:`markov`; recurrent neural networks are stateful :cite:`cho2014learning2`; and transformer networks consume the entire prefix :cite:`vaswani2017attention2`.
 
 Walkthrough
 ~~~~~~~~~~~
