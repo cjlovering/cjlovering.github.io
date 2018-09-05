@@ -310,7 +310,7 @@ First, an input embedding for each word is retrieved. TN uses `Byte-Encoding`_ R
 
 The two sublayers are Multi-Head Attention (self-attending) and a feed forward layer. This process manipulates the inputs and captures their interactions, outputting a sequence of the same dimensionality. As the authors note, this is used to make using the residual connections more natural. (It is possible to use residual connections with varying dimensions, but it is less clean.) 
 
-The residual connections maintain a direct path to the inputs, and the normalization stabilizes the embeddings. This encoder architecture mirrors Highway Networks :cite:`highway` (and ResNet) in that additive connections allow for a clear path through the architecture, supporting many layers.
+The residual connections maintain a direct path to the inputs, and the normalization stabilizes the embeddings. This encoder architecture mirrors Highway Networks :cite:`srivastava2015highway` because additive connections allow for a clear path through the architecture, supporting many layers.
 
 Decoder
 #######
