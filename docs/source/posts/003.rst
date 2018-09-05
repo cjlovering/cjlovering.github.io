@@ -14,7 +14,7 @@ Overview
 
 This work focuses on the task of natural language translation (e.g. translating english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together. The Transformer Network (TN) is composed of attention modules, linear mappings, regularization features and uses an Encoder-Decoder structure. 
 
-I modify and present implementations from the tensor2tensor_ library and `The Annotated Transformer`_ . For a complete view and implementation of this system, please visit these sources.
+I modify and present implementations from the tensor2tensor_ library and `The Annotated Transformer`_ . For a complete view and implementation of this system, please visit these sources. Diagrams are recreations, and all blocked quotes are from the original paper.
 
 Encoder-Decoder Structure
 ~~~~~~~~~~~~~~~~~~~~~~~~~
