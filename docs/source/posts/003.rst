@@ -14,13 +14,6 @@ Overview
 
 This work focuses on the task of natural language translation (e.g. translating english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together. The Transformer Network (TN) is composed of attention modules, linear mappings, regularization features and uses an Encoder-Decoder structure. 
 
-External dependencies:
-
-* `Byte-Encoding`_
-* Layer Normalization
-* Residual Connections
-* `Beam Search`_
-
 I modify and present implementations from the tensor2tensor_ library and `The Annotated Transformer`_ . For a complete view and implementation of this system, please visit these sources.
 
 Encoder-Decoder Structure
@@ -313,7 +306,7 @@ The encoder consists of a stack of identical modules.
 
   Transformer Network Encoder Details.
 
-First, an input embedding for each word is retrieved. TN uses Byte-Encoding Representation with a shared embedding matrix :cite:`sennrich2015neural` -- this itself improves performance. It is a subword tokenization of your vocabulary. Next a positional encoding is added pointwise to each dimension of the input vector. The identical encoder modules will operate on this representation.
+First, an input embedding for each word is retrieved. TN uses `Byte-Encoding`_ Representation with a shared embedding matrix :cite:`sennrich2015neural` -- this itself improves performance. It is a subword tokenization of your vocabulary. Next a positional encoding is added pointwise to each dimension of the input vector. The identical encoder modules will operate on this representation.
 
 The two sublayers are Multi-Head Attention (self-attending) and a feed forward layer. This process manipulates the inputs and captures their interactions, outputting a sequence of the same dimensionality. As the authors note, this is used to make using the residual connections more natural. (It is possible to use residual connections with varying dimensions, but it is less clean.) 
 
@@ -340,7 +333,7 @@ After the first "execution" of the decoder, the inputs to the module are derived
 Decoding
 ########
 
-The linear layer takes an input of :math:`\mathbb{R}^{q \times m}` and has a weight shape of :math:`\mathbb{R}^{m \times vocab}`, outputing :math:`\mathbb{R}^{q \times vocab}`. During training, the decoding is set so that all subsequent positions are masked out during attention, so that a symbol could never see "into the future". So, the final linear layer will output a probability distribution for each query (each symbol generated so far) starting with the start symbol. When decoding the next symbol will always be the right-most dimension.
+The linear layer takes an input of *q* inputs :math:`\mathbb{R}^{d_{model}}` and has a weight shape of :math:`\mathbb{R}^{d_{model} \times vocab}`, outputing :math:`\mathbb{R}^{q \times vocab}`. During training, the decoding is set so that all subsequent positions are masked out during attention, so that a symbol could never see "into the future". So, the final linear layer will output a probability distribution for each query (each symbol generated so far) starting with the start symbol. When decoding the next symbol will always be the right-most dimension.
 
 .. figure:: /_static/images/003/simple-architecture.svg
   :height: 350px
@@ -348,7 +341,9 @@ The linear layer takes an input of :math:`\mathbb{R}^{q \times m}` and has a wei
 
   Simplified Transformer Network Architecture.
 
-When decoding an output sequence, the network is run repeatedly. A greedy approach looks something like this:
+When decoding an output sequence, the network is run repeatedly. During the first run *q* = 1. For each run afterwards, *q* increases, and the right-most dimension is selected as the generated symbol. 
+
+A greedy approach looks something like this:
 
 .. code-block:: python3
 
