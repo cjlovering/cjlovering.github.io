@@ -20,7 +20,7 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Transformer Network" href="003.html" />
+    <link rel="next" title="Transformer Networks" href="003.html" />
     <link rel="prev" title="Byte-Encoding Representation" href="001.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -60,7 +60,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Beam Search</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="003.html">Transformer Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="003.html">Transformer Networks</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../profile/research.html">Research</a></li>
@@ -118,8 +118,9 @@
       
   <div class="section" id="beam-search">
 <h1>Beam Search<a class="headerlink" href="#beam-search" title="Permalink to this headline">¶</a></h1>
-<p>Beam search is a method for decoding a sequence given am auto-regressive function which outputs a probability distribution over the next possible symbols. This works by inserting the already-generated symbols into the function iteratively. Naturally, this can change depending on the algorithm being used: a hidden markov model with a memory of 1 will only take the previous symbol; most recurrent neural networks will be stateful; transformer networks will take the entire prefix.</p>
-<p>This search algorithm is often used translation. Beam search is most often used at test time, not during training. The algorithm is also described in this paper [TODO]. For a full implementation see OpenNMT <a class="footnote-reference" href="#id3" id="id2">[1]</a>. I provide a basic implementation below for reference.</p>
+<p>Beam search is a method for decoding a sequence given an auto-regressive function that outputs a probability distribution over the next possible symbols. Ideally, a search algorithm would traverse the all paths and select the most probable sequence. However, this is prohibatively expensive.</p>
+<p>This search algorithm is often used translation. Beam search is most often used at test time, not during training. For a full implementation see OpenNMT <a class="footnote-reference" href="#id4" id="id1">[1]</a>. I provide a basic implementation below for reference.</p>
+<p>Beam search works iteratively. Naturally, the details depend on the decoding function: a hidden markov model with a memory of 1 consumes the previous symbol; recurrent neural networks are stateful <a class="reference internal" href="#cho2014learning2" id="id2">[1]</a>; and transformer networks consume the entire prefix <a class="reference internal" href="#vaswani2017attention2" id="id3">[2]</a>.</p>
 <div class="section" id="walkthrough">
 <h2>Walkthrough<a class="headerlink" href="#walkthrough" title="Permalink to this headline">¶</a></h2>
 <hr /><p>Given a function which takes a prefix of a sequence and outputs a probability distribution of output symbols for the next item in the sequence, beam-search is an approximate algorithm which searches for the path that results in the most probable sequence. The path with the highest probability to start with, may not end up being the most likely sequence. Log probability is used so that we can sum together the probabilities and avoid floating point errors.</p>
@@ -277,12 +278,26 @@ getImages(file_names);
 <div class="section" id="conclusion">
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
 <hr /><p>It is possible that if we searched all the paths, extending out from options we pruned early on by keeping only the top beams, we may have recieved a different result. If one used depth-first search, each path would be evaluated, but at exponential cost. For example, with a vocabulary of 3 possible output symbols, and a maximum length of 4 symbols, finding the most likely path would cost 81 operations, compared to the 8 we demonstrate above. Beam search does not maintain all possibilities. It keeps the current best-so-far h possibilties, only requiring a linear number of operations.</p>
-<table class="docutils footnote" frame="void" id="id3" rules="none">
+<table class="docutils footnote" frame="void" id="id4" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td><a class="reference external" href="https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py">https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py</a></td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><a class="reference external" href="https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py">https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py</a></td></tr>
 </tbody>
 </table>
+<p class="rubric">References</p>
+<p id="bibtex-bibliography-posts/002-0"><table class="docutils citation" frame="void" id="cho2014learning2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td>Kyunghyun Cho, Bart Van&nbsp;Merriënboer, Caglar Gulcehre, Dzmitry Bahdanau, Fethi Bougares, Holger Schwenk, and Yoshua Bengio. Learning phrase representations using rnn encoder-decoder for statistical machine translation. <em>arXiv preprint arXiv:1406.1078</em>, 2014. URL: <a class="reference external" href="https://arxiv.org/pdf/1406.1078.pdf">https://arxiv.org/pdf/1406.1078.pdf</a>.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="vaswani2017attention2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan&nbsp;N Gomez, Łukasz Kaiser, and Illia Polosukhin. Attention is all you need. In <em>Advances in Neural Information Processing Systems</em>, 5998–6008. 2017. URL: <a class="reference external" href="https://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf">https://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf</a>.</td></tr>
+</tbody>
+</table>
+</p>
 </div>
 </div>
 

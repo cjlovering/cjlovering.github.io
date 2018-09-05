@@ -1,10 +1,10 @@
-Transformer Network
--------------------
+Transformer Networks
+--------------------
 
 .. raw:: html
   :file: assets/header/003.html
 
-Attention is all you need :cite:`vaswani2017attention` introduces the Transformer Network. This network is a shift from recurrent networks; economy inspired its design. It is formulated so that it does not need to use any state or recurrent functions, and is parallelized across all the symbols in an input sequence. However, it is difficult to see how this works across sequences of different length; demonstrating how the Transformer Network fits together is my primary goal for this notebook.
+Attention is all you need :cite:`vaswani2017attention` introduces the Transformer Network. This network is a shift from recurrent networks; economy inspired its design. It does use stateful or recurrent functions, and is parallelized across all symbols in an input sequence. However, it is difficult to see how this formulation works with sequences of different length; demonstrating how the Transformer Network fits together is my primary goal for this notebook.
 
 Overview
 ~~~~~~~~
@@ -12,20 +12,9 @@ Overview
 
   <hr />
 
-This work focuses on the task of natural language translation (e.g. english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together. 
+This work focuses on the task of natural language translation (e.g. translating english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together. The Transformer Network (TN) is composed of attention modules, linear mappings, regularization features and uses an Encoder-Decoder structure. 
 
-Attention is all you need presents a new neural model call the Transformer Network (TN). It is composed of attention modules, linear mappings, features for increased regularization and an Encoder-Decoder structure. 
-
-External dependencies:
-
-* `Byte-Encoding`_
-* Layer Normalization
-* Residual Connections
-* `Beam Search`_
-
-.. note:: 
-
-  I modify and present implementations from the tensor2tensor_ library and `The Annotated Transformer`_ . For a complete view and implementation of this system, please visit these sources.
+I modify and present implementations from the tensor2tensor_ library and `The Annotated Transformer`_ . For a complete view and implementation of this system, please visit these sources. Diagrams are recreations, and all blocked quotes are from the original paper.
 
 Encoder-Decoder Structure
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -33,7 +22,7 @@ Encoder-Decoder Structure
 
   <hr />
 
-The transformer uses a `encoder-decoder`_ :cite:`bahdanau2014neural` structure: an input sequence of symbols, :math:`x = { x_1, x_2, \dots, x_n }`, is encoded into a sequence of continuous variables,  :math:`\mathbf{z} = { z_1, z_2, \dots, z_n }`. This is then decoded into a sequence of symbols, :math:`y = { y_1, y_2, \dots, y_n }`. In some cases, :math:`\mathbf{z}` is a single continuous variable. This generation of these symbols occurs one at a time - it is `auto-regressive`_ :cite:`graves`, consuming previously generated symbols as additional input when generating the next. Encoder-decoder structures usually use a recurrent architectures.
+The transformer uses a `encoder-decoder`_ :cite:`bahdanau2014neural` structure: an input sequence of symbols, :math:`x = { x_1, x_2, \dots, x_n }`, is encoded into a sequence of continuous variables, :math:`\mathbf{z} = { z_1, z_2, \dots, z_n }`. This is then decoded into a sequence of symbols, :math:`y = { y_1, y_2, \dots, y_n }`. In some cases, :math:`\mathbf{z}` is a single continuous variable rather than a sequence :cite:`cho2014learning`. This generation of these symbols occurs one at a time - it is `auto-regressive`_ :cite:`graves`, consuming previously generated symbols as additional input when generating the next. Encoder-decoders typically use recurrent architectures.
 
 .. _`encoder-decoder`: https://arxiv.org/abs/1409.0473
 .. _`auto-regressive`: https://arxiv.org/abs/1308.0850
@@ -86,7 +75,7 @@ As noted by the authors, attention maps a query to a combination of given output
 For their formulation of attention to work, there are a few requirements for the inputs. There must be mapping between the keys and values, and the compatibility function must be valid (be defined for) the queries and the keys. In the paper, there is 1:1 mapping between the keys and values (by index), and the dot-product compatibility function requires that the queries and the keys have the same dimensionality.
 
 .. figure:: /_static/images/003/attention-explained.svg
-  :height: 350px
+  :height: 250px
   :align: center
 
   Attention inuition.
@@ -224,21 +213,19 @@ Thus, the multi-headed attention is a function from :math:`R^{q \times d}` to :m
 Additionally, this module is able to support *h* different heads, and still output a fixed-size vector for each query by concatenation, and then applying a linear mapping to the output.
 
 .. figure:: /_static/images/003/multi-head.svg
-   :height: 350px
+   :height: 200px
    :align: center
 
    Scaled dot product attention.
 
-Input Representation
-~~~~~~~~~~~~~~~~~~~~
+Other features
+~~~~~~~~~~~~~~
 .. raw:: html
 
   <hr />
 
-This work used a Byte Pair Encoding scheme. This is a subword tokenization of your vocabulary. This is much more valuable than a UNK symbol. To build this representation, an iterative algorithm links together common segments, starting with character pairs.
-
 Position-wise Feed-Forward Networks
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+###################################
 .. raw:: html
 
   <hr />
@@ -284,13 +271,13 @@ As the authors describe:
   :height: 350px
   :align: center
 
-  Each dimension corresponds to its location; in the diagram below, each vertical slice of the graph would be added to the input word embeddings.
+  Each dimension corresponds to its location; each line in the vertical slice of the graph would be added to the corresponding dimension in the word embeddings.
 
 .. figure:: /_static/images/003/pe-dropout.svg
   :height: 350px
   :align: center
 
-  The authors use dropout to reduce the strength of the signal; the figure demonstrates its effect.
+  The authors use dropout to reduce the strength of the signal.
 
 Architecture
 ~~~~~~~~~~~~
@@ -305,15 +292,58 @@ Each instance of the transformer will output a probability for the next symbol. 
    :height: 650px
    :align: center
 
-Decoding
-~~~~~~~~
+Encoder
+#######
 .. raw:: html
 
   <hr />
 
-The linear layer takes an input of :math:`\mathbb{R}^{q \times m}` and has a weight shape of :math:`\mathbb{R}^{m \times vocab}`, outputing :math:`\mathbb{R}^{q \times vocab}`. During training, the decoding is set so that all subsequent positions are masked out during attention, so that a symbol could never see "into the future". So, the final linear layer will output a probability distribution for each query (each symbol generated so far) starting with the start symbol. When decoding the next symbol will always be the right-most dimension.
+The encoder consists of a stack of identical modules.
 
-When decoding an output sequence, the network is run repeatedly. A greedy approach looks something like this:
+.. figure:: /_static/images/003/encoder-architecture.svg
+  :height: 375px
+  :align: center
+
+  Transformer Network Encoder Details.
+
+First, an input embedding for each word is retrieved. TN uses `Byte-Encoding`_ Representation with a shared embedding matrix :cite:`sennrich2015neural` -- this itself improves performance. It is a subword tokenization of your vocabulary. Next a positional encoding is added pointwise to each dimension of the input vector. The identical encoder modules will operate on this representation.
+
+The two sublayers are Multi-Head Attention (self-attending) and a feed forward layer. This process manipulates the inputs and captures their interactions, outputting a sequence of the same dimensionality. As the authors note, this is used to make using the residual connections more natural. (It is possible to use residual connections with varying dimensions, but it is less clean.) 
+
+The residual connections maintain a direct path to the inputs, and the normalization stabilizes the embeddings. This encoder architecture mirrors Highway Networks :cite:`srivastava2015highway` because additive connections allow for a clear path through the architecture, supporting many layers.
+
+Decoder
+#######
+.. raw:: html
+
+  <hr />
+
+The decoder resembles the encoder. All symbols already generated (beginning with a start symbol) are embedded and combined with the positional encoding.
+
+.. figure:: /_static/images/003/decoder-architecture.svg
+  :height: 650px
+  :align: center
+
+  Transformer Network Decoder Details.
+
+Next, masked self-attention is computed. A mask is applied so that only the right-most output can see previous outputs, preventing any contamination. After this, multi-headed attenion is applied, where the output sequences are the queries, and the encoded symbols are the keys and the queries. This maps the dimensionality of the vectors to be the same as those outputted by the encoder. The previous outputs served to mark what information has already been regressed; the linear maps intrinsic to the multi-head attention could make the compatibility *negative* in some sense, ignoring already generated content. After a feed forward layer, this process is repeated N times. 
+
+After the first "execution" of the decoder, the inputs to the module are derived from the encoded symbols rather than the previous output symbols. Note that while the encoder and decoder modules are repeated, they do not share weights. They are separate instances. Thus, I expect the first and second decoder layers learn different things. Finally, after decoding the encoded inputs, a linear map is applied to the vectors and a softmax generates an output probability distribution.
+
+Decoding
+########
+
+The linear layer takes an input of *q* inputs :math:`\mathbb{R}^{d_{model}}` and has a weight shape of :math:`\mathbb{R}^{d_{model} \times vocab}`, outputing :math:`\mathbb{R}^{q \times vocab}`. During training, the decoding is set so that all subsequent positions are masked out during attention, so that a symbol could never see "into the future". So, the final linear layer will output a probability distribution for each query (each symbol generated so far) starting with the start symbol. When decoding the next symbol will always be the right-most dimension.
+
+.. figure:: /_static/images/003/simple-architecture.svg
+  :height: 350px
+  :align: center
+
+  Simplified Transformer Network Architecture.
+
+When decoding an output sequence, the network is run repeatedly. During the first run *q* = 1. For each run afterwards, *q* increases, and the right-most dimension is selected as the generated symbol. 
+
+A greedy approach looks something like this:
 
 .. code-block:: python3
 

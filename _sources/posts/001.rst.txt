@@ -1,7 +1,10 @@
 Byte-Encoding Representation
 ----------------------------
 
-This is a subword tokenization of a vocabulary. An example of how this would work and be useful at test time from Sennrich et al. :cite:`sennrich2015neural` is as follows:
+.. raw:: html
+  :file: assets/header/001.html
+
+This is a subword tokenization of a vocabulary. An example of how this would work and be useful at test time from Sennrich et al. :cite:`sennrich2015neural2` is as follows:
 
 .. code-block:: python3
 
