@@ -225,8 +225,14 @@ Additionally, this module is able to support *h* different heads, and still outp
 
    Scaled dot product attention.
 
+Other features
+~~~~~~~~~~~~~~
+.. raw:: html
+
+  <hr />
+
 Input Representation
-~~~~~~~~~~~~~~~~~~~~
+####################
 .. raw:: html
 
   <hr />
@@ -234,7 +240,7 @@ Input Representation
 This work used a Byte Pair Encoding scheme. This is a subword tokenization of your vocabulary. This is much more valuable than a UNK symbol. To build this representation, an iterative algorithm links together common segments, starting with character pairs.
 
 Position-wise Feed-Forward Networks
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+###################################
 .. raw:: html
 
   <hr />
@@ -313,10 +319,12 @@ Encoder
 
   Transformer Network Encoder Architecture.
 
-After reviewing the modules in turn, the structure as a whole is transparent. An input embedding for each word is retrieved. TN uses Byte-Encoding Representation with a shared embedding matrix :cite:`sennrich2015neural`.
+After reviewing the modules in turn, the structure as a whole is transparent. An input embedding for each word is retrieved. TN uses Byte-Encoding Representation with a shared embedding matrix :cite:`sennrich2015neural` -- this itself improves performance. Next a positional encoding is added pointwise to each dimension of the input vector.
 
-Decoding
-########
+Next, the encoder module operates on the input representation N times (6). The two sublayers are self-attending Multi-Head Attention and a feed forward layer. Tailored to the decoder (and the target language), this process manipulates the inputs and captures their interactions, encoding the sequence, and outputting a sequence of the same shape. The residual connections maintain a direct path to the inputs, and the normalization stabilizes the embeddings.
+
+Decoder
+#######
 .. raw:: html
 
   <hr />
@@ -328,7 +336,16 @@ Decoding
 
   Transformer Network Decoder Architecture.
 
+Decoding
+########
+
 The linear layer takes an input of :math:`\mathbb{R}^{q \times m}` and has a weight shape of :math:`\mathbb{R}^{m \times vocab}`, outputing :math:`\mathbb{R}^{q \times vocab}`. During training, the decoding is set so that all subsequent positions are masked out during attention, so that a symbol could never see "into the future". So, the final linear layer will output a probability distribution for each query (each symbol generated so far) starting with the start symbol. When decoding the next symbol will always be the right-most dimension.
+
+.. figure:: /_static/images/003/simple-architecture.svg
+  :height: 350px
+  :align: center
+
+  Simplified Transformer Network Architecture.
 
 When decoding an output sequence, the network is run repeatedly. A greedy approach looks something like this:
 
