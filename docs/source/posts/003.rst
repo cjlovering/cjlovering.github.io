@@ -323,7 +323,7 @@ After reviewing the modules in turn, the structure as a whole is more transparen
 
 Next, the encoder module operates on the input representation N times (6). The two sublayers are self-attending Multi-Head Attention and a feed forward layer. Tailored to the decoder (and the target language), this process manipulates the inputs and captures their interactions, encoding the sequence, and outputting a sequence of the same shape. 
 
-The residual connections maintain a direct path to the inputs, and the normalization stabilizes the embeddings. This encoder architecture mirrors Highway Networks (and ResNet) in that additive connections allow for a clear path through the architecture, supporting many layers.
+The residual connections maintain a direct path to the inputs, and the normalization stabilizes the embeddings. This encoder architecture mirrors Highway Networks :cite:`highway` (and ResNet) in that additive connections allow for a clear path through the architecture, supporting many layers.
 
 Decoder
 #######
@@ -331,6 +331,7 @@ Decoder
 
   <hr />
 
+The decoder resembles the encoder. All symbols already generated (beginning with a start symbol) are embedded and combined with the positional encoding.
 
 .. figure:: /_static/images/003/decoder-architecture.svg
   :height: 650px
@@ -338,13 +339,9 @@ Decoder
 
   Transformer Network Decoder Architecture.
 
-The decoder resembles the encoder. All symbols already generated (beginning with a start symbol) are embedded and combined with the positional encoding. 
-
 Next, masked self-attention is computed. A mask is applied so that only the right-most output can see previous outputs, preventing any contamination. After this, multi-headed attenion is applied, where the output sequences are the queries, and the encoded symbols are the keys and the queries. This maps the dimensionality of the vectors to be the same as those outputted by the encoder. The previous outputs served to mark what information has already been regressed; the linear maps intrinsic to the multi-head attention could make the compatibility *negative* in some sense, ignoring already generated content. After a feed forward layer, this process is repeated N times. 
 
-For future work, it would be interesting to see adaptive computation employed here. Would the additional complexity be of any use or save any computation? It seems like some sentences might require less "decoding".
-
-After decoding the encoded inputs, a linear map is applied to the vectors and a softmax generates an output probability distribution.
+After the first "execution" of the decoder, the inputs to the module are derived from the encoded symbols rather than the previous output symbols. Note that while the encoder and decoder modules are repeated, they do not share weights. They are separate instances. Thus, I expect the first and second decoder layers learn different things. Finally, after decoding the encoded inputs, a linear map is applied to the vectors and a softmax generates an output probability distribution.
 
 Decoding
 ########
