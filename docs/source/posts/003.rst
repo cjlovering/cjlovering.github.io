@@ -4,7 +4,7 @@ Transformer Networks
 .. raw:: html
   :file: assets/header/003.html
 
-Attention is all you need :cite:`vaswani2017attention` introduces the Transformer Network. This network is a shift from recurrent networks; economy inspired its design. It is formulated so that it does not need to use any state or recurrent functions, and is parallelized across all the symbols in an input sequence. However, it is difficult to see how this works across sequences of different length; demonstrating how the Transformer Network fits together is my primary goal for this notebook.
+Attention is all you need :cite:`vaswani2017attention` introduces the Transformer Network. This network is a shift from recurrent networks; economy inspired its design. It does use stateful or recurrent functions, and is parallelized across all symbols in an input sequence. However, it is difficult to see how this formulation works with sequences of different length; demonstrating how the Transformer Network fits together is my primary goal for this notebook.
 
 Overview
 ~~~~~~~~
@@ -12,9 +12,7 @@ Overview
 
   <hr />
 
-This work focuses on the task of natural language translation (e.g. english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together. 
-
-Attention is all you need presents a new neural model call the Transformer Network (TN). It is composed of attention modules, linear mappings, features for increased regularization and an Encoder-Decoder structure. 
+This work focuses on the task of natural language translation (e.g. translating english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together. The Transformer Network (TN) is composed of attention modules, linear mappings, regularization features and uses an Encoder-Decoder structure. 
 
 External dependencies:
 
@@ -23,9 +21,7 @@ External dependencies:
 * Residual Connections
 * `Beam Search`_
 
-.. note:: 
-
-  I modify and present implementations from the tensor2tensor_ library and `The Annotated Transformer`_ . For a complete view and implementation of this system, please visit these sources.
+I modify and present implementations from the tensor2tensor_ library and `The Annotated Transformer`_ . For a complete view and implementation of this system, please visit these sources.
 
 Encoder-Decoder Structure
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -33,7 +29,7 @@ Encoder-Decoder Structure
 
   <hr />
 
-The transformer uses a `encoder-decoder`_ :cite:`bahdanau2014neural` structure: an input sequence of symbols, :math:`x = { x_1, x_2, \dots, x_n }`, is encoded into a sequence of continuous variables,  :math:`\mathbf{z} = { z_1, z_2, \dots, z_n }`. This is then decoded into a sequence of symbols, :math:`y = { y_1, y_2, \dots, y_n }`. In some cases, :math:`\mathbf{z}` is a single continuous variable. This generation of these symbols occurs one at a time - it is `auto-regressive`_ :cite:`graves`, consuming previously generated symbols as additional input when generating the next. Encoder-decoder structures usually use a recurrent architectures.
+The transformer uses a `encoder-decoder`_ :cite:`bahdanau2014neural` structure: an input sequence of symbols, :math:`x = { x_1, x_2, \dots, x_n }`, is encoded into a sequence of continuous variables, :math:`\mathbf{z} = { z_1, z_2, \dots, z_n }`. This is then decoded into a sequence of symbols, :math:`y = { y_1, y_2, \dots, y_n }`. In some cases, :math:`\mathbf{z}` is a single continuous variable rather than a sequence :cite:`cho2014learning`. This generation of these symbols occurs one at a time - it is `auto-regressive`_ :cite:`graves`, consuming previously generated symbols as additional input when generating the next. Encoder-decoders typically use recurrent architectures.
 
 .. _`encoder-decoder`: https://arxiv.org/abs/1409.0473
 .. _`auto-regressive`: https://arxiv.org/abs/1308.0850
