@@ -82,7 +82,7 @@ As noted by the authors, attention maps a query to a combination of given output
 For their formulation of attention to work, there are a few requirements for the inputs. There must be mapping between the keys and values, and the compatibility function must be valid (be defined for) the queries and the keys. In the paper, there is 1:1 mapping between the keys and values (by index), and the dot-product compatibility function requires that the queries and the keys have the same dimensionality.
 
 .. figure:: /_static/images/003/attention-explained.svg
-  :height: 350px
+  :height: 250px
   :align: center
 
   Attention inuition.
@@ -220,7 +220,7 @@ Thus, the multi-headed attention is a function from :math:`R^{q \times d}` to :m
 Additionally, this module is able to support *h* different heads, and still output a fixed-size vector for each query by concatenation, and then applying a linear mapping to the output.
 
 .. figure:: /_static/images/003/multi-head.svg
-   :height: 350px
+   :height: 200px
    :align: center
 
    Scaled dot product attention.
@@ -230,14 +230,6 @@ Other features
 .. raw:: html
 
   <hr />
-
-Input Representation
-####################
-.. raw:: html
-
-  <hr />
-
-This work used a Byte Pair Encoding scheme. This is a subword tokenization of your vocabulary. This is much more valuable than a UNK symbol. To build this representation, an iterative algorithm links together common segments, starting with character pairs.
 
 Position-wise Feed-Forward Networks
 ###################################
@@ -286,13 +278,13 @@ As the authors describe:
   :height: 350px
   :align: center
 
-  Each dimension corresponds to its location; in the diagram below, each vertical slice of the graph would be added to the input word embeddings.
+  Each dimension corresponds to its location; each line in the vertical slice of the graph would be added to the corresponding dimension in the word embeddings.
 
 .. figure:: /_static/images/003/pe-dropout.svg
   :height: 350px
   :align: center
 
-  The authors use dropout to reduce the strength of the signal; the figure demonstrates its effect.
+  The authors use dropout to reduce the strength of the signal.
 
 Architecture
 ~~~~~~~~~~~~
@@ -321,7 +313,7 @@ The encoder consists of a stack of identical modules.
 
   Transformer Network Encoder Details.
 
-First, an input embedding for each word is retrieved. TN uses Byte-Encoding Representation with a shared embedding matrix :cite:`sennrich2015neural` -- this itself improves performance. Next a positional encoding is added pointwise to each dimension of the input vector. The identical encoder modules will operate on this representation.
+First, an input embedding for each word is retrieved. TN uses Byte-Encoding Representation with a shared embedding matrix :cite:`sennrich2015neural` -- this itself improves performance. It is a subword tokenization of your vocabulary. Next a positional encoding is added pointwise to each dimension of the input vector. The identical encoder modules will operate on this representation.
 
 The two sublayers are Multi-Head Attention (self-attending) and a feed forward layer. This process manipulates the inputs and captures their interactions, outputting a sequence of the same dimensionality. As the authors note, this is used to make using the residual connections more natural. (It is possible to use residual connections with varying dimensions, but it is less clean.) 
 
