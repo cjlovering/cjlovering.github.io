@@ -301,11 +301,32 @@ Each instance of the transformer will output a probability for the next symbol. 
    :height: 650px
    :align: center
 
-Decoding
-~~~~~~~~
+Encoder
+#######
 .. raw:: html
 
   <hr />
+
+.. figure:: /_static/images/003/encoder-architecture.svg
+  :height: 375px
+  :align: center
+
+  Transformer Network Encoder Architecture.
+
+After reviewing the modules in turn, the structure as a whole is transparent. An input embedding for each word is retrieved. TN uses Byte-Encoding Representation with a shared embedding matrix :cite:`sennrich2015neural`.
+
+Decoding
+########
+.. raw:: html
+
+  <hr />
+
+
+.. figure:: /_static/images/003/decoder-architecture.svg
+  :height: 650px
+  :align: center
+
+  Transformer Network Decoder Architecture.
 
 The linear layer takes an input of :math:`\mathbb{R}^{q \times m}` and has a weight shape of :math:`\mathbb{R}^{m \times vocab}`, outputing :math:`\mathbb{R}^{q \times vocab}`. During training, the decoding is set so that all subsequent positions are masked out during attention, so that a symbol could never see "into the future". So, the final linear layer will output a probability distribution for each query (each symbol generated so far) starting with the start symbol. When decoding the next symbol will always be the right-most dimension.
 
