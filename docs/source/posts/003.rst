@@ -319,9 +319,11 @@ Encoder
 
   Transformer Network Encoder Architecture.
 
-After reviewing the modules in turn, the structure as a whole is transparent. An input embedding for each word is retrieved. TN uses Byte-Encoding Representation with a shared embedding matrix :cite:`sennrich2015neural` -- this itself improves performance. Next a positional encoding is added pointwise to each dimension of the input vector.
+After reviewing the modules in turn, the structure as a whole is more transparent. An input embedding for each word is retrieved. TN uses Byte-Encoding Representation with a shared embedding matrix :cite:`sennrich2015neural` -- this itself improves performance. Next a positional encoding is added pointwise to each dimension of the input vector.
 
-Next, the encoder module operates on the input representation N times (6). The two sublayers are self-attending Multi-Head Attention and a feed forward layer. Tailored to the decoder (and the target language), this process manipulates the inputs and captures their interactions, encoding the sequence, and outputting a sequence of the same shape. The residual connections maintain a direct path to the inputs, and the normalization stabilizes the embeddings.
+Next, the encoder module operates on the input representation N times (6). The two sublayers are self-attending Multi-Head Attention and a feed forward layer. Tailored to the decoder (and the target language), this process manipulates the inputs and captures their interactions, encoding the sequence, and outputting a sequence of the same shape. 
+
+The residual connections maintain a direct path to the inputs, and the normalization stabilizes the embeddings. This encoder architecture mirrors Highway Networks (and ResNet) in that additive connections allow for a clear path through the architecture, supporting many layers.
 
 Decoder
 #######
