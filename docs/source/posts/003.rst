@@ -313,15 +313,17 @@ Encoder
 
   <hr />
 
+The encoder consists of a stack of identical modules.
+
 .. figure:: /_static/images/003/encoder-architecture.svg
   :height: 375px
   :align: center
 
-  Transformer Network Encoder Architecture.
+  Transformer Network Encoder Details.
 
-After reviewing the modules in turn, the structure as a whole is more transparent. An input embedding for each word is retrieved. TN uses Byte-Encoding Representation with a shared embedding matrix :cite:`sennrich2015neural` -- this itself improves performance. Next a positional encoding is added pointwise to each dimension of the input vector.
+First, an input embedding for each word is retrieved. TN uses Byte-Encoding Representation with a shared embedding matrix :cite:`sennrich2015neural` -- this itself improves performance. Next a positional encoding is added pointwise to each dimension of the input vector. The identical encoder modules will operate on this representation.
 
-Next, the encoder module operates on the input representation N times (6). The two sublayers are self-attending Multi-Head Attention and a feed forward layer. Tailored to the decoder (and the target language), this process manipulates the inputs and captures their interactions, encoding the sequence, and outputting a sequence of the same shape. 
+The two sublayers are Multi-Head Attention (self-attending) and a feed forward layer. This process manipulates the inputs and captures their interactions, outputting a sequence of the same dimensionality. As the authors note, this is used to make using the residual connections more natural. (It is possible to use residual connections with varying dimensions, but it is less clean.) 
 
 The residual connections maintain a direct path to the inputs, and the normalization stabilizes the embeddings. This encoder architecture mirrors Highway Networks :cite:`highway` (and ResNet) in that additive connections allow for a clear path through the architecture, supporting many layers.
 
@@ -337,7 +339,7 @@ The decoder resembles the encoder. All symbols already generated (beginning with
   :height: 650px
   :align: center
 
-  Transformer Network Decoder Architecture.
+  Transformer Network Decoder Details.
 
 Next, masked self-attention is computed. A mask is applied so that only the right-most output can see previous outputs, preventing any contamination. After this, multi-headed attenion is applied, where the output sequences are the queries, and the encoded symbols are the keys and the queries. This maps the dimensionality of the vectors to be the same as those outputted by the encoder. The previous outputs served to mark what information has already been regressed; the linear maps intrinsic to the multi-head attention could make the compatibility *negative* in some sense, ignoring already generated content. After a feed forward layer, this process is repeated N times. 
 
