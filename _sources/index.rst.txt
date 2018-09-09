@@ -35,6 +35,7 @@ cjlovering
    :maxdepth: 1
 
    posts/003.rst
+   posts/004.rst
 
 .. raw:: html
 

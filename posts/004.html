@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Test &#8212; cjlovering 0.0 documentation</title>
+    <title>Neural Turing Machines &#8212; cjlovering 0.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/style.css" type="text/css" />
@@ -20,8 +20,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Transformer Network" href="003.html" />
-    <link rel="prev" title="Beam Search" href="002.html" />
+    <link rel="next" title="Research" href="../profile/research.html" />
+    <link rel="prev" title="Transformer Networks" href="003.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -55,13 +55,13 @@
      href="../index.html">Site <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"><ul class="current">
+      aria-labelledby="dLabelGlobalToc"><ul>
 <li class="toctree-l1"><a class="reference internal" href="001.html">Byte-Encoding Representation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="002.html">Beam Search</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Test</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="003.html">Transformer Network</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="003.html">Transformer Networks</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Neural Turing Machines</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../profile/research.html">Research</a></li>
@@ -82,10 +82,9 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Test</a><ul>
-<li><a class="reference internal" href="#a">A</a></li>
-<li><a class="reference internal" href="#b">B</a></li>
-<li><a class="reference internal" href="#c">C</a></li>
+<li><a class="reference internal" href="#">Neural Turing Machines</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#architecture">Architecture</a></li>
 </ul>
 </li>
 </ul>
@@ -117,182 +116,61 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <div class="section" id="test">
-<h1>Test<a class="headerlink" href="#test" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="a">
-<h2>A<a class="headerlink" href="#a" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="neural-turing-machines">
+<h1>Neural Turing Machines<a class="headerlink" href="#neural-turing-machines" title="Permalink to this headline">¶</a></h1>
+<h4>Neural Turing Machines</h4>
+<hr />
+<table>
+  <thead>
+    <tr>
+      <th width="150px"> Authors </th> 
+      <th width="150px"> Affliation </th> 
+      <th width="300px"> Links </th> </tr>
+  </thead>
+  <tbody>
+      <td>Ashish Vaswani</td>
+      <td>Google DeepMind</td>
+      <td><a href="https://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf"> PDF </a> </td>
+    </tr>
+    <tr>
+      <td>Greg Wayne</td>
+    </tr>
+    <tr>
+      <td>Ivo Danihelka</td>
+    </tr>
+  </tbody>
+</table>
+<hr /><p>Neural Turing Machines <a class="reference internal" href="#graves2014neural" id="id1">[1]</a> are able to learn simple algorithms that generalize “far beyond” the training data. Since publication there have been following up works, but this paper introduces some important mechanisms.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<hr /><p>This is a work in progress.</p>
+<p>The paper focused on the experiments and the results – this notebook provides an overview of some of the implementation details.</p>
 </div>
-<div class="section" id="b">
-<h2>B<a class="headerlink" href="#b" title="Permalink to this headline">¶</a></h2>
-<html>
-
-<h1> Hello world </h1>
-<div id="target">
+<div class="section" id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
+<hr /><p>The authors used the proposed Neural Turing Machine (NTM) to solve a range of basic data manipulation tasks. An external controller network utilizes NTM’s API of blurry read and write operations to tackle the task.</p>
+<div class="figure align-center">
+<img alt="../_images/simple-architecture1.svg" height="150px" src="../_images/simple-architecture1.svg" /></div>
+<p>The controller has a number of heads which each other read or write from the memory. The number and purpose of the heads is static (part of the network configuration). The generic API for the controller as a whole is only a sequence of vectors (describing a problem) and then the controller will output an answer for the given problem once a termination symbol is reached. There is no intermittent guidance on how the controller uses the NTM to organize information. The authors hypothesized, and at least to some degree demonstrated, that the controller and the NTM in concert learn to construct generalizable programs.</p>
+<p>The read operation is a weighted sum of the stateful memory <span class="math notranslate nohighlight">\(M \in \mathbb{R}^{N \times M}\)</span> as determined by a mask <span class="math notranslate nohighlight">\(w \in \mathbb{R}^{N}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\sum_i M_i w_i \in \mathbb{R}^{M}\]</div>
+<p>The write is more complicated; it uses something akin to the gating mechanism in an LSTM to update memory positions. The update is applied across all of its memory, but again, the update is controlled using the same mask as above.</p>
+<p>TODO: Add the writing section, add diagrams for reading and writing.</p>
+<p>The NTM uses a novel mechanism for addressing content inside its memory.</p>
+<div class="figure align-center" id="id2">
+<img alt="../_images/addressing.svg" height="450px" src="../_images/addressing.svg" /><p class="caption"><span class="caption-text">Addressing mechanism to create a mask used for reading and writing.</span></p>
 </div>
-<style>
-circle:hover {
-  stroke-width: 2px;
-}
-</style>
-
-<script src="https://d3js.org/d3.v4.js"></script>
-<script>
-
-const animate = function(images, file_names) {
-  const buttons = d3.select('#target')
-    .append("svg")
-    .attr("width", 700)
-    .attr("height", 100);
-  
-  const canvas = d3.select('#target')
-    .append("svg")
-    .attr("width", 700)
-    .attr("height", 500);
-
-  const show = (i) => {
-    const img = images[file_names[i]];
-    canvas.selectAll('svg').remove();
-    canvas.node().appendChild(img);
-  }
-
-  buttons.selectAll("circle")
-    .data([0,1,2,3])
-    .enter()
-    .append('circle')
-    .attr('r', 15)
-    .attr('stroke', 'grey')
-    .attr('fill', 'white')
-    .attr('cx', d => { console.log(d); return d*70 + 65; } )
-    .attr('cy', 75)
-    .on("mouseover", d => show(d));
-}
-
-const getImage = function(file_path, saveImage) {
-  d3.xml(file_path).mimeType("image/svg+xml").get((error, xml) => {
-    if (error) throw error;
-    const svg = xml.documentElement;
-    svg.setAttribute("height", "400px");
-    svg.setAttribute("preserveAspectRatio", "xMinYMin meet");
-    svg.id = file_path;
-    saveImage(file_path, svg);
-  });
-}
-
-const getImages = function(file_names) {
-  let images = {};
-  const saveImage = (file_path, img) => {
-    images[file_path] = img;
-    if (Object.keys(images).length >= file_names.length) {
-      animate(images, file_names);
-    }
-  }
-  file_names.forEach(name => getImage(name, saveImage));
-  return images;
-}
-
-const file_names = [
-  '../_static/images/002/beam-search-graph-01.svg',
-  '../_static/images/002/beam-search-graph-02.svg',
-  '../_static/images/002/beam-search-graph-03.svg',
-  '../_static/images/002/beam-search-graph-04.svg',
-  '../_static/images/002/beam-search-graph-05.svg'
-];
-getImages(file_names);
-</script>
-</html>
-</div>
-<div class="section" id="c">
-<h2>C<a class="headerlink" href="#c" title="Permalink to this headline">¶</a></h2>
-<html>
-<script src="https://d3js.org/d3.v5.min.js"></script>
-
-<svg>
-<defs>
-  <marker
-    id="arrow"
-    markerUnits="strokeWidth"
-    markerWidth="12"
-    markerHeight="12"
-    viewBox="0 0 12 12"
-    refX="6"
-    refY="6"
-    orient="auto">
-    <path d="M2,2 L10,6 L2,10 L6,6 L2,2" style="fill: grey;"></path>
-  </marker>
-</defs>
-</svg>
-
-<script>
-  //Make an SVG Container
-  
-  let canvas = d3.select("svg")
-      .attr("width", 500)
-      .attr("height", 500);
-
- //Draw the Rectangle
- const word_embeddings = function(words, bottom=200){
-  const BOTTOM = bottom;
-  const HEIGHT = 55;
-  const WIDTH = 55;
-  const PADDING = 5;
-  const START = 50;
-  const E_WIDTH = 15;
-
-  const getX = (_,i) => {
-    return START + (PADDING + WIDTH) * i;
-  }
-  const getEmbedX = (_,i) => {
-    return START + (PADDING + WIDTH) * i + WIDTH / 2 - E_WIDTH / 2;
-  }
-  const getArrowX = (_,i) => {
-    return getX(_,i) + (WIDTH + 2) / 2;
-  }
-
-  let text = canvas
-    .selectAll("text")
-    .data(words)
-    .enter()
-    .append("text");
-
-  let labels = text
-    .attr("x", getX)
-    .attr("y", BOTTOM - PADDING)
-    .text(function (d) { return d;})
-    .attr("font-family", "monospace")
-    .attr("font-size", "25px")
-    .attr("fill", "black");
-
-  let rects = canvas
-    .selectAll("rect")
-    .data(words)
-    .enter()
-    .append("rect");
-
-  let circleAttributes = rects
-    .attr("x", getEmbedX)
-    .attr("y", BOTTOM - 55 - HEIGHT - PADDING)
-    .attr("height", HEIGHT)
-    .attr("width", E_WIDTH)
-    .attr("fill", "lightblue");
-
-  let arrows = canvas
-    .selectAll("line")
-    .data(words)
-    .enter()
-    .append("line")
-    .attr("x1",getArrowX)
-    .attr("y1",BOTTOM - 25)
-    .attr("x2",getArrowX)
-    .attr("y2",BOTTOM - 50)
-    .attr("stroke","grey")
-    .attr("stroke-width",2)
-    .attr("marker-end","url(#arrow)");
-  }
-  word_embeddings(["the", "cat", "in", "the", "hat"]);
-
-</script>
-
-</html>
+<p>TODO: Detail specific layers.</p>
+<p>TODO: Provide basic code that shows how this code work.</p>
+<p class="rubric">References</p>
+<p id="bibtex-bibliography-posts/004-0"><table class="docutils citation" frame="void" id="graves2014neural" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Alex Graves, Greg Wayne, and Ivo Danihelka. Neural turing machines. <em>arXiv preprint arXiv:1410.5401</em>, 2014.</td></tr>
+</tbody>
+</table>
+</p>
 </div>
 </div>
 

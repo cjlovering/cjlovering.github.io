@@ -1,20 +1,58 @@
-Test
-----
-
-A
-~
+Neural Turing Machines
+----------------------
 
 .. raw:: html
-  :file: /_static/beam-search-graph.html
+  :file: assets/header/004.html
 
-B
-~
+Neural Turing Machines :cite:`graves2014neural` are able to learn simple algorithms that generalize "far beyond" the training data. Since publication there have been following up works, but this paper introduces some important mechanisms.
 
+Overview
+~~~~~~~~
 .. raw:: html
-  :file: assets/viz/beam-search-graph.html
 
-C
-~
+  <hr />
 
+This is a work in progress.
+
+The paper focused on the experiments and the results -- this notebook provides an overview of some of the implementation details.  
+
+Architecture
+~~~~~~~~~~~~
 .. raw:: html
-  :file: assets/viz/v2.html
+
+  <hr />
+
+The authors used the proposed Neural Turing Machine (NTM) to solve a range of basic data manipulation tasks. An external controller network utilizes NTM's API of blurry read and write operations to tackle the task.
+
+.. figure:: /_static/images/004/simple-architecture.svg
+  :height: 150px
+  :align: center
+
+The controller has a number of heads which each other read or write from the memory. The number and purpose of the heads is static (part of the network configuration). The generic API for the controller as a whole is only a sequence of vectors (describing a problem) and then the controller will output an answer for the given problem once a termination symbol is reached. There is no intermittent guidance on how the controller uses the NTM to organize information. The authors hypothesized, and at least to some degree demonstrated, that the controller and the NTM in concert learn to construct generalizable programs.
+
+The read operation is a weighted sum of the stateful memory :math:`M \in \mathbb{R}^{N \times M}` as determined by a mask :math:`w \in \mathbb{R}^{N}`.
+
+.. math::
+  \sum_i M_i w_i \in \mathbb{R}^{M}
+
+The write is more complicated; it uses something akin to the gating mechanism in an LSTM to update memory positions. The update is applied across all of its memory, but again, the update is controlled using the same mask as above.
+
+TODO: Add the writing section, add diagrams for reading and writing.
+
+The NTM uses a novel mechanism for addressing content inside its memory.
+
+.. figure:: /_static/images/004/addressing.svg
+  :height: 450px
+  :align: center
+
+  Addressing mechanism to create a mask used for reading and writing.
+
+TODO: Detail specific layers.
+
+TODO: Provide basic code that shows how this code work.
+
+.. rubric:: References
+
+.. bibliography:: assets/refs/refs_004.bib
+  :style: unsrt
+
