@@ -37,5 +37,5 @@ Imagitas
 
 `Summer 2015` - Software Engineering Intern
 
-Epsum.
-
+- Developed deployment scripts.
+- Improved automatic test framework.
