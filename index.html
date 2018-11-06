@@ -1,220 +1,61 @@
-<!DOCTYPE html>
+<head>
+    <link rel="shortcut icon" href="_static/favicon.ico">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</head>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>cjlovering &#8212; cjlovering 0.0 documentation</title>
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/style.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Byte-Encoding Representation" href="posts/001.html" />
-<meta charset='utf-8'>
-<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
-<meta name="apple-mobile-web-app-capable" content="yes">
+<!doctype html>
+<meta charset="utf-8">
+<script src="https://distill.pub/template.v2.js"></script>
 
-  </head><body>
+<body>
+    <d-front-matter>
+    <script type="text/json">{
+        "title": "Expositions in NLU & Related Fields",
+        "description": "--",
+        "authors": [
+            {
+                "author": "Charlie Lovering",
+                "authorURL": "https://github.com/cjlovering",
+                "affiliation": "Brown University",
+                "affiliationURL": "https://cs.brown.edu/people/epavlick/students.html"
+            }
+        ]
+    }
+    </script>
+</d-front-matter>
 
-  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">
-          cjlovering</a>
-        <span class="navbar-text navbar-version pull-left"><b></b></span>
-      </div>
+<d-title>
+    <h1>Expositions in Natural Language Understanding</h1>
+    <p> And investigations in related fields.</p>
+    <div class="l-page" id="vtoc"></div>
+</d-title>
 
-        <div class="collapse navbar-collapse nav-collapse">
-          <ul class="nav navbar-nav">
-            
-            
-              <li class="dropdown globaltoc-container">
-  <a role="button"
-     id="dLabelGlobalToc"
-     data-toggle="dropdown"
-     data-target="#"
-     href="#">Site <b class="caret"></b></a>
-  <ul class="dropdown-menu globaltoc"
-      role="menu"
-      aria-labelledby="dLabelGlobalToc"><ul>
-<li class="toctree-l1"><a class="reference internal" href="posts/001.html">Byte-Encoding Representation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="posts/002.html">Beam Search</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="posts/003.html">Transformer Networks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="posts/004.html">Neural Turing Machines</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="profile/research.html">Research</a></li>
-<li class="toctree-l1"><a class="reference internal" href="profile/professional.html">Professional</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="profile/publications.html">Publications</a></li>
-</ul>
-</ul>
-</li>
-              
-                <li class="dropdown">
-  <a role="button"
-     id="dLabelLocalToc"
-     data-toggle="dropdown"
-     data-target="#"
-     href="#">Page <b class="caret"></b></a>
-  <ul class="dropdown-menu localtoc"
-      role="menu"
-      aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">cjlovering</a><ul>
-</ul>
-</li>
-</ul>
-</ul>
-</li>
-              
-            
-            
-            
-            
-            
-          </ul>
+<d-article class="centered">
+    <p>This site maintains some notes on papers I have read. Presenting material so that others understand is the best way for me to improve my understanding.  For some papers, there are existing explications. However, the process of looking at these papers helps me understand them better, and might afford others another persepective.</p>
 
-          
-            
-<form class="navbar-form navbar-right" action="search.html" method="get">
- <div class="form-group">
-  <input type="text" name="q" class="form-control" placeholder="Search" />
- </div>
-  <input type="hidden" name="check_keywords" value="yes" />
-  <input type="hidden" name="area" value="default" />
-</form>
-          
+    <div style="max-width:590px;display:grid;grid-template-columns:50% 50%;grid-column-gap:0%">
+        <div>
+            <h3>Methods</h3>
+            <ul>
+                <li><a href="posts/byte-encoding/index.html">Byte Encoding Representation</a></li>
+                <li><a href="posts/beam-search/index.html">Beam Search</a></li>
+            </ul>
+        </div>
+        <div>
+            <h3>Models</h3>
+            <ul>
+                <li><a href="posts/transformer-networks/index.html">Transformer Networks</a></li>
+                <li><a href="posts/neural-turing/index.html">Neural Turing Machine</a></li>
+            </ul>
         </div>
     </div>
-  </div>
+</div>  
+</d-article>
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-12 content">
-      
-  <div class="section" id="cjlovering">
-<h1>cjlovering<a class="headerlink" href="#cjlovering" title="Permalink to this headline">¶</a></h1>
-<hr />
-<div class="container-fluid">
-<div class="panel panel-default">
-<div class="panel-heading">
-  <h3 class="panel-title">Hello</h3>
-</div>
-<div class="panel-body">
-  <p class="card-text">This site maintains some notes on papers I have read. For some papers, there are existing explications. However, the process of looking at these papers helps me understand them better, and might afford others another persepective.</p>
-</div>
-</div>
-<div class="row">
-<div class="col-md-4">
-<div class="panel panel-default">
-<div class="panel-heading">
-<h3 class="panel-title">Posts</h3>
-</div>
-<div class="panel-body"><div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="posts/001.html">Byte-Encoding Representation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="posts/002.html">Beam Search</a></li>
-</ul>
-</div>
-<hr /><div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="posts/003.html">Transformer Networks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="posts/004.html">Neural Turing Machines</a></li>
-</ul>
-</div>
- </div>
- </div>
- </div>
- <div class="col-md-4">
-<div class="panel panel-default">
- <div class="panel-heading">
- <h3 class="panel-title">Profile</h3>
- </div>
- <div class="panel-body"><div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="profile/research.html">Research</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="profile/research.html#natural-language-processing">Natural Language Processing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="profile/research.html#time-series">Time Series</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="profile/professional.html">Professional</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="profile/professional.html#google">Google</a></li>
-<li class="toctree-l2"><a class="reference internal" href="profile/professional.html#microsoft">Microsoft</a></li>
-<li class="toctree-l2"><a class="reference internal" href="profile/professional.html#id1">Google</a></li>
-<li class="toctree-l2"><a class="reference internal" href="profile/professional.html#silicon-labs">Silicon Labs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="profile/professional.html#imagitas">Imagitas</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="col-md-4">
-<div class="panel panel-default">
-<div class="panel-heading">
-<h3 class="panel-title">Publications</h3>
-</div>
-<div class="panel-body"><div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="profile/publications.html">Publications</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="profile/publications.html#accepted">Accepted</a></li>
-<li class="toctree-l2"><a class="reference internal" href="profile/publications.html#submitted">Submitted</a></li>
-<li class="toctree-l2"><a class="reference internal" href="profile/publications.html#posters">Posters</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div></div>
-
-
-    </div>
-      
-  </div>
-</div>
-<footer class="footer">
-  <div class="container">
-    <p class="pull-right">
-      <a href="#">Back to top</a>
-      
-        <br/>
-        
-<div id="sourcelink">
-  <a href="_sources/index.rst.txt"
-     rel="nofollow">Source</a>
-</div>
-      
-    </p>
-    <p>
-        &copy; Copyright 2018, Charles J. Lovering.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.7.<br/>
-    </p>
-  </div>
-</footer>
-  </body>
-</html>
+<d-appendix>
+    <h3 id="acknowledgments">Acknowledgments</h3>
+    <p>The design and markup is entirely replicated from <a href="https://distill.pub/journal/">distill</a>. After several renditions, I have landed this approach. Previously, I used Sphinx. The two main reasons I tried using Sphinx was that I was able to render jupyter notebooks and I had hoped the raw markup of .rst would be more natural to read and write. However, it ended up being both overly constricting and underwhelming at the same time.</p>
+    <p>I use Adobe XD CC for diagrams, D3 for visualizations, and PyTorch and Torch (Lua) for implementations.<p>
+</d-appendix>
+</body>
