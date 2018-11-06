@@ -50,7 +50,7 @@
   </d-code>
 
   <p>This is much more valuable than a symbol for an unknown word (UNK). Using the two subword segments, it would not be surpirising if a model would be able to intepret "lower" correctly.</p>
-  <p>To build this representation, an iterative algorithm can be used to link together the most common segments, starting with character pairs. Below is the pseudo code provided by the original authors with a few changes. This algorithm is iterative. The author provides a more optimized implementation that batches and avoids recomputation. It starts bottom up, getting the bigram counts for every pair of symbols. These symbols will startout as characters but in later steps be common strings.</p>
+  <p>To build this representation, an iterative algorithm can be used to link together the most common segments, starting with character pairs. Below is the pseudo code provided by the original authors with a few changes. The author provides an optimized implementation that batches and avoids recomputation. It starts bottom up, getting the bigram counts for every pair of symbols. These symbols will startout as characters but in later steps be common strings.</p>
 
 <d-code block language="python">
 import re

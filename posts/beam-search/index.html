@@ -41,7 +41,7 @@
 
 <p>This search algorithm is often used translation. Beam search is most often used at test time, not during training. For a full implementation see <a href="https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/beam.py">OpenNMT</a>. I provide a basic implementation below for reference.</p>
 
-<p>Beam search works iteratively. Naturally, the details depend on the decoding function: a hidden markov model with a memory of 1 consumes the previous symbol; recurrent neural networks are stateful <d-cite key="cho2014learning2"></d-cite>; and transformer networks consume the entire prefix <d-cite key="vaswani2017attention2"></d-cite>.</p>
+<p>Beam search works iteratively. The details depend on the decoding function: a hidden markov model with a memory of 1 consumes the previous symbol; recurrent neural networks are stateful <d-cite key="cho2014learning2"></d-cite>; and transformer networks consume the entire prefix <d-cite key="vaswani2017attention2"></d-cite>.</p>
 
 <h3>Walkthrough</h3>
 
@@ -65,7 +65,7 @@
     <figcaption>Step 2.</figcaption>
 </figure>
 
-<p>Note that in this time step that one branch will fade completely, as the other branch contains the options with lowest probabilities.</p>
+<p>Note that in this time step that one branch will fade completely, as the other branch contains all the options with lowest probabilities.</p>
 
 <figure>
     <div class="l-body">
@@ -97,5 +97,3 @@
 
 <d-bibliography src="./refs.bib"></d-bibliography>
 </body>
-
-

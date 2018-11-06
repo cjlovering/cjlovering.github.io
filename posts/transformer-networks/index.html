@@ -83,11 +83,11 @@
 
 <d-article>
 
-<p>Attention is all you need <d-cite key="vaswani2017attention"></d-cite> introduces the Transformer Network. This network is a shift from recurrent networks; economy inspired its design. It does use stateful or recurrent functions, and is parallelized across all symbols in an input sequence. However, it is difficult to see how this formulation works with sequences of different length; demonstrating how the Transformer Network fits together is my primary goal for this notebook.</p>
+<p>Attention is all you need <d-cite key="vaswani2017attention"></d-cite> introduces the Transformer Network. This network is a shift from recurrent networks; economy inspired its design. It does use stateful or recurrent functions, and instead it is parallelized across all symbols in an input sequence. However, it is difficult to see how this formulation works with sequences of different length; demonstrating how the Transformer Network fits together is my primary goal in this post.</p>
 
 <h2> Overview </h2>
 
-<p>This work focuses on the task of natural language translation (e.g. translating english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together. The Transformer Network (TN) is composed of attention modules, linear mappings, regularization features and uses an Encoder-Decoder structure. </p>
+<p>This work focuses on the task of natural language translation (e.g. translating english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together. The Transformer Network (TN) is composed of attention modules, linear mappings, regularization features and uses an Encoder-Decoder structure. Since this publication, Transformer Networks have been used to great success in a wide range of applications <d-cite key="devlin2018bert"></d-cite>.</p>
 
 <p>I modify and present implementations from the tensor2tensor <d-footnote><a href="https://github.com/tensorflow/tensor2tensor">https://github.com/tensorflow/tensor2tensor</a> </d-footnote> library and The Annotated Transformer<d-footnote><a href="http://nlp.seas.harvard.edu/2018/04/03/attention.html">http://nlp.seas.harvard.edu/2018/04/03/attention.html</a></d-footnote>. For a complete view and implementation of this system, please visit these sources. Diagrams are recreations, and all blocked quotes are from the original paper.</p>
 
