@@ -132,7 +132,7 @@
             </div>
  </figure>
 
-<p>Next, we decode <d-math>\mathbf{z}</d-math> into the output predictions <d-math>y</d-math>. Again, this typically uses a recurrent function (RNN).</p>
+<p>Next, we decode <d-math>\mathbf{z}</d-math> into the output predictions <d-math>y</d-math>. This typically uses a recurrent function (RNN).</p>
 
 <figure class="figure-math">
     <div style="max-width:590px;display:grid;grid-template-columns:12.5% 35% 12.5% 35%;grid-column-gap:5%">
@@ -431,6 +431,7 @@ This two linear transforms with a nonlinear (RELU) operation. The denotation of 
             asdfdas
             </figcaption>
         </div>
+    </div>
 </figure>
 
 <d-code block language="python">
@@ -461,6 +462,7 @@ class PositionwiseFeedForward(nn.Module):
                 where <d-math>p</d-math> is the position and <d-math>i</d-math> is the dimension.  
                 </figcaption>
             </div>
+        </div>
 </figure>
 
 <p>As the authors describe:</p>
