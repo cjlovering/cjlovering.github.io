@@ -372,7 +372,7 @@ tensor(
 <d-code block language="python">
 class MultiHeadedAttention(nn.Module):
     def __init__(self, h, d_model, dropout=0.1):
-        "Take in model size and number of heads."
+        """Take in model size and number of heads."""
         super(MultiHeadedAttention, self).__init__()
         assert d_model % h == 0
         # We assume d_v always equals d_k
@@ -383,7 +383,8 @@ class MultiHeadedAttention(nn.Module):
         self.dropout = nn.Dropout(p=dropout)
         
     def forward(self, query, key, value, mask=None):
-        "Implements Figure 2"
+        """Outputs weighted sums of the value as determined by interactions between the
+        query and the key."""
         if mask is not None:
             # Same mask applied to all h heads.
             mask = mask.unsqueeze(1)
@@ -436,7 +437,7 @@ This two linear transforms with a nonlinear (RELU) operation. The denotation of 
 
 <d-code block language="python">
 class PositionwiseFeedForward(nn.Module):
-"Implements FFN equation."
+"""Implements FFN equation."""
     def __init__(self, d_model=512, d_ff=2048, dropout=0.1):
         super(PositionwiseFeedForward, self).__init__()
         self.w_1 = nn.Linear(d_model, d_ff)
