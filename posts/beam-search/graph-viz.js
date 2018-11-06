@@ -64,10 +64,10 @@ const getImages = function(file_names) {
 }
 
 const file_names = [
-  '/_static/images/002/beam-search-graph-01.svg',
-  '/_static/images/002/beam-search-graph-02.svg',
-  '/_static/images/002/beam-search-graph-03.svg',
-  '/_static/images/002/beam-search-graph-04.svg',
-  '/_static/images/002/beam-search-graph-05.svg'
+  './images/beam-search-graph-01.svg',
+  './images/beam-search-graph-02.svg',
+  './images/beam-search-graph-03.svg',
+  './images/beam-search-graph-04.svg',
+  './images/beam-search-graph-05.svg'
 ];
 getImages(file_names);
