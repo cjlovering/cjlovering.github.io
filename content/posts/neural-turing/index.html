@@ -1,0 +1,105 @@
+<!doctype html>
+<head>
+<meta charset="utf-8">
+<script src="https://distill.pub/template.v2.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+<style>
+    .figure-math {
+      margin-left: 1em;
+    }
+</style>
+</head>
+<d-front-matter>
+<script type="text/json">{
+    "title": "Neural Turing Machines",
+    "description": "Neural Turing Machines.",
+    "authors": [
+        {
+            "author": "Alex Graves",
+            "authorURL": "#",
+            "affiliation": "Google DeepMind",
+            "affiliationURL": "#"
+        },
+        {
+            "author": "Greg Wayne",
+            "authorURL": "#",
+            "affiliation": "",
+            "affiliationURL": "#"
+        },
+        {
+            "author": "Ivo Danihelka",
+            "authorURL": "#",
+            "affiliation": "",
+            "affiliationURL": "#"
+        }
+    ],
+    "katex": {
+      "delimiters": [
+        {"left": "$$", "right": "$$", "display": false}
+      ]
+    }
+}
+</script>
+</d-front-matter>
+
+<d-title>
+    <h1>Neural Turing Machines</h1>
+    <p>Neural Turing Machines.</p>
+    <div class="l-page" id="vtoc"></div>
+</d-title>
+
+<d-byline></d-byline>
+
+<d-article>
+
+<p>Neural Turing Machines <d-cite key="graves2014neural"></d-cite>  are able to learn simple algorithms that generalize "far beyond" the training data. Since publication there have been following up works, but this paper introduces some important mechanisms.</p>
+
+<h2> Overview </h2>
+
+<p>The paper focused on the experiments and the results -- this notebook provides an overview of some of the implementation details.</p>
+
+<h2>Architecture</h2>
+
+The authors used the proposed Neural Turing Machine (NTM) to solve a range of basic data manipulation tasks. An external controller network utilizes NTM's API of blurry read and write operations to tackle the task.
+
+<figure>
+    <div class="l-body">
+        <img src="/_static/images/004/simple-architecture.svg" height="150px">
+    </div>
+    <figcaption>Simplified architecture.</figcaption>
+</figure>
+
+<p>The controller has a number of heads which each other read or write from the memory. The number and purpose of the heads is static (part of the network configuration). The generic API for the controller as a whole is only a sequence of vectors (describing a problem) and then the controller will output an answer for the given problem once a termination symbol is reached. There is no intermittent guidance on how the controller uses the NTM to organize information. The authors hypothesized, and at least to some degree demonstrated, that the controller and the NTM in concert learn to construct generalizable programs.</p>
+
+<p>The read operation is a weighted sum of the stateful memory  <d-math>M \in \mathbb{R}^{N \times M}</d-math> as determined by a mask <d-math>w \in \mathbb{R}^{N}</d-math>.</p>
+
+<figure class="figure-math">
+    <div style="max-width:590px;display:grid;grid-template-columns:100%;grid-column-gap:5%">
+    <div>
+        <d-math>\sum_i M_i w_i \in \mathbb{R}^{M} \;</d-math>
+        <figcaption style="padding-top:10px">
+        Get representation using attention across the memory.  
+        </figcaption>
+    </div>
+ </figure>
+
+<p>The write is more complicated; it uses something akin to the gating mechanism in an LSTM to update memory positions. The update is applied across all of its memory, but again, the update is controlled using the same mask as above.</p>
+
+<p>The NTM uses a novel mechanism for addressing content inside its memory.</p>
+
+
+<figure>
+    <div class="l-body">
+        <img src="/_static/images/004/addressing.svg" height="450px">
+    </div>
+    <figcaption>Addressing mechanism to create a mask used for reading and writing.</figcaption>
+</figure>
+
+<d-appendix>
+    <d-footnote-list></d-footnote-list>
+    <d-citation-list></d-citation-list>
+</d-appendix>
+
+<d-bibliography src="./refs.bib"></d-bibliography>
+</body>
