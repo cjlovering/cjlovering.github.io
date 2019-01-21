@@ -83,17 +83,17 @@
 
 <d-article>
 
-<p>Attention is all you need <d-cite key="vaswani2017attention"></d-cite> introduces the Transformer Network. This network is a shift from recurrent networks; economy inspired its design. It does use stateful or recurrent functions, and instead it is parallelized across all symbols in an input sequence. However, it is difficult to see how this formulation works with sequences of different length; demonstrating how the Transformer Network fits together is my primary goal in this post.</p>
+<p>Attention is all you need <d-cite key="vaswani2017attention"></d-cite> introduces the Transformer Network. This network is a shift from recurrent networks; economy inspires design. It does not use stateful or recurrent functions, and instead it is parallelized across all symbols in an input sequence. However, it is difficult at first to see how this works with sequences of different length. The primary goal of this post is demonstrating how the Transformer Network fits together.</p>
 
-<h2> Overview </h2>
+<h2>Overview</h2>
 
-<p>This work focuses on the task of natural language translation (e.g. translating english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together. The Transformer Network (TN) is composed of attention modules, linear mappings, regularization features and uses an Encoder-Decoder structure. Since this publication, Transformer Networks have been used to great success in a wide range of applications <d-cite key="devlin2018bert"></d-cite>.</p>
+<p>This work focuses on the task of natural language translation (e.g. translating english to german or vice versa.) This notebook focuses on the unique modules the authors present, and how the system fits together. The Transformer Network (TN) is composed of attention modules, linear mappings, regularization features and uses an Encoder-Decoder structure. Since this publication, Transformer Networks Encoders have been used to great success in a wide range of applications <d-cite key="devlin2018bert"></d-cite>.</p>
 
 <p>I modify and present implementations from the tensor2tensor <d-footnote><a href="https://github.com/tensorflow/tensor2tensor">https://github.com/tensorflow/tensor2tensor</a> </d-footnote> library and The Annotated Transformer<d-footnote><a href="http://nlp.seas.harvard.edu/2018/04/03/attention.html">http://nlp.seas.harvard.edu/2018/04/03/attention.html</a></d-footnote>. For a complete view and implementation of this system, please visit these sources. Diagrams are recreations, and all blocked quotes are from the original paper.</p>
 
 <h2>Encoder-Decoder Structure</h2>
 
-<p>The transformer uses a encoder-decoder <d-cite key="bahdanau2014neural"></d-cite> structure: an input sequence of symbols, <d-math>x = \{ x_1, x_2, ..., x_n \}</d-math>, is encoded into a sequence of continuous variables, <d-math>\mathbf{z} = \{ z_1, z_2, ..., z_n \}</d-math>. This is then decoded into a sequence of symbols, <d-math>y = \{ y_1, y_2, ..., y_n \}</d-math>. In some cases, <d-math>\mathbf{z}</d-math> is a single continuous variable rather than a sequence <d-cite key="cho2014learning"></d-cite>. This generation of these symbols occurs one at a time - it is <d-cite key="graves"></d-cite>, consuming previously generated symbols as additional input when generating the next. Encoder-decoders typically use recurrent architectures.</p>
+<p>The transformer uses a encoder-decoder <d-cite key="bahdanau2014neural"></d-cite> structure: an input sequence of symbols, <d-math>x = \{ x_1, x_2, ..., x_n \}</d-math>, is encoded into a sequence of continuous variables, <d-math>\mathbf{z} = \{ z_1, z_2, ..., z_n \}</d-math>. This is then decoded into a sequence of symbols, <d-math>y = \{ y_1, y_2, ..., y_n \}</d-math>. In some cases, <d-math>\mathbf{z}</d-math> is a single continuous variable rather than a sequence <d-cite key="cho2014learning"></d-cite>. This generation of these symbols occurs one at a time - it is <d-cite key="graves"></d-cite>, consuming previously generated symbols as additional input when generating the next. Encoder-decoders often use recurrent architectures.</p>
 
 <p>According to Cho et. al <d-cite key="cho2014learning"></d-cite>, the encoding function <d-math>e</d-math> can be any non-linear function, but it is often implemented as an RNN.</p>
 
