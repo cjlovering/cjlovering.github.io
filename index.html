@@ -12,23 +12,6 @@
 <script src="https://distill.pub/template.v2.js"></script>
 
 <body>
-    <d-front-matter>
-        <script type="text/json">{
-        "title": "Charles Lovering",
-        "description": "--",
-        "authors": [
-            {
-                "author": "Charlie Lovering",
-                "authorURL": "https://github.com/cjlovering",
-                "affiliation": "Brown University",
-                "affiliationURL": "https://cs.brown.edu/people/epavlick/students.html",
-                "published": "2020"
-            }
-        ]
-    }
-    </script>
-    </d-front-matter>
-
     <d-title>
         <h1>Charles Lovering</h1>
         <p> Computer Science PhD Student (NLU).</p>
@@ -36,15 +19,45 @@
     </d-title>
 
     <d-article class="centered">
-        <h2>Hello</h2>
-        <p>Interesting stuff below &darr;; a bit about me <a href="./profile/index.html">here</a> &larr;. </p>
         <div style="max-width:600px;display:grid;grid-template-columns:100%;grid-column-gap:0%">
-            <h2>Projects</h2>
+        <h2>Links</h2>
+        <div style="max-width:300px;display:grid;grid-template-columns:100%;grid-column-gap:0%">
+
+        <table>
+            <tbody>
+                <tr>
+                    <td>Google Scholar</td>
+                    <td><a href="https://scholar.google.com/citations?user=w0hYPqEAAAAJ&hl=en">[link]</a></td>
+                </tr>
+                <tr>
+                    <td>Github</td>
+                    <td><a href="https://github.com/cjlovering">[link]</a></td>
+                </tr>
+                <tr>
+                    <td>Resume</td>
+                    <td><a href="./profile/index.html">[link]</a></td>
+                </tr>
+                <tr>
+                    <td>Lab page</td>
+                    <td><a href="https://lunar.cs.brown.edu/">[link]</a></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        </div>
+
+        <div style="max-width:600px;display:grid;grid-template-columns:100%;grid-column-gap:0%">
+            <h2>Research</h2>
             <h3>Recent Work</h3>
             <ol>
+                <li>Charles Lovering*, Jessica Forde*,  Ellie Pavlick, Michael
+                    Littman. Where, When & Which Concepts Does AlphaZero Learn?
+                    AAAI, RLG Workshop, 2022. (*Equal contribution.)
+                </li>
                 <li><a href="https://openreview.net/forum?id=mNtmhaDkAr">Charles Lovering, Rohan Jha, Tal Linzen, Ellie
                         Pavlick. Predicting Inductive Biases of Pre-Trained Models.
-                        ICLR, 2021.</a> <a href="https://github.com/cjlovering/predicting-inductive-biases">Github.</a>
+                        ICLR, 2021.</a> <a href="https://github.com/cjlovering/predicting-inductive-biases">[github]</a>
+                        <a href="https://iclr.cc/virtual/2021/poster/3098">[video]</a>
                 </li>
                 <li><a href="https://arxiv.org/pdf/2004.15012.pdf">Rohan Jha, Charles Lovering, Ellie Pavlick. Does Data
                         Augmentation Improve Generalization in NLP?
@@ -53,54 +66,38 @@
                         Efficient Language Acquisition. 2020. PREPRINT.
                     </a></li>
             </ol>
-            <h3>Fun Visualizations</h3>
+            <h3>Talks</h3>
             <ul>
-                <li><a href="https://observablehq.com/collection/@xenocidist/lindenmayer-systems">Ferns:</a>
-                    Visualizations of Lindenmayer systems, generating beautiful ferns!
-                </li>
-                <li><a href="https://cjlovering.github.io/playground/">Playground:</a> Different interactive
-                    visualizations, including a hexagon-based game-of-life, random gradient walks, and (my favorite)
-                    bouncing balls.</li>
-            </ul>
-            <h3>Unpublished Work</h3>
-            <ul>
-                <li><a href="posts/interpretable-reinforcement-learning/index.html">Interpretable Reinforcement
-                        Learning: </a> Reimplementation of attention-based reinforcement learning.</li>
-                <li><a href="posts/listicles/index.html">Listicles:</a> A dataset drawn extracted from online listicles.
-                </li>
+                <li>Where, When & Which Concepts Does AlphaZero Learn?. @ Jane Street, Research Symposium. Winter, 2022. [Upcoming]</li>
+                <li><a href="https://openreview.net/forum?id=mNtmhaDkAr">Predicting Inductive Biases of Pre-Trained
+                        Models.</a> @ NLP & Fairness, Interpretability, and
+                    Robustness; Google. Fall, 2020.</li>
+                <li><a href=./presentations/mdl.pdf>Minimum Description Length Probing</a> @ Language Understanding
+                    and
+                    Representations; Brown University. Summer, 2020.</li>
+                <li><a href=./presentations/transformer-tutorial.pdf>Transformers</a> @ Language Understand and
+                    Representations; Brown University. Summer, 2019.</li>
             </ul>
         </div>
 
         <div style="max-width:550px;display:grid;grid-template-columns:100%;grid-column-gap:0%">
-            <h2>Notes</h2>
-            <div>
-                <h3>Talks (slides)</h3>
-                <ul>
-                    <li><a href="https://openreview.net/forum?id=mNtmhaDkAr">Predicting Inductive Biases of Pre-Trained
-                            Models.</a> @ NLP & Fairness, Interpretability, and
-                        Robustness; Google. Fall, 2020.</li>
-                    <li><a href=./presentations/mdl.pdf>Minimum Description Length Probing</a> @ Language Understanding
-                        and
-                        Representations; Brown University. Summer, 2020.</li>
-                    <li><a href=./presentations/transformer-tutorial.pdf>Transformers</a> @ Language Understand and
-                        Representations; Brown University. Summer, 2019.</li>
-                </ul>
-            </div>
-            <div>
-                <h3>Methods (expositions)</h3>
-                <ul>
-                    <li><a href="posts/byte-encoding/index.html">Byte Encoding Representation</a></li>
-                    <li><a href="posts/beam-search/index.html">Beam Search</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3>Models (expositions)</h3>
-                <ul>
-                    <li><a href="posts/transformer-networks/index.html">Transformer Networks</a></li>
-                    <li><a href="posts/neural-turing/index.html">Neural Turing Machine</a></li>
-                </ul>
-            </div>
-        </div>
+            <h2>Artifacts</h2>
+
+            <div class="row">
+                <div class="column">
+                    <a href="https://observablehq.com/collection/@xenocidist/lindenmayer-systems"><img src="./_static/images/index/ferns.png" width="200px" /></a></td>
+                    <a href="https://cjlovering.github.io/playground/"><img src="./_static/images/index/playground.png"  width="200px"/></a>
+                </div>
+                <div class="column">
+                    <a href="posts/byte-encoding/index.html"> <img src="./_static/images/index/byte.png"  width="200px"/></a>
+                    <a href="posts/beam-search/index.html"><img src="./_static/images/index/beam.png"  width="200px"/></a>
+                    </div>
+                    <div class="column">
+                        <a href="posts/transformer-networks/index.html"><img src="./_static/images/index/transformer.png"  width="200px"/></a>
+                        <a href="posts/neural-turing/index.html"><img src="./_static/images/index/neural-turing.png" width="200px" /></a>
+                        </div>
+                    </div>
+
         <div style="max-width:550px;display:grid;grid-template-columns:100%;grid-column-gap:0%">
             <h2>Etc</h2>
             <div>
